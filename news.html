@@ -47,22 +47,74 @@
                 <div class="ms-dot"></div>
                 <div class="ms-pill-text">IRB Submitted<span class="ms-pill-sub">Q1 2025</span></div>
             </div>
+            <div class="ms-pill done">
+                <div class="ms-dot"></div>
+                <div class="ms-pill-text">Hardware Setup<span class="ms-pill-sub">Completed</span></div>
+            </div>
             <div class="ms-pill current">
                 <div class="ms-dot"></div>
-                <div class="ms-pill-text">Hardware Setup<span class="ms-pill-sub">In Progress</span></div>
+                <div class="ms-pill-text">Data Collection<span class="ms-pill-sub">In Progress</span></div>
             </div>
-            <div class="ms-pill upcoming">
+            <div class="ms-pill current">
                 <div class="ms-dot"></div>
-                <div class="ms-pill-text">Data Collection<span class="ms-pill-sub">Upcoming</span></div>
+                <div class="ms-pill-text">Model Training<span class="ms-pill-sub">In Progress</span></div>
             </div>
-            <div class="ms-pill upcoming">
+            <div class="ms-pill current">
                 <div class="ms-dot"></div>
-                <div class="ms-pill-text">Model Training<span class="ms-pill-sub">Upcoming</span></div>
+                <div class="ms-pill-text">Corpus Builder<span class="ms-pill-sub">Launched</span></div>
             </div>
         </div>
 
         <!-- News Cards -->
         <div class="news-grid">
+            <!-- FEATURED: Corpus Builder Launch -->
+            <div class="n-card n-card-featured reveal" style="grid-column:1/-1;">
+                <div class="n-card-visual" style="height:200px; background:linear-gradient(135deg, rgba(45,127,249,0.12), rgba(139,92,246,0.12));">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:56px;height:56px;opacity:.6"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/><path d="M8 22h8"/><path d="M2 8h2"/><path d="M20 8h2"/><path d="M4.93 4.93l1.41 1.41"/><path d="M17.66 6.34l1.41-1.41"/></svg>
+                </div>
+                <div class="n-card-body">
+                    <div class="n-card-meta">
+                        <span class="n-card-tag milestone">Major Launch</span>
+                        <span class="n-card-date">March 2026</span>
+                    </div>
+                    <h3>Arabic Medical Speech Corpus Builder — Now Live</h3>
+                    <p>We are excited to announce the launch of the <strong>Arabic Medical Speech Corpus Builder</strong> — a first-of-its-kind platform for building structured, high-quality Arabic medical speech datasets. The tool enables clinicians to record, transcribe, validate, and annotate medical conversations in Gulf Arabic dialects, creating the foundational dataset that will power Medad's AI engine.</p>
+                    <p style="margin-top:.75rem; color:var(--text-muted); font-size:.82rem; line-height:1.6;">The platform features an intuitive web interface for managing recording sessions, real-time transcription review, medical terminology tagging, and quality scoring — all running 100% locally to ensure complete data sovereignty. Currently managed and developed with AI-assisted engineering, this project represents a major step toward building the largest Arabic clinical speech corpus ever assembled.</p>
+                    <div style="margin-top:1.25rem; padding-top:1rem; border-top:1px solid var(--border);">
+                        <p style="font-size:.82rem; color:var(--accent-strong); font-weight:600;">Interested in collaborating?</p>
+                        <p style="font-size:.8rem; color:var(--text-muted); margin-top:.25rem;">We welcome partnerships with hospitals, research institutions, and universities across the Arab world. Reach out to us at <a href="mailto:dr.abdullahalalawi@gmail.com" style="color:var(--accent-strong); text-decoration:underline;">dr.abdullahalalawi@gmail.com</a></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="n-card reveal">
+                <div class="n-card-visual">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg>
+                </div>
+                <div class="n-card-body">
+                    <div class="n-card-meta">
+                        <span class="n-card-tag milestone">Milestone</span>
+                        <span class="n-card-date">March 2026</span>
+                    </div>
+                    <h3>Data Collection Has Begun</h3>
+                    <p>Clinical data collection is now underway across participating hospitals in Muscat. Our team is actively recording real-world doctor-patient conversations in Gulf Arabic, building the foundation for Medad's speech recognition and clinical note generation models.</p>
+                </div>
+            </div>
+
+            <div class="n-card reveal reveal-delay-1">
+                <div class="n-card-visual">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="7.5 4.21 12 6.81 16.5 4.21"/><polyline points="7.5 19.79 7.5 14.6 3 12"/><polyline points="21 12 16.5 14.6 16.5 19.79"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+                </div>
+                <div class="n-card-body">
+                    <div class="n-card-meta">
+                        <span class="n-card-tag tech">Technical</span>
+                        <span class="n-card-date">March 2026</span>
+                    </div>
+                    <h3>Model Training Initiated</h3>
+                    <p>Initial model training has kicked off using collected speech data. We are fine-tuning Arabic ASR models and local LLMs on Omani medical terminology, Gulf dialect patterns, and clinical note structures — all processed on our on-premise GPU infrastructure.</p>
+                </div>
+            </div>
+
             <div class="n-card reveal">
                 <div class="n-card-visual">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
@@ -118,6 +170,18 @@
                     <p>Initial project concept developed and research methodology designed. Identifying key collaborators across Omani medical institutions and defining the technical architecture for the system.</p>
                 </div>
             </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-cta section">
+    <div class="container centered">
+        <h2 class="h2">Collaborate With Us</h2>
+        <p class="sub-text" style="margin:0 auto 1rem;">We are building the largest Arabic clinical speech corpus and welcome partnerships with hospitals, universities, and research institutions across the Arab world.</p>
+        <p style="color:var(--text-muted); font-size:.9rem; margin-bottom:1.5rem;">Whether you can contribute clinical recordings, linguistic expertise, or engineering resources — we want to hear from you.</p>
+        <div class="hero-actions" style="justify-content:center; gap:1rem;">
+            <a href="mailto:dr.abdullahalalawi@gmail.com" class="btn btn-primary">Contact for Collaboration</a>
+            <a href="./join.html" class="btn btn-ghost">View Open Roles</a>
         </div>
     </div>
 </section>
