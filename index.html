@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medad — AI-Powered Arabic Clinical Documentation</title>
+    <meta name="description" content="Revolutionizing Omani healthcare with secure, local AI that transforms Arabic medical conversations into structured clinical notes.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Noto+Kufi+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav class="nav" id="nav">
+    <div class="container nav-inner">
+        <a href="/" class="logo">
+            <span class="logo-mark">مداد</span>
+            <span class="logo-text">MEDAD</span>
+        </a>
+        <div class="nav-links" id="navLinks">
+            <a href="/" class="nav-link active">Home</a>
+            <a href="./team.html" class="nav-link">Team</a>
+            <a href="./news.html" class="nav-link">News</a>
+            <a href="./join.html" class="nav-link">Join Us</a>
+            <a href="./join.html#apply" class="nav-cta">Apply Now</a>
+        </div>
+        <button class="nav-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+    <div class="hero-bg">
+        <img src="./hero-bg.png" alt="" class="hero-img">
+        <div class="hero-overlay"></div>
+    </div>
+    <div class="container hero-content">
+        <div class="hero-badge">🇴🇲 Made in Oman</div>
+        <h1 class="hero-title">
+            <span class="hero-line">Ambient Clinical</span>
+            <span class="hero-line accent">Documentation</span>
+            <span class="hero-line">System</span>
+        </h1>
+        <p class="hero-sub">Secure, local AI that listens to Arabic medical conversations and writes the clinical notes — so doctors can focus on patients.</p>
+        <div class="hero-actions">
+            <a href="#solution" class="btn btn-primary">Learn More</a>
+            <a href="./join.html" class="btn btn-ghost">Join the Team</a>
+        </div>
+        <div class="hero-stats">
+            <div class="stat">
+                <span class="stat-num">2-3h</span>
+                <span class="stat-label">Daily documentation time</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat">
+                <span class="stat-num">40-50%</span>
+                <span class="stat-label">Time away from patients</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat">
+                <span class="stat-num">15-20m</span>
+                <span class="stat-label">Per SOAP note manually</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat">
+                <span class="stat-num">0</span>
+                <span class="stat-label">Existing Arabic solutions</span>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- THE PROBLEM -->
+<section class="section" id="problem">
+    <div class="container">
+        <div class="section-label">The Problem</div>
+        <div class="split">
+            <div class="split-text">
+                <h2 class="h2">Doctors Are Drowning in Paperwork</h2>
+                <p>Clinicians across the Arab world spend excessive hours on manual documentation — typing notes, filling forms, writing referrals. This reduces face-to-face patient time and drives burnout.</p>
+                <p>Existing AI documentation tools are built for English, rely on cloud processing (a privacy nightmare for patient data), and don't understand Arabic medical terminology or Gulf dialects.</p>
+            </div>
+            <div class="problem-cards">
+                <div class="p-card">
+                    <div class="p-card-icon red">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" x2="9" y1="9" y2="15"/><line x1="9" x2="15" y1="9" y2="15"/></svg>
+                    </div>
+                    <div>
+                        <strong>No Arabic Support</strong>
+                        <span>Current systems fail on Arabic dialects and medical terms</span>
+                    </div>
+                </div>
+                <div class="p-card">
+                    <div class="p-card-icon red">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
+                    </div>
+                    <div>
+                        <strong>Cloud Privacy Risks</strong>
+                        <span>Patient data sent to foreign servers violates sovereignty</span>
+                    </div>
+                </div>
+                <div class="p-card">
+                    <div class="p-card-icon red">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    </div>
+                    <div>
+                        <strong>Time Drain</strong>
+                        <span>15-20 minutes per patient for manual SOAP notes</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- OUR SOLUTION -->
+<section class="section section-dark" id="solution">
+    <div class="container">
+        <div class="section-label">Our Solution</div>
+        <div class="solution-hero">
+            <h2 class="h2">Medad: Documentation That<br><span class="accent">Happens Automatically</span></h2>
+            <p class="solution-sub">An AI system that sits in the room, listens to the doctor-patient conversation in Arabic, and generates complete clinical notes — all processed locally, never leaving the hospital.</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-num">01</div>
+                <h3>100% Local Processing</h3>
+                <p>All AI runs on hospital servers. Zero data leaves the building. Complete sovereignty over patient information.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-num">02</div>
+                <h3>Arabic-First Design</h3>
+                <p>Fine-tuned for Gulf Arabic dialects and Omani medical terminology. Understands code-switching between Arabic and English.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-num">03</div>
+                <h3>Learns & Adapts</h3>
+                <p>Doctors review and correct notes. The system learns from every edit, getting smarter with each use — personalized to each clinician.</p>
+            </div>
+        </div>
+
+        <!-- How it works demo -->
+        <div class="demo-section">
+            <h3 class="demo-title">See It In Action</h3>
+            <div class="demo-flow">
+                <div class="demo-step">
+                    <div class="demo-num">1</div>
+                    <div class="demo-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
+                    </div>
+                    <strong>Record</strong>
+                    <span>Ambient listening during consultation</span>
+                </div>
+                <div class="demo-arrow">→</div>
+                <div class="demo-step">
+                    <div class="demo-num">2</div>
+                    <div class="demo-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" x2="6.01" y1="6" y2="6"/><line x1="6" x2="6.01" y1="18" y2="18"/></svg>
+                    </div>
+                    <strong>Process Locally</strong>
+                    <span>On-premise AI transcription</span>
+                </div>
+                <div class="demo-arrow">→</div>
+                <div class="demo-step">
+                    <div class="demo-num">3</div>
+                    <div class="demo-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg>
+                    </div>
+                    <strong>Translate</strong>
+                    <span>Arabic → structured English notes</span>
+                </div>
+                <div class="demo-arrow">→</div>
+                <div class="demo-step">
+                    <div class="demo-num">4</div>
+                    <div class="demo-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m9 12 2 2 4-4"/><path d="M21 12a9 9 0 1 1-9-9"/><path d="M21 3v6h-6"/></svg>
+                    </div>
+                    <strong>Review & Learn</strong>
+                    <span>Doctor corrects, AI improves</span>
+                </div>
+            </div>
+
+            <div class="demo-example">
+                <div class="demo-arabic">
+                    <div class="demo-tag">Arabic Input</div>
+                    <p class="arabic-text">المريض يشتكي من ألم حاد في الجهة اليسرى للصدر مع انتشار للكتف.</p>
+                    <p class="arabic-text">ضيق التنفس الجهدية ملاحظ بعد صعود الدرج.</p>
+                </div>
+                <div class="demo-english">
+                    <div class="demo-tag">SOAP Note Output</div>
+                    <p>Patient complains of acute left-sided chest pain with radiation to the shoulder.</p>
+                    <p>Exertional dyspnea noted after climbing stairs, requiring rest.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ROADMAP -->
+<section class="section" id="roadmap">
+    <div class="container">
+        <div class="section-label">Where We Are</div>
+        <h2 class="h2 centered">Project Roadmap</h2>
+        <p class="centered sub-text">A 24-month journey to transform clinical documentation in Oman and beyond.</p>
+
+        <div class="roadmap">
+            <div class="rm-item done">
+                <div class="rm-marker"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 12 2 2 4-4"/></svg></div>
+                <div class="rm-content">
+                    <div class="rm-phase">Phase 1</div>
+                    <h3>Setup & Data Collection</h3>
+                    <p>System installation, IRB approval, and initial data collection. Training 50-100 hours of Omani medical conversations.</p>
+                </div>
+            </div>
+            <div class="rm-item active">
+                <div class="rm-marker"><div class="rm-pulse"></div></div>
+                <div class="rm-content">
+                    <div class="rm-phase">Phase 2 — Current</div>
+                    <h3>Multi-User Platform</h3>
+                    <p>Collaborative web system with continuous self-training capabilities. Clinicians review outputs to fine-tune models monthly.</p>
+                </div>
+            </div>
+            <div class="rm-item">
+                <div class="rm-marker"></div>
+                <div class="rm-content">
+                    <div class="rm-phase">Phase 3</div>
+                    <h3>Expansion</h3>
+                    <p>Deploy to specialty clinics, ward rounds, and other hospitals. Testing hardware options from high-end GPUs to CPU-only servers.</p>
+                </div>
+            </div>
+            <div class="rm-item">
+                <div class="rm-marker"></div>
+                <div class="rm-content">
+                    <div class="rm-phase">Phase 4</div>
+                    <h3>Testing & Validation</h3>
+                    <p>Comprehensive accuracy testing, clinical validation, and usability assessment. Comparing AI vs manual SOAP notes.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- LATEST NEWS TEASER -->
+<section class="section section-dark" id="news">
+    <div class="container">
+        <div class="section-label">Latest Updates</div>
+        <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:2rem; flex-wrap:wrap; gap:1rem;">
+            <div>
+                <h2 class="h2" style="margin-bottom:.25rem;">News & Progress</h2>
+                <p class="sub-text">Follow our journey building the future of clinical documentation.</p>
+            </div>
+            <a href="./news.html" class="btn btn-ghost" style="flex-shrink:0;">View All Updates →</a>
+        </div>
+        <div class="news-grid">
+            <div class="n-card reveal">
+                <div class="n-card-visual">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </div>
+                <div class="n-card-body">
+                    <div class="n-card-meta">
+                        <span class="n-card-tag">Team</span>
+                        <span class="n-card-date">February 2025</span>
+                    </div>
+                    <h3>Medad Research Team Formed</h3>
+                    <p>A multidisciplinary team of 11 clinicians, researchers, and engineers from across Oman's top institutions has come together to build Medad.</p>
+                </div>
+            </div>
+            <div class="n-card reveal reveal-delay-1">
+                <div class="n-card-visual">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+                </div>
+                <div class="n-card-body">
+                    <div class="n-card-meta">
+                        <span class="n-card-tag milestone">Milestone</span>
+                        <span class="n-card-date">January 2025</span>
+                    </div>
+                    <h3>IRB Application Submitted</h3>
+                    <p>Ethical approval application submitted for clinical data collection across participating hospitals in Muscat.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="section section-cta">
+    <div class="container centered">
+        <h2 class="h2">Want to Be Part of This?</h2>
+        <p class="sub-text">We're building a team of clinicians, engineers, and researchers to transform Arabic healthcare documentation.</p>
+        <div class="hero-actions" style="justify-content:center">
+            <a href="./team.html" class="btn btn-primary">Meet the Team</a>
+            <a href="./join.html" class="btn btn-ghost">Apply to Join</a>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div>
+                <div class="footer-logo"><span class="logo-mark">مداد</span> MEDAD</div>
+                <p class="footer-desc">AI-Powered Arabic Medical Transcription for Omani Healthcare. Enhancing patient care through automated documentation.</p>
+            </div>
+            <div>
+                <h4>Pages</h4>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="./team.html">Team</a></li>
+                    <li><a href="./news.html">News</a></li>
+                    <li><a href="./join.html">Join Us</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Contact</h4>
+                <ul>
+                    <li>Muscat, Oman</li>
+                    <li><a href="mailto:dr.abdullahalalawi@gmail.com">dr.abdullahalalawi@gmail.com</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Medad. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<script src="./main.js"></script>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Our Team — Medad</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Noto+Kufi+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+
+<nav class="nav scrolled" id="nav">
+    <div class="container nav-inner">
+        <a href="/" class="logo"><span class="logo-mark">مداد</span><span class="logo-text">MEDAD</span></a>
+        <div class="nav-links" id="navLinks">
+            <a href="./" class="nav-link">Home</a>
+            <a href="./team.html" class="nav-link">Team</a>
+            <a href="./news.html" class="nav-link">News</a>
+            <a href="./join.html" class="nav-link active">Join Us</a>
+            <a href="#apply" class="nav-cta">Apply Now</a>
+        </div>
+        <button class="nav-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</nav>
+
+<div class="page-header">
+    <div class="container">
+        <div class="section-label" style="justify-content:center">We're Hiring</div>
+        <h1>Join the Medad Team</h1>
+        <p>Help us build the future of Arabic clinical documentation. Remote and on-site positions across the Arab world.</p>
+    </div>
+</div>
+
+<!-- OPEN ROLES -->
+<section class="section">
+    <div class="container">
+        <div class="section-label">Open Roles</div>
+        <h2 class="h2">Skills We're Looking For</h2>
+        <p class="sub-text" style="margin-bottom:2rem;">We need passionate people with expertise in AI, software development, and clinical research.</p>
+
+        <div class="roles-grid">
+            <div class="role-card reveal">
+                <div class="role-icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg></div>
+                <h3>Speech & NLP Engineer</h3>
+                <p>Build and fine-tune Arabic automatic speech recognition systems. Work on dialect-aware transcription models optimized for medical conversations.</p>
+                <div class="role-tags"><span class="role-tag">Arabic ASR</span><span class="role-tag">Whisper</span><span class="role-tag">NLP</span><span class="role-tag">PyTorch</span></div>
+            </div>
+            <div class="role-card reveal reveal-delay-1">
+                <div class="role-icon purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/></svg></div>
+                <h3>ML / AI Engineer</h3>
+                <p>Deploy and optimize local LLMs for clinical note generation. Build RAG pipelines, fine-tune models, and ensure real-time performance on-premise.</p>
+                <div class="role-tags"><span class="role-tag">LLMs</span><span class="role-tag">RAG</span><span class="role-tag">Fine-tuning</span><span class="role-tag">ONNX</span></div>
+            </div>
+            <div class="role-card reveal reveal-delay-2">
+                <div class="role-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+                <h3>Full-Stack Developer</h3>
+                <p>Build the clinical documentation platform — from intuitive doctor-facing interfaces to robust backend APIs processing audio and generating SOAP notes.</p>
+                <div class="role-tags"><span class="role-tag">React</span><span class="role-tag">Python</span><span class="role-tag">FastAPI</span><span class="role-tag">PostgreSQL</span></div>
+            </div>
+            <div class="role-card reveal">
+                <div class="role-icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" x2="12.01" y1="18" y2="18"/></svg></div>
+                <h3>Mobile Developer</h3>
+                <p>Create native iOS and Android apps for bedside ambient recording, real-time transcription, and clinical note review on mobile devices.</p>
+                <div class="role-tags"><span class="role-tag">iOS</span><span class="role-tag">Android</span><span class="role-tag">Swift</span><span class="role-tag">Kotlin</span></div>
+            </div>
+            <div class="role-card reveal reveal-delay-1">
+                <div class="role-icon purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" x2="6.01" y1="6" y2="6"/><line x1="6" x2="6.01" y1="18" y2="18"/></svg></div>
+                <h3>DevOps Engineer</h3>
+                <p>Manage on-premise GPU infrastructure, automate deployment pipelines, and ensure secure, reliable operation of local AI systems within hospital networks.</p>
+                <div class="role-tags"><span class="role-tag">Docker</span><span class="role-tag">Linux</span><span class="role-tag">NVIDIA</span><span class="role-tag">CI/CD</span></div>
+            </div>
+            <div class="role-card reveal reveal-delay-2">
+                <div class="role-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+                <h3>Research Coordinator</h3>
+                <p>Coordinate multi-site clinical studies, manage IRB processes, oversee data collection protocols, and facilitate collaboration across Arab institutions.</p>
+                <div class="role-tags"><span class="role-tag">Clinical Research</span><span class="role-tag">IRB</span><span class="role-tag">Multi-site</span></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- REGIONAL EXPANSION -->
+<section class="section section-dark">
+    <div class="container">
+        <div class="section-label">Pan-Arab Collaboration</div>
+        <h2 class="h2">Expanding Across the Arab World</h2>
+        <p class="sub-text" style="margin-bottom:2rem;">Medad is built for Oman, but Arabic clinical documentation is a challenge shared across 22 nations. We're seeking researchers and institutions everywhere Arabic is spoken.</p>
+
+        <div class="region-grid reveal">
+            <div class="region-item"><div class="flag">🇴🇲</div><h4>Oman</h4><p>Home base</p></div>
+            <div class="region-item"><div class="flag">🇦🇪</div><h4>UAE</h4><p>Gulf partner</p></div>
+            <div class="region-item"><div class="flag">🇸🇦</div><h4>Saudi Arabia</h4><p>Largest market</p></div>
+            <div class="region-item"><div class="flag">🇰🇼</div><h4>Kuwait</h4><p>Gulf partner</p></div>
+            <div class="region-item"><div class="flag">🇶🇦</div><h4>Qatar</h4><p>Gulf partner</p></div>
+            <div class="region-item"><div class="flag">🇧🇭</div><h4>Bahrain</h4><p>Gulf partner</p></div>
+            <div class="region-item"><div class="flag">🇪🇬</div><h4>Egypt</h4><p>North Africa</p></div>
+            <div class="region-item"><div class="flag">🇯🇴</div><h4>Jordan</h4><p>Levant</p></div>
+            <div class="region-item"><div class="flag">🇱🇧</div><h4>Lebanon</h4><p>Levant</p></div>
+            <div class="region-item"><div class="flag">🇮🇶</div><h4>Iraq</h4><p>Mesopotamia</p></div>
+            <div class="region-item"><div class="flag">🇲🇦</div><h4>Morocco</h4><p>North Africa</p></div>
+            <div class="region-item"><div class="flag">🇹🇳</div><h4>Tunisia</h4><p>North Africa</p></div>
+        </div>
+    </div>
+</section>
+
+<!-- APPLICATION FORM -->
+<section class="section" id="apply">
+    <div class="container">
+        <div class="apply-box reveal">
+            <h3>Apply to Join Medad</h3>
+            <p>Whether you're a developer, researcher, or clinician — if you're passionate about transforming healthcare with AI, we want to hear from you.</p>
+            <form onsubmit="handleApply(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" placeholder="Dr. Ahmed Al Said" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" placeholder="ahmed@university.edu" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Country</label>
+                        <select required>
+                            <option value="">Select country</option>
+                            <option>Oman</option><option>UAE</option><option>Saudi Arabia</option><option>Kuwait</option><option>Qatar</option><option>Bahrain</option>
+                            <option>Egypt</option><option>Jordan</option><option>Lebanon</option><option>Iraq</option><option>Morocco</option><option>Tunisia</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Role of Interest</label>
+                        <select required>
+                            <option value="">Select role</option>
+                            <option>Speech & NLP Engineer</option>
+                            <option>ML / AI Engineer</option>
+                            <option>Full-Stack Developer</option>
+                            <option>Mobile Developer</option>
+                            <option>DevOps Engineer</option>
+                            <option>Research Coordinator</option>
+                            <option>Clinical Researcher</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Tell us about yourself & your experience</label>
+                    <textarea placeholder="Brief summary of your background, skills, and why you'd like to join Medad..."></textarea>
+                </div>
+                <button type="submit" class="btn-submit">Submit Application</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div><div class="footer-logo"><span class="logo-mark">مداد</span> MEDAD</div><p class="footer-desc">AI-Powered Arabic Medical Transcription for Omani Healthcare.</p></div>
+            <div><h4>Pages</h4><ul><li><a href="/">Home</a></li><li><a href="./team.html">Team</a></li><li><a href="./news.html">News</a></li><li><a href="./join.html">Join Us</a></li></ul></div>
+            <div><h4>Contact</h4><ul><li>Muscat, Oman</li><li><a href="mailto:dr.abdullahalalawi@gmail.com">dr.abdullahalalawi@gmail.com</a></li></ul></div>
+        </div>
+        <div class="footer-bottom"><p>&copy; 2026 Medad. All rights reserved.</p></div>
+    </div>
+</footer>
+<script src="./main.js"></script>
+</body>
+</html>

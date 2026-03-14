@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News & Updates — Medad</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Noto+Kufi+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+
+<nav class="nav scrolled" id="nav">
+    <div class="container nav-inner">
+        <a href="/" class="logo"><span class="logo-mark">مداد</span><span class="logo-text">MEDAD</span></a>
+        <div class="nav-links" id="navLinks">
+            <a href="./" class="nav-link">Home</a>
+            <a href="./team.html" class="nav-link">Team</a>
+            <a href="./news.html" class="nav-link active">News</a>
+            <a href="./join.html" class="nav-link">Join Us</a>
+            <a href="./join.html#apply" class="nav-cta">Apply Now</a>
+        </div>
+        <button class="nav-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</nav>
+
+<div class="page-header">
+    <div class="container">
+        <div class="section-label" style="justify-content:center">Updates</div>
+        <h1>News & Progress</h1>
+        <p>Follow our journey building the future of Arabic clinical documentation.</p>
+    </div>
+</div>
+
+<section class="section">
+    <div class="container">
+        <!-- Milestone Tracker -->
+        <div class="milestone-tracker reveal">
+            <div class="ms-pill done">
+                <div class="ms-dot"></div>
+                <div class="ms-pill-text">Team Assembled<span class="ms-pill-sub">Q4 2024</span></div>
+            </div>
+            <div class="ms-pill done">
+                <div class="ms-dot"></div>
+                <div class="ms-pill-text">IRB Submitted<span class="ms-pill-sub">Q1 2025</span></div>
+            </div>
+            <div class="ms-pill current">
+                <div class="ms-dot"></div>
+                <div class="ms-pill-text">Hardware Setup<span class="ms-pill-sub">In Progress</span></div>
+            </div>
+            <div class="ms-pill upcoming">
+                <div class="ms-dot"></div>
+                <div class="ms-pill-text">Data Collection<span class="ms-pill-sub">Upcoming</span></div>
+            </div>
+            <div class="ms-pill upcoming">
+                <div class="ms-dot"></div>
+                <div class="ms-pill-text">Model Training<span class="ms-pill-sub">Upcoming</span></div>
+            </div>
+        </div>
+
+        <!-- News Cards -->
+        <div class="news-grid">
+            <div class="n-card reveal">
+                <div class="n-card-visual">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </div>
+                <div class="n-card-body">
+                    <div class="n-card-meta">
+                        <span class="n-card-tag">Team</span>
+                        <span class="n-card-date">February 2025</span>
+                    </div>
+                    <h3>Medad Research Team Formed</h3>
+                    <p>A multidisciplinary team of 11 clinicians, researchers, and engineers from across Oman's top medical institutions has come together to build Medad — the first Arabic ambient clinical documentation system.</p>
+                </div>
+            </div>
+
+            <div class="n-card reveal reveal-delay-1">
+                <div class="n-card-visual">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+                </div>
+                <div class="n-card-body">
+                    <div class="n-card-meta">
+                        <span class="n-card-tag milestone">Milestone</span>
+                        <span class="n-card-date">January 2025</span>
+                    </div>
+                    <h3>IRB Application Submitted</h3>
+                    <p>Institutional Review Board application submitted for ethical approval of clinical data collection across participating hospitals in Muscat. A critical step toward starting real-world recording sessions.</p>
+                </div>
+            </div>
+
+            <div class="n-card reveal">
+                <div class="n-card-visual">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg>
+                </div>
+                <div class="n-card-body">
+                    <div class="n-card-meta">
+                        <span class="n-card-tag tech">Technical</span>
+                        <span class="n-card-date">December 2024</span>
+                    </div>
+                    <h3>Local Infrastructure Planning</h3>
+                    <p>Evaluating on-premise GPU servers and local LLM deployment strategies to ensure 100% data sovereignty for Omani patient information. Testing various hardware configurations for optimal performance.</p>
+                </div>
+            </div>
+
+            <div class="n-card reveal reveal-delay-1">
+                <div class="n-card-visual">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2 2 7l10 5 10-5-10-5Z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg>
+                </div>
+                <div class="n-card-body">
+                    <div class="n-card-meta">
+                        <span class="n-card-tag">Project</span>
+                        <span class="n-card-date">November 2024</span>
+                    </div>
+                    <h3>Project Inception & Planning</h3>
+                    <p>Initial project concept developed and research methodology designed. Identifying key collaborators across Omani medical institutions and defining the technical architecture for the system.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div><div class="footer-logo"><span class="logo-mark">مداد</span> MEDAD</div><p class="footer-desc">AI-Powered Arabic Medical Transcription for Omani Healthcare.</p></div>
+            <div><h4>Pages</h4><ul><li><a href="/">Home</a></li><li><a href="./team.html">Team</a></li><li><a href="./news.html">News</a></li><li><a href="./join.html">Join Us</a></li></ul></div>
+            <div><h4>Contact</h4><ul><li>Muscat, Oman</li><li><a href="mailto:dr.abdullahalalawi@gmail.com">dr.abdullahalalawi@gmail.com</a></li></ul></div>
+        </div>
+        <div class="footer-bottom"><p>&copy; 2026 Medad. All rights reserved.</p></div>
+    </div>
+</footer>
+<script src="./main.js"></script>
+</body>
+</html>
