@@ -152,6 +152,34 @@
         .tli h3.ac { color:var(--primary); }
         .tli p { font-size:.82rem; color:var(--muted-fg); text-align:center; max-width:220px; line-height:1.5; }
 
+        /* BUDGET SUMMARY */
+        .budget-sec { padding:5rem 0; position:relative; }
+        .budget-sec::before { content:''; position:absolute; inset:0; background:linear-gradient(to bottom,var(--background),rgba(59,130,246,0.03),var(--background)); }
+        .budget-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1.25rem; margin-top:2rem; position:relative; z-index:1; }
+        .bcard { background:rgba(12,12,15,0.6); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.06); border-radius:var(--radius); padding:1.5rem; text-align:center; transition:all .3s; }
+        .bcard:hover { border-color:rgba(59,130,246,0.2); transform:translateY(-2px); }
+        .bcard .bl { font-size:.75rem; font-weight:600; text-transform:uppercase; letter-spacing:.1em; color:var(--muted-fg); margin-bottom:.5rem; }
+        .bcard .bv { font-family:'Rajdhani',sans-serif; font-size:clamp(1.5rem,3vw,2.2rem); font-weight:700; }
+        .bcard .bv.green { color:#22c55e; }
+        .bcard .bv.red { color:var(--destructive); }
+        .bcard .bv.blue { color:var(--primary); }
+        .bcard .bv.amber { color:#f59e0b; }
+        .bcard .bs { font-size:.75rem; color:var(--muted-fg); margin-top:.25rem; }
+        .cat-bars { display:flex; flex-direction:column; gap:1rem; margin-top:2rem; position:relative; z-index:1; }
+        .cat-bar { background:rgba(12,12,15,0.6); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.06); border-radius:var(--radius); padding:1.25rem 1.5rem; }
+        .cat-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:.75rem; }
+        .cat-name { font-weight:600; font-size:.95rem; }
+        .cat-amt { font-family:'Rajdhani',sans-serif; font-weight:700; font-size:1.1rem; color:var(--primary); }
+        .cat-pct { font-size:.8rem; color:var(--muted-fg); }
+        .bar-track { height:8px; background:var(--muted); border-radius:100px; overflow:hidden; }
+        .bar-fill { height:100%; border-radius:100px; transition:width 1.5s ease; }
+        .bar-fill.hw { background:linear-gradient(90deg,#3b82f6,#60a5fa); }
+        .bar-fill.ra { background:linear-gradient(90deg,#22c55e,#4ade80); }
+        .bar-fill.sw { background:linear-gradient(90deg,#a855f7,#c084fc); }
+        .budget-note { text-align:center; margin-top:1.5rem; font-size:.8rem; color:var(--muted-fg); position:relative; z-index:1; }
+        @media(max-width:768px) { .budget-grid { grid-template-columns:1fr 1fr; } }
+        @media(max-width:480px) { .budget-grid { grid-template-columns:1fr; } }
+
         /* FOOTER */
         footer { border-top:1px solid var(--border); background:var(--background); padding:3rem 0; }
         .fg { display:grid; grid-template-columns:1fr 1fr; gap:2rem; }
@@ -196,6 +224,7 @@
         <a href="#technology">Technology</a>
         <a href="#team">Team</a>
         <a href="#expansion">Expansion</a>
+        <a href="#budget">Budget</a>
         <a href="#contact">Contact Us</a>
         <button class="lang-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>العربية</button>
     </div>
@@ -288,6 +317,31 @@
         <div class="tli"><div class="tld">3</div><div><h3>Expansion</h3><p>Deploy to specialty clinics, ward rounds, and other hospitals. Testing hardware options from high-end GPUs to CPU-only servers.</p></div></div>
         <div class="tli"><div class="tld">4</div><div><h3>Testing &amp; Validation</h3><p>Comprehensive accuracy testing, clinical validation, and usability assessment. Comparing AI vs manual SOAP notes.</p></div></div>
     </div></div>
+</div></section>
+
+<section class="budget-sec" id="budget"><div class="container">
+    <div class="sec-center fi"><span class="badge">Project Transparency</span><h2>Funding Overview</h2><p>Real-time budget tracking for the Medad research project, funded by IG Medical Research Center.</p></div>
+    <div class="budget-grid">
+        <div class="bcard fi"><div class="bl">IG Allocated</div><div class="bv blue">6,000</div><div class="bs">OMR</div></div>
+        <div class="bcard fi"><div class="bl">Total Spent</div><div class="bv amber">6,936</div><div class="bs">OMR (115.6%)</div></div>
+        <div class="bcard fi"><div class="bl">Paid by IG</div><div class="bv green">3,001</div><div class="bs">OMR (GPU + RAs)</div></div>
+        <div class="bcard fi"><div class="bl">PI Pending Reimbursement</div><div class="bv red">3,935</div><div class="bs">OMR</div></div>
+    </div>
+    <div class="cat-bars">
+        <div class="cat-bar fi">
+            <div class="cat-top"><span class="cat-name">A. Hardware &amp; Equipment</span><span><span class="cat-amt">4,979.890 OMR</span> <span class="cat-pct">(71.8%)</span></span></div>
+            <div class="bar-track"><div class="bar-fill hw" style="width:71.8%"></div></div>
+        </div>
+        <div class="cat-bar fi">
+            <div class="cat-top"><span class="cat-name">B. Research Assistants</span><span><span class="cat-amt">586.000 OMR</span> <span class="cat-pct">(8.4%)</span></span></div>
+            <div class="bar-track"><div class="bar-fill ra" style="width:8.4%"></div></div>
+        </div>
+        <div class="cat-bar fi">
+            <div class="cat-top"><span class="cat-name">C. AI &amp; Software</span><span><span class="cat-amt">1,370.449 OMR</span> <span class="cat-pct">(19.8%)</span></span></div>
+            <div class="bar-track"><div class="bar-fill sw" style="width:19.8%"></div></div>
+        </div>
+    </div>
+    <p class="budget-note">MOHERI Strategic Research Fund (20,000 OMR) — approved, not yet received &bull; Last updated: 20 April 2026</p>
 </div></section>
 
 <footer id="contact"><div class="container">
