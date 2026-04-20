@@ -295,7 +295,20 @@
         <h2 class="h2 centered">Budget Allocation</h2>
         <p class="centered sub-text">Total project funding of 25,500 OMR from IG Medical Research Center and the Research and Innovation Authority.</p>
 
-        <div style="display:flex;flex-direction:column;gap:1rem;margin-top:2.5rem;max-width:700px;margin-left:auto;margin-right:auto">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:2.5rem;max-width:500px;margin-left:auto;margin-right:auto">
+            <div class="p-card" style="text-align:center;border-left:none;border-top:3px solid var(--accent)">
+                <div style="font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);margin-bottom:.5rem">Total Budget</div>
+                <div style="font-family:var(--font-mono);font-size:2rem;font-weight:700;color:var(--accent-strong)">25,500</div>
+                <div style="font-size:.75rem;color:var(--text-dim)">OMR</div>
+            </div>
+            <div class="p-card" style="text-align:center;border-left:none;border-top:3px solid var(--green)">
+                <div style="font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);margin-bottom:.5rem">Spent to Date</div>
+                <div style="font-family:var(--font-mono);font-size:2rem;font-weight:700;color:var(--green)">6,936</div>
+                <div style="font-size:.75rem;color:var(--text-dim)">OMR (27%)</div>
+            </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:1rem;margin-top:2rem;max-width:700px;margin-left:auto;margin-right:auto">
             <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1.25rem 1.5rem">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem">
                     <span style="font-weight:600;font-size:.9rem">Hardware & Equipment</span>
