@@ -2,6 +2,6 @@
   "name": "medad-website",
   "version": "2.0.0",
   "scripts": {
-    "build": "mkdir -p dist && cp -r *.html *.css *.js *.jpg *.png dist/ 2>/dev/null; cp -r images logos dist/ 2>/dev/null; true"
+    "build": "mkdir -p dist && cp -r *.html *.css *.js *.jpg *.png *.xml *.txt dist/ 2>/dev/null; cp -r images logos dist/ 2>/dev/null; true"
   }
 }
