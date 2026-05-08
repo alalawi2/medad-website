@@ -272,19 +272,53 @@ img{max-width:100%;display:block}
 @media(max-width:1100px){
   .hero-grid{grid-template-columns:1fr}
   .hero-vrule{display:none}
+  .demo{margin-top:32px}
   .pipe-head, .pull-grid{grid-template-columns:1fr;gap:40px}
   .pipe-stages{grid-template-columns:1fr 1fr}
   .pipe-stage{border-bottom:1px solid var(--rule)}
   .stats-grid{grid-template-columns:1fr 1fr}
   .stat{border-bottom:1px solid rgba(241,234,215,0.12);padding:24px}
   .foot-grid{grid-template-columns:1fr 1fr}
+  .inst-grid{gap:16px}
+  .inst-card{min-width:140px;padding:18px 14px}
 }
 @media(max-width:720px){
-  .wrap, .nav-inner{padding:0 24px}
-  .nav-inner{padding:14px 24px}
+  .wrap{padding:0 20px}
+  .nav-inner{padding:12px 20px}
   .nav-links a:not(.nav-cta){display:none}
-  .pipe-stages, .stats-grid{grid-template-columns:1fr}
-  .pipe-stage{padding:32px 0;border-right:none}
+  .hero{padding:40px 0 60px}
+  .hero-mark-ar{font-size:clamp(72px,16vw,120px)}
+  .hero-mark-en{font-size:clamp(22px,5vw,32px)}
+  .hero-deck{font-size:16px;margin-top:24px}
+  .hero-meta{gap:12px;font-size:11px}
+  .hero-actions{flex-direction:column;align-items:stretch}
+  .hero-actions .btn{text-align:center;justify-content:center}
+  .pull{padding:60px 0}
+  .pull-quote{font-size:clamp(22px,5vw,32px)}
+  .pipe{padding:80px 0}
+  .pipe-head h2{font-size:clamp(28px,6vw,40px)}
+  .pipe-stages{grid-template-columns:1fr}
+  .pipe-stage{padding:28px 0;border-right:none}
+  .stats{padding:60px 0}
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .stat{padding:20px 16px}
+  .stat-fig{font-size:48px}
+  .stat-cap{font-size:11px}
+  .institutions{padding:60px 0}
+  .inst-heading{font-size:24px}
+  .inst-grid{gap:12px}
+  .inst-card{min-width:120px;max-width:none;flex:1 1 calc(50% - 12px);padding:16px 12px}
+  .inst-card img{height:40px}
+  .inst-card .inst-name{font-size:12px}
+  .cta-strip{padding:60px 0}
+  .cta-strip h2{font-size:24px}
+  .cta-strip p{font-size:15px}
+  .foot-grid{grid-template-columns:1fr}
+  .foot-grid > div{margin-bottom:16px}
+  .foot-bottom{flex-direction:column;text-align:center;gap:8px}
+  .brand-en{display:none}
+  .brand-logo{width:30px;height:30px}
+  .brand-glyph{font-size:24px}
 }
 </style>
 </head>

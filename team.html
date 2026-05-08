@@ -211,13 +211,37 @@ img{max-width:100%;display:block}
   .t-card.lead{grid-column:span 3;grid-template-columns:240px 1fr}
   .foot-grid{grid-template-columns:1fr 1fr}
   .atlas-mapwrap{position:relative;top:0}
+  .atlas-row{grid-template-columns:36px 1fr 90px;gap:12px}
+  .atlas-phrase{display:none}
 }
 @media(max-width:720px){
-  .wrap, .nav-inner{padding:0 24px}
-  .nav-inner{padding:14px 24px}
+  .wrap{padding:0 20px}
+  .nav-inner{padding:12px 20px}
   .nav-links a:not(.nav-cta){display:none}
-  .team-grid{grid-template-columns:1fr}
-  .t-card.lead{grid-column:span 1;grid-template-columns:1fr}
+  .page-header h1{font-size:clamp(28px,6vw,40px)}
+  .team-grid{grid-template-columns:1fr 1fr;gap:16px}
+  .t-card.lead{grid-column:span 2;grid-template-columns:1fr}
+  .t-card.lead .t-photo{aspect-ratio:3/2}
+  .t-card.lead .t-name{font-size:24px}
+  .t-name{font-size:18px}
+  .t-bio{font-size:13px}
+  .h2{font-size:clamp(24px,5vw,36px)}
+  .h2-deck{font-size:16px}
+  .vp{grid-template-columns:40px 1fr;gap:14px}
+  .vp h4{font-size:20px}
+  .atlas-grid{grid-template-columns:1fr}
+  .atlas-row{grid-template-columns:36px 1fr 70px;gap:10px;padding:14px 0}
+  .atlas-region{font-size:18px}
+  .atlas-pop{font-size:10px}
+  .stat-fig{font-size:48px}
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .stat{padding:20px 16px}
+  .foot-grid{grid-template-columns:1fr}
+  .foot-bottom{flex-direction:column;text-align:center;gap:8px}
+  .brand-en{display:none}
+  .brand-logo{width:30px;height:30px}
+  .brand-glyph{font-size:24px}
+  .vision-stamp{width:120px;height:120px;font-size:28px}
 }
 </style>
 </head>

@@ -110,9 +110,19 @@ img{max-width:100%;display:block}
   .foot-grid{grid-template-columns:1fr 1fr}
 }
 @media(max-width:720px){
-  .wrap, .nav-inner{padding:0 24px}
-  .nav-inner{padding:14px 24px}
+  .wrap{padding:0 20px}
+  .nav-inner{padding:12px 20px}
   .nav-links a:not(.nav-cta){display:none}
+  .page-header h1{font-size:clamp(24px,6vw,36px)}
+  .page-header p{font-size:15px}
+  .foot-grid{grid-template-columns:1fr}
+  .foot-bottom{flex-direction:column;text-align:center;gap:8px}
+  .brand-en{display:none}
+  .brand-logo{width:30px;height:30px}
+  .brand-glyph{font-size:24px}
+  .join-two-col{grid-template-columns:1fr !important}
+  .join-three-col{grid-template-columns:1fr !important}
+  .join-four-col{grid-template-columns:1fr 1fr !important}
 }
 </style>
 </head>
@@ -153,7 +163,7 @@ img{max-width:100%;display:block}
       <p style="font-size:17px;color:var(--ink-soft);margin-top:20px;max-width:640px;margin-left:auto;margin-right:auto;line-height:1.6">We need two things: real clinical conversations and people to annotate them. From Oman and across the Arab world.</p>
     </div>
 
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:880px;margin:0 auto">
+    <div class="join-two-col" style="display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:880px;margin:0 auto">
       <!-- Data Collection -->
       <div style="padding:28px;border:1px solid var(--rule);background:var(--paper-2);border-radius:8px">
         <div style="font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--gold-deep);text-transform:uppercase;margin-bottom:12px">Data Collection</div>
@@ -192,7 +202,7 @@ img{max-width:100%;display:block}
     <h2 class="inst-heading">Who We're Looking For</h2>
     <p class="inst-sub">Three ways to contribute — from the clinic, from home, or from your institution.</p>
 
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:960px;margin:0 auto">
+    <div class="join-three-col" style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:960px;margin:0 auto">
       <div style="padding:32px 24px;border:1px solid var(--rule);border-radius:8px;background:var(--paper)">
         <div style="font-size:32px;margin-bottom:14px">&#x1FA7A;</div>
         <h4 style="font-size:18px;font-weight:700;margin-bottom:8px;color:var(--ink)">Clinical Researchers</h4>
@@ -225,7 +235,7 @@ img{max-width:100%;display:block}
     <h2 class="inst-heading">Where annotators do their work</h2>
     <p style="font-size:15px;color:var(--ink-soft);line-height:1.65;margin-bottom:32px">Our annotation platform is a bilingual (Arabic/English) web tool where annotators listen to audio clips, correct AI transcriptions, tag dialects and medical terms. Each clip is reviewed by two independent annotators for quality assurance.</p>
 
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px;text-align:center">
+    <div class="join-four-col" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px;text-align:center">
       <div style="padding:20px;border:1px solid var(--rule);border-radius:8px;background:var(--paper-2)">
         <div style="font-size:28px;font-weight:700;color:var(--gold-deep)">1</div>
         <div style="font-size:13px;color:var(--ink-soft);margin-top:4px">Listen to clip</div>
