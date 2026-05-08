@@ -23,9 +23,10 @@
             <a href="/" class="nav-link active">Home</a>
             <a href="./team.html" class="nav-link">Team</a>
             <a href="./news.html" class="nav-link">News</a>
+            <a href="./annotate.html" class="nav-link">Annotate</a>
             <a href="./join.html" class="nav-link">Join Us</a>
             <a href="#budget" class="nav-link">Budget</a>
-            <a href="./join.html#apply" class="nav-cta">Apply Now</a>
+            <a href="./annotate.html" class="nav-cta">Start Annotating</a>
         </div>
         <button class="nav-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">
             <span></span><span></span><span></span>
@@ -36,7 +37,7 @@
 <!-- HERO -->
 <header class="hero">
     <div class="hero-bg">
-        <img src="./hero-bg.png" alt="" class="hero-img">
+        <img src="./images/hero.jpg" alt="Omani doctor with patient in clinical setting" class="hero-img">
         <div class="hero-overlay"></div>
     </div>
     <div class="container hero-content">
@@ -338,31 +339,96 @@
 <section class="section">
     <div class="container">
         <h2 class="h2 centered">Funded & Supported By</h2>
-        <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:1.5rem;margin-top:2rem">
-            <div class="p-card" style="border-left:none;min-width:180px;text-align:center;padding:1.25rem 1.5rem">
-                <div style="width:40px;height:40px;margin:0 auto .75rem;display:flex;align-items:center;justify-content:center;background:var(--accent-glow);border-radius:var(--radius-sm)">
-                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/></svg>
+        <p class="centered sub-text" style="margin-bottom:2.5rem">Medad is funded through the Strategic Research Program (AI & Health theme) from the Research and Innovation Authority, and an internal grant from the Medical Research Center at Sultan Qaboos University.</p>
+
+        <!-- Funders -->
+        <div style="font-family:var(--font-mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.12em;color:var(--accent);text-align:center;margin-bottom:1rem">Funding</div>
+        <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:1.25rem;margin-bottom:2.5rem">
+            <div class="p-card" style="border-left:none;min-width:240px;text-align:center;padding:1.5rem;border-color:rgba(16,185,129,0.2);background:rgba(16,185,129,0.03)">
+                <div style="height:56px;display:flex;align-items:center;justify-content:center;margin-bottom:.75rem">
+                    <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="#10b981" stroke-width="1.5"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/></svg>
                 </div>
-                <div style="font-weight:600;font-size:.9rem;line-height:1.3">Research and Innovation<br>Authority</div>
+                <div style="font-weight:700;font-size:.9rem;line-height:1.3">Research and Innovation<br>Authority</div>
+                <div style="font-size:.72rem;color:var(--text-dim);margin-top:.35rem">Strategic Research Program<br>MOH Theme: AI & Health</div>
             </div>
-            <div class="p-card" style="border-left:none;min-width:180px;text-align:center;padding:1.25rem 1.5rem">
-                <div style="width:40px;height:40px;margin:0 auto .75rem;display:flex;align-items:center;justify-content:center;background:var(--accent-glow);border-radius:var(--radius-sm)">
-                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 6 3 6 3s3 0 6-3v-5"/></svg>
+            <div class="p-card" style="border-left:none;min-width:240px;text-align:center;padding:1.5rem;border-color:rgba(16,185,129,0.2);background:rgba(16,185,129,0.03)">
+                <div style="height:56px;display:flex;align-items:center;justify-content:center;margin-bottom:.75rem">
+                    <img src="./logos/squ.png" alt="Sultan Qaboos University" style="height:48px;object-fit:contain;filter:brightness(1.2)">
                 </div>
-                <div style="font-weight:600;font-size:.9rem;line-height:1.3">Sultan Qaboos<br>University</div>
+                <div style="font-weight:700;font-size:.9rem;line-height:1.3">Medical Research Center<br>Sultan Qaboos University</div>
+                <div style="font-size:.72rem;color:var(--text-dim);margin-top:.35rem">Internal Research Grant</div>
             </div>
+        </div>
+
+        <!-- Host & Collaborators -->
+        <div style="font-family:var(--font-mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.12em;color:var(--accent);text-align:center;margin-bottom:1rem">Host Institution & Collaborators</div>
+        <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:1.25rem;margin-bottom:2.5rem">
             <div class="p-card" style="border-left:none;min-width:180px;text-align:center;padding:1.25rem 1.5rem">
-                <div style="width:40px;height:40px;margin:0 auto .75rem;display:flex;align-items:center;justify-content:center;background:var(--accent-glow);border-radius:var(--radius-sm)">
-                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9h1"/><path d="M9 13h1"/><path d="M9 17h1"/></svg>
+                <div style="height:48px;display:flex;align-items:center;justify-content:center;margin-bottom:.75rem">
+                    <img src="./logos/umc.jpg" alt="University Medical City" style="height:44px;width:44px;object-fit:contain;border-radius:8px">
                 </div>
                 <div style="font-weight:600;font-size:.9rem;line-height:1.3">University<br>Medical City</div>
+                <div style="font-size:.7rem;color:var(--text-dim);margin-top:.25rem">Host Institution</div>
             </div>
             <div class="p-card" style="border-left:none;min-width:180px;text-align:center;padding:1.25rem 1.5rem">
-                <div style="width:40px;height:40px;margin:0 auto .75rem;display:flex;align-items:center;justify-content:center;background:var(--accent-glow);border-radius:var(--radius-sm)">
-                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                <div style="height:48px;display:flex;align-items:center;justify-content:center;margin-bottom:.75rem">
+                    <img src="./logos/moh.png" alt="Ministry of Health" style="height:44px;object-fit:contain;filter:brightness(1.2)">
                 </div>
                 <div style="font-weight:600;font-size:.9rem;line-height:1.3">Ministry<br>of Health</div>
+                <div style="font-size:.7rem;color:var(--text-dim);margin-top:.25rem">Research Theme Partner</div>
             </div>
+            <div class="p-card" style="border-left:none;min-width:180px;text-align:center;padding:1.25rem 1.5rem">
+                <div style="height:48px;display:flex;align-items:center;justify-content:center;margin-bottom:.75rem">
+                    <img src="./logos/omsb.png" alt="Oman Medical Specialty Board" style="height:36px;object-fit:contain;filter:brightness(1.2)">
+                </div>
+                <div style="font-weight:600;font-size:.9rem;line-height:1.3">Oman Medical<br>Specialty Board</div>
+                <div style="font-size:.7rem;color:var(--text-dim);margin-top:.25rem">Resident Collaborators</div>
+            </div>
+        </div>
+
+        <!-- Technical & Digital Partner -->
+        <div style="font-family:var(--font-mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.12em;color:var(--accent);text-align:center;margin-bottom:1rem">Technical & Digital Partner</div>
+        <div style="display:flex;justify-content:center">
+            <div class="p-card" style="border-left:none;min-width:280px;text-align:center;padding:1.5rem;border-color:rgba(139,92,246,0.2);background:rgba(139,92,246,0.03)">
+                <div style="height:56px;display:flex;align-items:center;justify-content:center;margin-bottom:.75rem">
+                    <img src="./logos/medresearch.png" alt="MedResearch Academy" style="height:52px;object-fit:contain">
+                </div>
+                <div style="font-weight:700;font-size:.95rem;line-height:1.3">MedResearch Academy</div>
+                <div style="font-size:.75rem;color:var(--text-muted);margin-top:.35rem">medresearch-academy.om</div>
+                <div style="font-size:.72rem;color:var(--text-dim);margin-top:.25rem">System architecture, AI pipeline development,<br>annotation platform, and digital infrastructure</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- OMAN VISION 2040 ALIGNMENT -->
+<section class="section" id="vision">
+    <div class="container">
+        <div class="section-label">National Alignment</div>
+        <h2 class="h2 centered">Built for Oman's Future</h2>
+        <p class="centered sub-text" style="margin-bottom:2.5rem">Medad directly supports Oman Vision 2040 and the National AI Strategy — advancing healthcare innovation, building Arabic language AI capabilities, and developing local talent.</p>
+
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-bottom:3rem">
+            <div class="feature-card" style="border-top:2px solid #10b981">
+                <div style="font-family:var(--font-mono);font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:#10b981;margin-bottom:.75rem">Vision 2040 — People & Society</div>
+                <h3 style="font-size:1rem;margin-bottom:.5rem">Leading Healthcare System</h3>
+                <p style="font-size:.82rem;color:var(--text-muted);line-height:1.6">Technology-driven medical systems and services with qualified national talents leading scientific research and innovation in healthcare.</p>
+            </div>
+            <div class="feature-card" style="border-top:2px solid var(--accent)">
+                <div style="font-family:var(--font-mono);font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:.75rem">National AI Program 2024–2026</div>
+                <h3 style="font-size:1rem;margin-bottom:.5rem">Arabic Language AI</h3>
+                <p style="font-size:.82rem;color:var(--text-muted);line-height:1.6">Aligned with Oman's initiative to build Arabic language models and AI capabilities — Medad develops the first medical Arabic speech corpus and clinical NLP system.</p>
+            </div>
+            <div class="feature-card" style="border-top:2px solid var(--purple)">
+                <div style="font-family:var(--font-mono);font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:.75rem">Digital Economy Roadmap</div>
+                <h3 style="font-size:1rem;margin-bottom:.5rem">AI in Healthcare</h3>
+                <p style="font-size:.82rem;color:var(--text-muted);line-height:1.6">Contributing to Oman's goal of growing the digital economy to 10% of GDP by 2040, with healthcare AI as a priority sector alongside early disease detection and diagnostic systems.</p>
+            </div>
+        </div>
+
+        <div style="text-align:center;padding:1.5rem;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);max-width:700px;margin:0 auto">
+            <p style="font-family:var(--font-arabic);font-size:1.1rem;color:var(--accent-strong);direction:rtl;margin-bottom:.5rem">مداد — مبادرة وطنية تدعم رؤية عمان 2040</p>
+            <p style="font-size:.85rem;color:var(--text-muted)">Medad is a national initiative supporting Oman Vision 2040's healthcare and AI pillars — building sovereign Arabic AI that keeps patient data within Oman.</p>
         </div>
     </div>
 </section>
@@ -393,14 +459,14 @@
                     <li><a href="/">Home</a></li>
                     <li><a href="./team.html">Team</a></li>
                     <li><a href="./news.html">News</a></li>
-                    <li><a href="./join.html">Join Us</a></li>
+                    <li><a href="./annotate.html">Annotate</a></li><li><a href="./join.html">Join Us</a></li>
                 </ul>
             </div>
             <div>
                 <h4>Contact</h4>
                 <ul>
                     <li>Muscat, Oman</li>
-                    <li><a href="mailto:info@medresearch-academy.om">info@medresearch-academy.om</a></li>
+                    <li><a href="mailto:info@medad.om">info@medad.om</a></li>
                 </ul>
             </div>
         </div>

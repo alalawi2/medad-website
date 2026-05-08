@@ -44,6 +44,6 @@ function handleApply(e) {
     const msg = f.querySelector('textarea').value;
     const subject = encodeURIComponent('Medad Application: ' + role + ' - ' + name);
     const body = encodeURIComponent('Name: ' + name + '\nEmail: ' + email + '\nCountry: ' + country + '\nRole: ' + role + '\n\n' + msg);
-    window.location.href = 'mailto:dr.abdullahalalawi@gmail.com?subject=' + subject + '&body=' + body;
+    window.location.href = 'mailto:info@medad.om?subject=' + subject + '&body=' + body;
     f.innerHTML = '<div style="padding:2rem;text-align:center"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="m9 12 2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg><h3 style="margin-top:1rem;color:#10b981">Application Submitted!</h3><p style="color:var(--text-muted);margin-top:.5rem">Your email client should open with the details. Thank you!</p></div>';
 }
