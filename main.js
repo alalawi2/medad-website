@@ -47,3 +47,16 @@ function handleApply(e) {
     window.location.href = 'mailto:info@medad.om?subject=' + subject + '&body=' + body;
     f.innerHTML = '<div style="padding:2rem;text-align:center"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="m9 12 2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg><h3 style="margin-top:1rem;color:#10b981">Application Submitted!</h3><p style="color:var(--text-muted);margin-top:.5rem">Your email client should open with the details. Thank you!</p></div>';
 }
+
+// Live stats from medad-corpus public API (used on join.html)
+(function fetchLiveStats() {
+    const el = document.getElementById('liveHours');
+    if (!el) return;
+    fetch('https://api.medad.om/api/public/stats')
+        .then(r => r.json())
+        .then(d => {
+            const h = Math.round(d.trainable_hours || 0).toLocaleString();
+            el.textContent = h;
+        })
+        .catch(() => { /* keep fallback value */ });
+})();
