@@ -229,7 +229,7 @@ img{max-width:100%;display:block}
     </div>
 
     <div style="text-align:center;margin-top:40px;display:flex;flex-wrap:wrap;gap:14px;justify-content:center">
-      <a class="btn btn-primary" href="https://annotate.medad.om" target="_blank" rel="noopener">Apply as Annotator
+      <a class="btn btn-primary" href="#apply-form">Apply as Annotator
         <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
       </a>
       <a class="btn btn-ghost" href="mailto:info@medresearch-academy.om?subject=Medad%20%E2%80%94%20Data%20Partner%20interest">Data Partner Inquiry
@@ -238,6 +238,165 @@ img{max-width:100%;display:block}
     </div>
   </div>
 </section>
+
+<!-- ============ APPLICATION FORM ============ -->
+<section id="apply-form" style="padding:100px 0;border-bottom:1px solid var(--rule)">
+  <div class="wrap" style="max-width:680px">
+    <div style="text-align:center;margin-bottom:40px">
+      <div style="font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--gold-deep);text-transform:uppercase;margin-bottom:16px">Apply to Join</div>
+      <h2 class="inst-heading">Become an Annotator</h2>
+      <p style="font-size:15px;color:var(--ink-soft);line-height:1.65;margin-top:14px">Remote work · flexible hours · paid per clip · open worldwide to native Arabic speakers.</p>
+    </div>
+    <form id="medadApplyForm" style="display:flex;flex-direction:column;gap:16px;padding:32px;border:1px solid var(--rule);border-radius:10px;background:var(--paper)">
+      <div>
+        <label style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:6px;display:block">Full Name *</label>
+        <input type="text" name="name" required minlength="2"
+               style="width:100%;padding:12px 14px;border:1px solid var(--rule);border-radius:6px;font-size:14px;font-family:inherit;background:var(--paper-2)">
+      </div>
+      <div>
+        <label style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:6px;display:block">Email *</label>
+        <input type="email" name="email" required
+               style="width:100%;padding:12px 14px;border:1px solid var(--rule);border-radius:6px;font-size:14px;font-family:inherit;background:var(--paper-2)">
+      </div>
+      <div>
+        <label style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:6px;display:block">Country *</label>
+        <select name="country" required
+                style="width:100%;padding:12px 14px;border:1px solid var(--rule);border-radius:6px;font-size:14px;font-family:inherit;background:var(--paper-2)">
+          <option value="">— Select your country —</option>
+          <option value="Oman">Oman / عُمان</option>
+          <option value="UAE">United Arab Emirates / الإمارات</option>
+          <option value="Saudi Arabia">Saudi Arabia / السعودية</option>
+          <option value="Kuwait">Kuwait / الكويت</option>
+          <option value="Bahrain">Bahrain / البحرين</option>
+          <option value="Qatar">Qatar / قطر</option>
+          <option value="Yemen">Yemen / اليمن</option>
+          <option value="Iraq">Iraq / العراق</option>
+          <option value="Egypt">Egypt / مصر</option>
+          <option value="Jordan">Jordan / الأردن</option>
+          <option value="Lebanon">Lebanon / لبنان</option>
+          <option value="Syria">Syria / سوريا</option>
+          <option value="Palestine">Palestine / فلسطين</option>
+          <option value="Sudan">Sudan / السودان</option>
+          <option value="Morocco">Morocco / المغرب</option>
+          <option value="Tunisia">Tunisia / تونس</option>
+          <option value="Algeria">Algeria / الجزائر</option>
+          <option value="Libya">Libya / ليبيا</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div>
+        <label style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:6px;display:block">Dialects you can review (pick all that apply)</label>
+        <div id="medadDialectChips" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px"></div>
+      </div>
+      <div>
+        <label style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:6px;display:block">Background <span style="font-weight:400;color:var(--ink-soft);font-size:12px">(optional, e.g. medical, linguistics, student)</span></label>
+        <input type="text" name="background"
+               style="width:100%;padding:12px 14px;border:1px solid var(--rule);border-radius:6px;font-size:14px;font-family:inherit;background:var(--paper-2)">
+      </div>
+      <div>
+        <label style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:6px;display:block">Why do you want to join? <span style="font-weight:400;color:var(--ink-soft);font-size:12px">(optional, 1-2 lines)</span></label>
+        <textarea name="why" rows="3"
+                  style="width:100%;padding:12px 14px;border:1px solid var(--rule);border-radius:6px;font-size:14px;font-family:inherit;background:var(--paper-2);resize:vertical"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary" style="margin-top:10px;justify-content:center">
+        Submit Application
+        <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+      </button>
+      <div id="medadApplyStatus" style="font-size:13px;text-align:center;min-height:18px;color:var(--ink-soft)"></div>
+      <p style="font-size:12px;color:var(--ink-soft);text-align:center;margin-top:4px;line-height:1.5">
+        Already have an account? <a href="https://annotate.medad.om" style="color:var(--gold-deep);font-weight:600">Sign in</a>
+      </p>
+    </form>
+  </div>
+</section>
+
+<script>
+(function(){
+  var dialects = [
+    {id:'omani', label:'Omani / عُماني'},
+    {id:'gulf', label:'Gulf / خليجي'},
+    {id:'saudi', label:'Saudi / سعودي'},
+    {id:'kuwaiti', label:'Kuwaiti / كويتي'},
+    {id:'emirati', label:'Emirati / إماراتي'},
+    {id:'qatari', label:'Qatari / قطري'},
+    {id:'bahraini', label:'Bahraini / بحريني'},
+    {id:'yemeni', label:'Yemeni / يمني'},
+    {id:'iraqi', label:'Iraqi / عراقي'},
+    {id:'levantine', label:'Levantine / شامي'},
+    {id:'syrian', label:'Syrian / سوري'},
+    {id:'lebanese', label:'Lebanese / لبناني'},
+    {id:'jordanian', label:'Jordanian / أردني'},
+    {id:'palestinian', label:'Palestinian / فلسطيني'},
+    {id:'egyptian', label:'Egyptian / مصري'},
+    {id:'sudanese', label:'Sudanese / سوداني'},
+    {id:'maghrebi', label:'Maghrebi / مغاربي'},
+    {id:'msa', label:'MSA / فصحى'},
+  ];
+  var picked = new Set();
+  var chips = document.getElementById('medadDialectChips');
+  dialects.forEach(function(d){
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = d.label;
+    b.dataset.id = d.id;
+    b.style.cssText = 'padding:6px 12px;border:1px solid var(--rule);border-radius:14px;background:var(--paper-2);font-size:12.5px;cursor:pointer;font-family:inherit;color:var(--ink)';
+    b.onclick = function(){
+      if (picked.has(d.id)){
+        picked.delete(d.id);
+        b.style.background = 'var(--paper-2)';
+        b.style.color = 'var(--ink)';
+        b.style.borderColor = 'var(--rule)';
+      } else {
+        picked.add(d.id);
+        b.style.background = 'var(--gold-deep)';
+        b.style.color = 'white';
+        b.style.borderColor = 'var(--gold-deep)';
+      }
+    };
+    chips.appendChild(b);
+  });
+
+  var form = document.getElementById('medadApplyForm');
+  var status = document.getElementById('medadApplyStatus');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    status.style.color = 'var(--ink-soft)';
+    status.textContent = 'Submitting…';
+    var fd = new FormData(form);
+    var btn = form.querySelector('button[type=submit]');
+    btn.disabled = true;
+    fetch('https://annotate.medad.om/api/apply', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        name: fd.get('name'),
+        email: fd.get('email'),
+        country: fd.get('country'),
+        dialects: Array.from(picked),
+        background: fd.get('background') || '',
+        why: fd.get('why') || '',
+      })
+    })
+    .then(function(r){ return r.json().then(function(j){ return {ok: r.ok, body: j}; }); })
+    .then(function(res){
+      btn.disabled = false;
+      if (res.ok){
+        status.style.color = '#2d6a3e';
+        status.textContent = '✓ ' + (res.body.message || 'Application received');
+        if (res.body.status === 'received') form.reset();
+      } else {
+        status.style.color = '#b04848';
+        status.textContent = '✗ ' + (res.body.detail || res.body.message || 'Submission failed');
+      }
+    })
+    .catch(function(err){
+      btn.disabled = false;
+      status.style.color = '#b04848';
+      status.textContent = '✗ Network error — please try again or email info@medresearch-academy.om';
+    });
+  });
+})();
+</script>
 
 <!-- ============ ANNOTATION PLATFORM ============ -->
 <section style="padding:100px 0;border-bottom:1px solid var(--rule);background:var(--paper)">
