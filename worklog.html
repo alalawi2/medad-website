@@ -315,49 +315,42 @@ const sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON);
 let currentMember=null,categories=[],allMembers=[],hourGuides=[];
 
 async function init(){
-  let isRecovery=false;
-
-  // 1. Set up auth state listener FIRST (catches PASSWORD_RECOVERY from code exchange)
-  sb.auth.onAuthStateChange(async(event,session)=>{
-    if(event==='PASSWORD_RECOVERY'){
-      isRecovery=true;
-      document.getElementById('loginView').classList.remove('wl-hidden');
-      document.getElementById('appView').classList.add('wl-hidden');
-      showReset();
-    }
-  });
-
-  // 2. Handle PKCE code exchange (Supabase redirects with ?code=xxx)
+  // Handle PKCE code exchange (Supabase redirects with ?code=xxx after reset link click)
   const params=new URLSearchParams(window.location.search);
   const code=params.get('code');
+  const pendingReset=localStorage.getItem('medad_pending_reset');
+
   if(code){
-    await sb.auth.exchangeCodeForSession(code);
+    const{data,error}=await sb.auth.exchangeCodeForSession(code);
     window.history.replaceState(null,'',window.location.pathname);
-    // Wait briefly for onAuthStateChange to fire
-    await new Promise(r=>setTimeout(r,500));
-    if(isRecovery)return;
+    if(pendingReset){
+      localStorage.removeItem('medad_pending_reset');
+      showReset();
+      return;
+    }
+    // If code exchange succeeded but no reset flag, it's a normal login
+    if(data?.session){await onLogin(data.session.user);return}
   }
 
-  // 3. Check hash fragment (older implicit flow)
+  // Handle hash fragment (older implicit flow)
   const hash=window.location.hash;
-  if(hash.includes('type=recovery')){
-    await new Promise(r=>setTimeout(r,500));
-    if(isRecovery)return;
-    const{data:{session}}=await sb.auth.getSession();
-    if(session){showReset();return}
+  if(hash.includes('type=recovery')||hash.includes('access_token')){
+    // Wait for Supabase to process the hash
+    sb.auth.onAuthStateChange(async(event)=>{
+      if(event==='PASSWORD_RECOVERY'){showReset()}
+    });
+    return;
   }
 
-  // 4. Normal session check
-  if(!isRecovery){
-    const{data:{session}}=await sb.auth.getSession();
-    if(session){await onLogin(session.user)}else{document.getElementById('loginView').classList.remove('wl-hidden');document.getElementById('appView').classList.add('wl-hidden')}
-  }
+  // Normal session check
+  const{data:{session}}=await sb.auth.getSession();
+  if(session){await onLogin(session.user)}else{document.getElementById('loginView').classList.remove('wl-hidden');document.getElementById('appView').classList.add('wl-hidden')}
 }
 function showForgot(){document.getElementById('loginForm').classList.add('wl-hidden');document.getElementById('forgotForm').classList.remove('wl-hidden');document.getElementById('resetForm').classList.add('wl-hidden');document.getElementById('loginAlert').style.display='none'}
 function showLogin(){document.getElementById('loginForm').classList.remove('wl-hidden');document.getElementById('forgotForm').classList.add('wl-hidden');document.getElementById('resetForm').classList.add('wl-hidden');document.getElementById('loginAlert').style.display='none'}
 function showReset(){document.getElementById('loginForm').classList.add('wl-hidden');document.getElementById('forgotForm').classList.add('wl-hidden');document.getElementById('resetForm').classList.remove('wl-hidden');const a=document.getElementById('loginAlert');a.className='wl-alert wl-alert-success';a.textContent='Set your new password below.';a.style.display='block'}
 
-document.getElementById('forgotForm').addEventListener('submit',async(e)=>{e.preventDefault();const email=document.getElementById('forgotEmail').value.trim();const btn=document.getElementById('forgotBtn');const a=document.getElementById('loginAlert');btn.disabled=true;btn.textContent='Sending...';a.style.display='none';const{error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:RESET_REDIRECT});if(error){a.className='wl-alert wl-alert-error';a.textContent=error.message}else{a.className='wl-alert wl-alert-success';a.textContent='Reset link sent! Check your email.'}a.style.display='block';btn.disabled=false;btn.textContent='Send Reset Link'});
+document.getElementById('forgotForm').addEventListener('submit',async(e)=>{e.preventDefault();const email=document.getElementById('forgotEmail').value.trim();const btn=document.getElementById('forgotBtn');const a=document.getElementById('loginAlert');btn.disabled=true;btn.textContent='Sending...';a.style.display='none';const{error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:RESET_REDIRECT});if(error){a.className='wl-alert wl-alert-error';a.textContent=error.message}else{localStorage.setItem('medad_pending_reset','1');a.className='wl-alert wl-alert-success';a.textContent='Reset link sent! Check your email.'}a.style.display='block';btn.disabled=false;btn.textContent='Send Reset Link'});
 document.getElementById('resetForm').addEventListener('submit',async(e)=>{e.preventDefault();const pw=document.getElementById('resetPassword').value;const c=document.getElementById('resetConfirm').value;const btn=document.getElementById('resetBtn');const a=document.getElementById('loginAlert');a.style.display='none';if(pw!==c){a.className='wl-alert wl-alert-error';a.textContent='Passwords do not match.';a.style.display='block';return}if(pw.length<6){a.className='wl-alert wl-alert-error';a.textContent='Min 6 characters.';a.style.display='block';return}btn.disabled=true;btn.textContent='Updating...';const{error}=await sb.auth.updateUser({password:pw});if(error){a.className='wl-alert wl-alert-error';a.textContent=error.message}else{a.className='wl-alert wl-alert-success';a.textContent='Password updated! Signing you in...';window.history.replaceState(null,'',window.location.pathname);setTimeout(async()=>{const{data:{session}}=await sb.auth.getSession();if(session)await onLogin(session.user)},1500)}a.style.display='block';btn.disabled=false;btn.textContent='Update Password'});
 document.getElementById('loginForm').addEventListener('submit',async(e)=>{e.preventDefault();const email=document.getElementById('loginEmail').value.trim();const pw=document.getElementById('loginPassword').value;const btn=document.getElementById('loginBtn');const a=document.getElementById('loginAlert');a.style.display='none';btn.disabled=true;btn.textContent='Signing in...';const{data,error}=await sb.auth.signInWithPassword({email,password:pw});if(error){a.textContent=error.message;a.className='wl-alert wl-alert-error';a.style.display='block';btn.disabled=false;btn.textContent='Sign In';return}await onLogin(data.user)});
 
