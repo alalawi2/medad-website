@@ -315,9 +315,38 @@ const sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON);
 let currentMember=null,categories=[],allMembers=[],hourGuides=[];
 
 async function init(){
-  sb.auth.onAuthStateChange(async(event)=>{if(event==='PASSWORD_RECOVERY'){document.getElementById('loginView').classList.remove('wl-hidden');document.getElementById('appView').classList.add('wl-hidden');showReset()}});
-  const hash=window.location.hash;const params=new URLSearchParams(window.location.search);
-  if(hash.includes('type=recovery')||params.get('type')==='recovery'){const{data:{session}}=await sb.auth.getSession();if(session){showReset();return}}
+  // Handle PKCE code exchange (newer Supabase sends ?code=xxx in URL)
+  const params=new URLSearchParams(window.location.search);
+  const code=params.get('code');
+  if(code){
+    const{data,error}=await sb.auth.exchangeCodeForSession(code);
+    // Clean URL
+    window.history.replaceState(null,'',window.location.pathname);
+    if(data?.session){
+      // Check if this was a recovery flow
+      const hash=window.location.hash;
+      if(params.get('type')==='recovery'||hash.includes('type=recovery')){
+        showReset();return;
+      }
+    }
+  }
+
+  // Listen for PASSWORD_RECOVERY event (works for both hash and PKCE flows)
+  sb.auth.onAuthStateChange(async(event,session)=>{
+    if(event==='PASSWORD_RECOVERY'){
+      document.getElementById('loginView').classList.remove('wl-hidden');
+      document.getElementById('appView').classList.add('wl-hidden');
+      showReset();
+    }
+  });
+
+  // Also check hash fragment (older flow)
+  const hash=window.location.hash;
+  if(hash.includes('type=recovery')||params.get('type')==='recovery'){
+    const{data:{session}}=await sb.auth.getSession();
+    if(session){showReset();return}
+  }
+
   const{data:{session}}=await sb.auth.getSession();
   if(session){await onLogin(session.user)}else{document.getElementById('loginView').classList.remove('wl-hidden');document.getElementById('appView').classList.add('wl-hidden')}
 }
