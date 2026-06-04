@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<title>Team Work Log — Medad مداد</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Amiri:ital,wght@0,400;0,700;1,400&family=Reem+Kufi:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<style>
+:root{
+  --paper:#faf8f4;--paper-2:#f0ede7;--paper-3:#e5e1da;
+  --ink:#14110d;--ink-2:#1e1a16;--ink-soft:#38322c;
+  --gold:#b8853a;--gold-2:#d4a24c;--gold-deep:#8e6326;
+  --seal:#8a2e2e;
+  --rule:rgba(20,17,13,0.16);--rule-soft:rgba(20,17,13,0.08);
+  --sans:'Helvetica Neue',Helvetica,'Sohne',Arial,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --ar:'Amiri','Noto Naskh Arabic',serif;
+  --kufi:'Reem Kufi','Noto Kufi Arabic',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--gold);color:var(--ink)}
+
+.wrap{max-width:1380px;margin:0 auto;padding:0 56px;position:relative;z-index:2}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:60;background:rgba(250,248,244,0.92);backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid var(--rule)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;padding:18px 56px;max-width:1380px;margin:0 auto}
+.brand{display:flex;align-items:center;gap:14px}
+.brand-glyph{font-family:var(--ar);font-size:30px;font-weight:700;color:var(--ink);line-height:1;position:relative;padding-right:4px}
+.brand-glyph::after{content:'';position:absolute;bottom:-3px;left:0;right:4px;height:2px;background:linear-gradient(90deg,var(--gold) 0%,var(--gold) 60%,transparent 100%)}
+.brand-logo{height:38px;width:auto;border-radius:6px}
+.brand-en{font-family:var(--mono);font-size:12px;letter-spacing:.32em;color:var(--ink-2);padding-top:4px;border-left:1px solid var(--rule);padding-left:14px}
+.nav-links{display:flex;gap:2px;align-items:center}
+.nav-link{padding:8px 14px;font-size:13px;color:var(--ink-soft);transition:.2s;border-radius:2px}
+.nav-link:hover,.nav-link.active{color:var(--ink);background:rgba(20,17,13,0.05)}
+.nav-cta{display:inline-flex;align-items:center;gap:8px;background:#008080;color:#fff;padding:10px 18px;font-size:12.5px;letter-spacing:.04em;font-weight:500;margin-left:8px;border:1px solid #008080;transition:.2s;border-radius:6px}
+.nav-cta:hover{background:#006666;border-color:#006666}
+
+/* page header */
+.page-header{padding:60px 0 48px;border-bottom:1px solid var(--rule);text-align:center}
+.page-header h1{font-family:var(--sans);font-size:clamp(32px,5vw,56px);font-weight:700;line-height:1.05;letter-spacing:-0.03em;color:var(--ink)}
+.page-header p{font-size:17px;color:var(--ink-soft);margin-top:14px;max-width:560px;margin-left:auto;margin-right:auto;line-height:1.55}
+
+/* footer */
+.foot{padding:64px 0 32px;background:var(--paper-2);border-top:1px solid var(--ink)}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px}
+.foot-desc{font-family:var(--sans);font-size:16px;color:var(--ink-2);max-width:380px;margin-top:18px;line-height:1.5}
+.foot h5{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:14px}
+.foot ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+.foot a{font-size:13.5px;color:var(--ink-2);transition:.2s;border-bottom:1px solid transparent}
+.foot a:hover{color:var(--seal);border-bottom-color:var(--seal)}
+.foot-bottom{margin-top:48px;padding-top:24px;border-top:1px solid var(--rule);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--ink-soft);text-transform:uppercase}
+.foot-bottom .ar{font-family:var(--ar);font-size:14px;font-style:italic;letter-spacing:0;color:var(--gold-deep);text-transform:none}
+
+/* ============ WORKLOG ============ */
+.wl-login{min-height:60vh;display:flex;align-items:center;justify-content:center;padding:60px 20px}
+.wl-login-card{background:var(--paper-2);border:1px solid var(--rule);border-radius:8px;padding:40px 36px;max-width:400px;width:100%}
+.wl-login-card h2{font-size:1.3rem;font-weight:700;margin-bottom:4px;text-align:center}
+
+.wl-wrap{max-width:880px;margin:0 auto;padding:40px 20px}
+.wl-user-bar{display:flex;align-items:center;justify-content:space-between;padding:14px 56px;border-bottom:1px solid var(--rule);max-width:1380px;margin:0 auto}
+.wl-user-bar .name{font-weight:600;font-size:14px}
+
+.wl-tabs{display:flex;gap:0;border-bottom:1px solid var(--rule);padding:0 56px;max-width:1380px;margin:0 auto}
+.wl-tab{padding:12px 18px;cursor:pointer;color:var(--ink-soft);border-bottom:2px solid transparent;font-size:13px;font-family:var(--mono);letter-spacing:.04em;transition:.2s}
+.wl-tab:hover{color:var(--ink)}
+.wl-tab.active{color:var(--ink);border-bottom-color:var(--gold)}
+
+.wl-field{margin-bottom:14px}
+.wl-field label{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:6px}
+.wl-field input,.wl-field select,.wl-field textarea{
+  width:100%;padding:10px 14px;background:var(--paper);border:1px solid var(--rule);border-radius:6px;
+  color:var(--ink);font-size:14px;font-family:var(--sans);outline:none;transition:border-color .2s;
+}
+.wl-field input:focus,.wl-field select:focus,.wl-field textarea:focus{border-color:var(--gold)}
+.wl-field textarea{min-height:80px;resize:vertical}
+.wl-field select{cursor:pointer}
+.wl-field .hint{font-size:12px;color:var(--ink-soft);margin-top:4px;font-style:italic}
+.wl-field .search-wrap{position:relative}
+.wl-field .search-wrap input{padding-left:32px}
+.wl-field .search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--ink-soft);font-size:14px;pointer-events:none}
+.wl-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+.wl-btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 22px;border-radius:6px;border:1px solid var(--ink);
+  font-size:13.5px;font-weight:500;cursor:pointer;transition:.25s;font-family:var(--sans);letter-spacing:.02em;
+}
+.wl-btn-primary{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.wl-btn-primary:hover{background:var(--seal);border-color:var(--seal)}
+.wl-btn-primary:disabled{opacity:.5;cursor:not-allowed}
+.wl-btn-block{width:100%}
+.wl-btn-ghost{background:transparent;color:var(--ink)}
+.wl-btn-ghost:hover{background:var(--ink);color:var(--paper)}
+.wl-btn-sm{padding:6px 14px;font-size:12px;font-family:var(--mono);letter-spacing:.04em;border:1px solid var(--rule);background:transparent;color:var(--ink-soft);cursor:pointer;border-radius:4px;transition:.2s}
+.wl-btn-sm:hover{border-color:var(--gold);color:var(--gold-deep)}
+
+.wl-alert{padding:12px 16px;border-radius:6px;font-size:13px;margin-bottom:14px;display:none}
+.wl-alert-error{background:#fef2f2;color:#991b1b;border:1px solid #fca5a5}
+.wl-alert-success{background:#f0fdf4;color:#166534;border:1px solid #86efac}
+
+.wl-card{background:var(--paper-2);border:1px solid var(--rule);border-radius:8px;padding:28px 24px;margin-bottom:20px}
+.wl-section-title{font-size:16px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;letter-spacing:-0.01em}
+
+/* table */
+.wl-table{width:100%;border-collapse:collapse;font-size:13px}
+.wl-table th{text-align:left;padding:8px 10px;color:var(--ink-soft);border-bottom:1px solid var(--ink);font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:500}
+.wl-table td{padding:10px 10px;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+.wl-table tr:hover td{background:var(--paper-2)}
+.wl-badge{display:inline-block;padding:2px 8px;border-radius:3px;background:rgba(184,133,58,0.12);color:var(--gold-deep);font-size:11px;font-family:var(--mono);letter-spacing:.04em}
+.wl-hours{font-weight:700;color:var(--gold-deep);font-family:var(--mono)}
+.wl-del{background:none;border:none;color:var(--ink-soft);cursor:pointer;font-size:13px;padding:2px 6px;border-radius:4px}
+.wl-del:hover{color:var(--seal);background:rgba(138,46,46,0.08)}
+.wl-empty{text-align:center;padding:48px;color:var(--ink-soft);font-size:14px}
+
+/* stats */
+.wl-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--ink);margin-bottom:24px}
+.wl-stat{padding:20px 16px;text-align:center;border-right:1px solid var(--rule)}
+.wl-stat:last-child{border-right:none}
+.wl-stat .val{font-size:28px;font-weight:700;color:var(--gold-deep);font-family:var(--mono);letter-spacing:-0.02em}
+.wl-stat .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin-top:6px}
+
+/* filters */
+.wl-filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;align-items:end}
+.wl-filters .wl-field{margin-bottom:0;flex:1;min-width:140px}
+
+/* modal */
+.wl-modal-bg{position:fixed;inset:0;background:rgba(20,17,13,0.5);display:none;align-items:center;justify-content:center;z-index:200;padding:20px}
+.wl-modal-bg.show{display:flex}
+.wl-modal{background:var(--paper);border:1px solid var(--rule);border-radius:8px;max-width:600px;width:100%;max-height:80vh;overflow-y:auto;padding:28px 24px}
+.wl-modal h3{margin-bottom:14px;font-size:18px;font-weight:700}
+.wl-modal .close-x{float:right;background:none;border:none;color:var(--ink-soft);font-size:20px;cursor:pointer}
+.wl-guide-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--rule-soft);font-size:13px}
+.wl-guide-row .activity{flex:1}
+.wl-guide-row .hours{color:var(--gold-deep);font-weight:600;min-width:100px;text-align:right;font-family:var(--mono);font-size:12px}
+.wl-guide-row .notes{color:var(--ink-soft);font-size:12px;margin-top:2px}
+
+.wl-hidden{display:none !important}
+
+@media(max-width:720px){
+  .wrap,.wl-user-bar,.wl-tabs{padding-left:20px;padding-right:20px}
+  .nav-inner{padding:12px 20px}
+  .nav-links a:not(.nav-cta){display:none}
+  .wl-row{grid-template-columns:1fr}
+  .wl-stats{grid-template-columns:1fr 1fr}
+  .wl-filters{flex-direction:column}
+  .wl-table th:nth-child(4),.wl-table td:nth-child(4){display:none}
+  .wl-tab{padding:10px 12px;font-size:11px}
+  .foot-grid{grid-template-columns:1fr}
+  .foot-bottom{flex-direction:column;text-align:center;gap:8px}
+  .brand-en{display:none}
+  .brand-glyph{font-size:24px}
+  .page-header h1{font-size:clamp(24px,6vw,36px)}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV (same as site) -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="./">
+      <svg class="brand-logo" width="36" height="36" viewBox="0 0 120 120"><defs><linearGradient id="g1" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#E8B860"/><stop offset="1" stop-color="#B8853A"/></linearGradient></defs><path d="M60 14 C60 14 30 46 30 70 C30 87 43 100 60 100 C77 100 90 87 90 70 C90 46 60 14 60 14 Z" fill="url(#g1)"/><path d="M22 72 L40 72 L46 60 L52 86 L58 50 L64 80 L70 66 L98 66" stroke="#14110d" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="brand-glyph">مداد</span>
+      <span class="brand-en">MEDAD</span>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="./">Home</a>
+      <a class="nav-link" href="./team.html">The Team</a>
+      <a class="nav-link" href="./challenge.html">Challenge</a>
+      <a class="nav-link" href="./join.html">Join</a>
+      <a class="nav-link" href="https://annotate.medad.om" style="font-weight:500">Annotator Login</a>
+      <a class="nav-link active" href="./worklog.html" style="font-weight:500">Work Log</a>
+      <a class="nav-cta" href="./join.html">Join the Project
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- LOGIN VIEW -->
+<div id="loginView">
+  <section class="page-header">
+    <div class="wrap"><h1>Team Work Log</h1><p>Track your contributions. Log hours. Build the record.</p></div>
+  </section>
+  <div class="wl-login">
+    <div class="wl-login-card">
+      <div id="loginAlert" class="wl-alert wl-alert-error"></div>
+      <form id="loginForm">
+        <div class="wl-field"><label>Email</label><input type="email" id="loginEmail" required placeholder="your@email.com" autocomplete="email"></div>
+        <div class="wl-field"><label>Password</label><input type="password" id="loginPassword" required placeholder="Min 6 characters" autocomplete="current-password"></div>
+        <button type="submit" class="wl-btn wl-btn-primary wl-btn-block" id="loginBtn">Sign In</button>
+        <p style="text-align:center;margin-top:10px"><a href="#" onclick="showForgot();return false" style="color:var(--gold-deep);font-size:13px">Forgot password?</a></p>
+      </form>
+      <form id="forgotForm" class="wl-hidden">
+        <div class="wl-field"><label>Email</label><input type="email" id="forgotEmail" required placeholder="your@email.com" autocomplete="email"></div>
+        <button type="submit" class="wl-btn wl-btn-primary wl-btn-block" id="forgotBtn">Send Reset Link</button>
+        <p style="text-align:center;margin-top:10px"><a href="#" onclick="showLogin();return false" style="color:var(--gold-deep);font-size:13px">Back to Sign In</a></p>
+      </form>
+      <p style="text-align:center;margin-top:16px;font-size:12px;color:var(--ink-soft)">Contact admin for account access</p>
+    </div>
+  </div>
+</div>
+
+<!-- APP VIEW -->
+<div id="appView" class="wl-hidden">
+  <div class="wl-user-bar">
+    <span class="name" id="userName"></span>
+    <button class="wl-btn-sm" onclick="signOut()">Sign Out</button>
+  </div>
+  <div class="wl-tabs">
+    <div class="wl-tab active" data-tab="log" onclick="switchTab('log')">Log Work</div>
+    <div class="wl-tab" data-tab="history" onclick="switchTab('history')">My History</div>
+    <div class="wl-tab wl-hidden" data-tab="admin" id="adminTab" onclick="switchTab('admin')">Admin</div>
+  </div>
+
+  <!-- LOG -->
+  <div id="tab-log" class="wl-wrap">
+    <div class="wl-card">
+      <div class="wl-section-title"><span>New Work Entry</span><button class="wl-btn-sm" style="margin-left:auto" onclick="showGuide()">Hour Guide</button></div>
+      <div id="logAlert" class="wl-alert"></div>
+      <form id="logForm">
+        <div class="wl-row">
+          <div class="wl-field"><label>Date</label><input type="date" id="logDate" required></div>
+          <div class="wl-field"><label>Hours Spent</label><input type="number" id="logHours" required min="0.25" max="24" step="0.25" placeholder="e.g. 2.5"></div>
+        </div>
+        <div class="wl-field"><label>Category</label><select id="logCategory" required><option value="">Select category...</option></select></div>
+        <div class="wl-field">
+          <label>Subcategory</label>
+          <div class="search-wrap"><span class="search-icon">&#128269;</span><input type="text" id="subSearch" placeholder="Search subcategories..." autocomplete="off"></div>
+          <select id="logSubcategory" required style="margin-top:6px"><option value="">Select subcategory...</option></select>
+          <div class="hint" id="guideHint"></div>
+        </div>
+        <div class="wl-field"><label>Description (optional)</label><textarea id="logDescription" placeholder="What specifically did you do?"></textarea></div>
+        <button type="submit" class="wl-btn wl-btn-primary" id="submitLog">Save Entry</button>
+      </form>
+    </div>
+    <div class="wl-section-title">Recent Entries</div>
+    <div id="recentLogs"></div>
+  </div>
+
+  <!-- HISTORY -->
+  <div id="tab-history" class="wl-wrap wl-hidden">
+    <div class="wl-stats" id="myStats"></div>
+    <div class="wl-card">
+      <div class="wl-section-title">My Work Log</div>
+      <div class="wl-filters">
+        <div class="wl-field"><label>From</label><input type="date" id="histFrom"></div>
+        <div class="wl-field"><label>To</label><input type="date" id="histTo"></div>
+        <div class="wl-field"><label>Category</label><select id="histCategory"><option value="">All</option></select></div>
+        <button class="wl-btn wl-btn-ghost" onclick="loadHistory()">Filter</button>
+      </div>
+      <div id="historyTable"></div>
+    </div>
+  </div>
+
+  <!-- ADMIN -->
+  <div id="tab-admin" class="wl-wrap wl-hidden">
+    <div class="wl-stats" id="adminStats"></div>
+    <div class="wl-card">
+      <div class="wl-section-title">All Team Logs</div>
+      <div class="wl-filters">
+        <div class="wl-field"><label>Member</label><select id="adminMember"><option value="">All Members</option></select></div>
+        <div class="wl-field"><label>From</label><input type="date" id="adminFrom"></div>
+        <div class="wl-field"><label>To</label><input type="date" id="adminTo"></div>
+        <div class="wl-field"><label>Category</label><select id="adminCategory"><option value="">All</option></select></div>
+        <button class="wl-btn wl-btn-ghost" onclick="loadAdmin()">Filter</button>
+        <button class="wl-btn wl-btn-ghost" onclick="exportCSV()">Export CSV</button>
+      </div>
+      <div id="adminTable"></div>
+    </div>
+  </div>
+</div>
+
+<!-- HOUR GUIDE MODAL -->
+<div class="wl-modal-bg" id="guideModal">
+  <div class="wl-modal">
+    <button class="close-x" onclick="hideGuide()">&times;</button>
+    <h3>Hour Estimation Guide</h3>
+    <p style="color:var(--ink-soft);font-size:13px;margin-bottom:16px">Log <b>actual time spent</b> including preparation, execution, and follow-up.</p>
+    <div id="guideContent"></div>
+  </div>
+</div>
+
+<!-- FOOTER (same as site) -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="brand"><span class="brand-glyph">مداد</span><span class="brand-en">MEDAD</span></div>
+        <p class="foot-desc">Ambient clinical documentation, in Arabic, on-premise. <i>Made in Oman, for the Arab world.</i></p>
+      </div>
+      <div><h5>The Project</h5><ul><li><a href="./">Home</a></li><li><a href="./team.html">The Team</a></li><li><a href="./worklog.html">Work Log</a></li></ul></div>
+      <div><h5>Get Involved</h5><ul><li><a href="./join.html">Join the Project</a></li><li><a href="https://annotate.medad.om">Become an Annotator</a></li><li><a href="mailto:dr.abdullahalalawi@gmail.com">dr.abdullahalalawi@gmail.com</a></li></ul></div>
+      <div><h5>Imprint</h5><ul><li>Muscat, Oman</li><li>SQUH · OMSB · MCMSS</li><li>SQU · GUtech</li><li>EST. 2025</li></ul></div>
+    </div>
+    <div class="foot-bottom"><span>&copy; 2026 Medad · A National AI Initiative · v2.0</span><span class="ar">المُداد يستمع · يكتب · يتعلّم</span></div>
+  </div>
+</footer>
+
+<script>
+const SUPABASE_URL='https://xrxekxvyzayudgkixmza.supabase.co';
+const SUPABASE_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyeGVreHZ5emF5dWRna2l4bXphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1MDM1NzIsImV4cCI6MjA5NjA3OTU3Mn0.dK21GXduLQV2aOsfs743FpYthhA3UNjIRxwYXDAIEHw';
+const RESET_REDIRECT='https://medad.om/reset';
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON);
+let currentMember=null,categories=[],allMembers=[],hourGuides=[];
+
+async function init(){
+  const params=new URLSearchParams(window.location.search);
+  const hasRecoveryCode=params.has('code');
+  const hash=window.location.hash;
+  const hasRecoveryHash=hash.includes('type=recovery')||hash.includes('access_token');
+
+  // Old reset links may still point to /worklog. Send recovery traffic to the dedicated reset page.
+  if(hasRecoveryCode||hasRecoveryHash){
+    window.location.replace(RESET_REDIRECT+window.location.search+window.location.hash);
+    return;
+  }
+
+  const{data:{session}}=await sb.auth.getSession();
+  if(session){await onLogin(session.user)}else{document.getElementById('loginView').classList.remove('wl-hidden');document.getElementById('appView').classList.add('wl-hidden')}
+}
+function showForgot(){document.getElementById('loginForm').classList.add('wl-hidden');document.getElementById('forgotForm').classList.remove('wl-hidden');document.getElementById('loginAlert').style.display='none'}
+function showLogin(){document.getElementById('loginForm').classList.remove('wl-hidden');document.getElementById('forgotForm').classList.add('wl-hidden');document.getElementById('loginAlert').style.display='none'}
+document.getElementById('forgotForm').addEventListener('submit',async(e)=>{e.preventDefault();const email=document.getElementById('forgotEmail').value.trim();const btn=document.getElementById('forgotBtn');const a=document.getElementById('loginAlert');btn.disabled=true;btn.textContent='Sending...';a.style.display='none';const{error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:RESET_REDIRECT});if(error){a.className='wl-alert wl-alert-error';a.textContent=error.message}else{a.className='wl-alert wl-alert-success';a.textContent='Reset link sent! Check your email.'}a.style.display='block';btn.disabled=false;btn.textContent='Send Reset Link'});
+document.getElementById('loginForm').addEventListener('submit',async(e)=>{e.preventDefault();const email=document.getElementById('loginEmail').value.trim();const pw=document.getElementById('loginPassword').value;const btn=document.getElementById('loginBtn');const a=document.getElementById('loginAlert');a.style.display='none';btn.disabled=true;btn.textContent='Signing in...';const{data,error}=await sb.auth.signInWithPassword({email,password:pw});if(error){a.textContent=error.message;a.className='wl-alert wl-alert-error';a.style.display='block';btn.disabled=false;btn.textContent='Sign In';return}await onLogin(data.user)});
+
+async function onLogin(user){
+  let{data:member}=await sb.from('team_members').select('*').eq('auth_id',user.id).limit(1).single();
+  if(!member){const{data:byEmail}=await sb.from('team_members').select('*').eq('email',user.email).limit(1).single();if(byEmail){await sb.from('team_members').update({auth_id:user.id}).eq('id',byEmail.id);member={...byEmail,auth_id:user.id}}else{const a=document.getElementById('loginAlert');a.className='wl-alert wl-alert-error';a.textContent='Your email is not registered as a team member.';a.style.display='block';await sb.auth.signOut();return}}
+  currentMember=member;document.getElementById('loginView').classList.add('wl-hidden');document.getElementById('appView').classList.remove('wl-hidden');document.getElementById('userName').textContent=member.display_name;
+  if(member.role==='admin')document.getElementById('adminTab').classList.remove('wl-hidden');
+  document.getElementById('logDate').value=new Date().toISOString().split('T')[0];
+  await loadCategories();await loadHourGuides();await loadRecent();
+}
+async function signOut(){await sb.auth.signOut();currentMember=null;document.getElementById('loginView').classList.remove('wl-hidden');document.getElementById('appView').classList.add('wl-hidden');document.getElementById('loginAlert').style.display='none';document.getElementById('loginBtn').disabled=false;document.getElementById('loginBtn').textContent='Sign In'}
+
+async function loadCategories(){const{data}=await sb.from('work_categories').select('id,parent_id,name,sort_order').eq('is_active',true).order('sort_order').limit(500);categories=data||[];const parents=categories.filter(c=>!c.parent_id);['logCategory','histCategory','adminCategory'].forEach(id=>{const sel=document.getElementById(id);const f=sel.options[0];sel.innerHTML='';sel.appendChild(f);parents.forEach(p=>{const o=document.createElement('option');o.value=p.id;o.textContent=p.name;sel.appendChild(o)})})}
+document.getElementById('logCategory').addEventListener('change',e=>{const pid=parseInt(e.target.value);const subs=categories.filter(c=>c.parent_id===pid);const sel=document.getElementById('logSubcategory');sel.innerHTML='<option value="">Select subcategory...</option>';subs.forEach(s=>{const o=document.createElement('option');o.value=s.id;o.textContent=s.name;sel.appendChild(o)});document.getElementById('subSearch').value='';document.getElementById('guideHint').textContent=''});
+document.getElementById('subSearch').addEventListener('input',e=>{const q=e.target.value.toLowerCase();const pid=parseInt(document.getElementById('logCategory').value);if(!pid)return;const subs=categories.filter(c=>c.parent_id===pid&&c.name.toLowerCase().includes(q));const sel=document.getElementById('logSubcategory');sel.innerHTML='<option value="">Select subcategory...</option>';subs.forEach(s=>{const o=document.createElement('option');o.value=s.id;o.textContent=s.name;sel.appendChild(o)})});
+document.getElementById('logSubcategory').addEventListener('change',e=>{const g=hourGuides.find(g=>g.category_id===parseInt(e.target.value));document.getElementById('guideHint').textContent=g?'Typical: '+g.typical_hours+(g.notes?' — '+g.notes:''):''});
+
+async function loadHourGuides(){const{data}=await sb.from('hour_guides').select('*').limit(100);hourGuides=data||[]}
+function showGuide(){const grouped={};hourGuides.forEach(g=>{const cat=categories.find(c=>c.id===g.category_id);if(!cat)return;const parent=categories.find(c=>c.id===cat.parent_id);const pn=parent?parent.name:'Other';if(!grouped[pn])grouped[pn]=[];grouped[pn].push({...g,subName:cat.name})});let html='';Object.keys(grouped).forEach(pn=>{html+='<h4 style="color:var(--gold-deep);margin:16px 0 8px;font-size:14px;font-weight:700">'+pn+'</h4>';grouped[pn].forEach(g=>{html+='<div class="wl-guide-row"><div><div class="activity">'+g.subName+'</div><div class="notes">'+g.activity_example+(g.notes?' — '+g.notes:'')+'</div></div><div class="hours">'+g.typical_hours+'</div></div>'})});document.getElementById('guideContent').innerHTML=html;document.getElementById('guideModal').classList.add('show')}
+function hideGuide(){document.getElementById('guideModal').classList.remove('show')}
+document.getElementById('guideModal').addEventListener('click',e=>{if(e.target===e.currentTarget)hideGuide()});
+
+document.getElementById('logForm').addEventListener('submit',async(e)=>{e.preventDefault();const a=document.getElementById('logAlert');const btn=document.getElementById('submitLog');a.style.display='none';btn.disabled=true;btn.textContent='Saving...';const entry={member_id:currentMember.id,category_id:parseInt(document.getElementById('logSubcategory').value),entry_date:document.getElementById('logDate').value,hours_spent:parseFloat(document.getElementById('logHours').value),description:document.getElementById('logDescription').value.trim()||null};if(!entry.category_id){a.className='wl-alert wl-alert-error';a.textContent='Please select a subcategory.';a.style.display='block';btn.disabled=false;btn.textContent='Save Entry';return}const{error}=await sb.from('work_logs').insert(entry);if(error){a.className='wl-alert wl-alert-error';a.textContent=error.message}else{a.className='wl-alert wl-alert-success';a.textContent='Entry saved!';document.getElementById('logForm').reset();document.getElementById('logDate').value=new Date().toISOString().split('T')[0];document.getElementById('logSubcategory').innerHTML='<option value="">Select subcategory...</option>';document.getElementById('guideHint').textContent='';setTimeout(()=>a.style.display='none',3000);await loadRecent()}a.style.display='block';btn.disabled=false;btn.textContent='Save Entry'});
+
+async function loadRecent(){const{data}=await sb.from('work_logs').select('id,entry_date,hours_spent,description,category_id,created_at').eq('member_id',currentMember.id).order('entry_date',{ascending:false}).order('created_at',{ascending:false}).limit(10);renderTable(data||[],'recentLogs',true)}
+async function loadHistory(){let q=sb.from('work_logs').select('id,entry_date,hours_spent,description,category_id,created_at').eq('member_id',currentMember.id).order('entry_date',{ascending:false}).limit(500);const f=document.getElementById('histFrom').value,t=document.getElementById('histTo').value,c=document.getElementById('histCategory').value;if(f)q=q.gte('entry_date',f);if(t)q=q.lte('entry_date',t);if(c){const ids=categories.filter(x=>x.parent_id===parseInt(c)).map(x=>x.id);if(ids.length)q=q.in('category_id',ids)}const{data}=await q;renderTable(data||[],'historyTable',true);const logs=data||[],th=logs.reduce((s,l)=>s+parseFloat(l.hours_spent),0),ud=new Set(logs.map(l=>l.entry_date)).size;document.getElementById('myStats').innerHTML='<div class="wl-stat"><div class="val">'+th.toFixed(1)+'</div><div class="lbl">Total Hours</div></div><div class="wl-stat"><div class="val">'+logs.length+'</div><div class="lbl">Entries</div></div><div class="wl-stat"><div class="val">'+ud+'</div><div class="lbl">Active Days</div></div><div class="wl-stat"><div class="val">'+(ud?(th/ud).toFixed(1):0)+'</div><div class="lbl">Avg Hours/Day</div></div>'}
+async function loadAdmin(){if(!allMembers.length){const{data}=await sb.from('team_members').select('id,display_name').eq('is_active',true).order('display_name').limit(50);allMembers=data||[];const sel=document.getElementById('adminMember');allMembers.forEach(m=>{const o=document.createElement('option');o.value=m.id;o.textContent=m.display_name;sel.appendChild(o)})}let q=sb.from('work_logs').select('id,entry_date,hours_spent,description,category_id,member_id,created_at').order('entry_date',{ascending:false}).limit(1000);const mid=document.getElementById('adminMember').value,f=document.getElementById('adminFrom').value,t=document.getElementById('adminTo').value,c=document.getElementById('adminCategory').value;if(mid)q=q.eq('member_id',mid);if(f)q=q.gte('entry_date',f);if(t)q=q.lte('entry_date',t);if(c){const ids=categories.filter(x=>x.parent_id===parseInt(c)).map(x=>x.id);if(ids.length)q=q.in('category_id',ids)}const{data}=await q;renderTable(data||[],'adminTable',false,true);const logs=data||[],th=logs.reduce((s,l)=>s+parseFloat(l.hours_spent),0),um=new Set(logs.map(l=>l.member_id)).size,ud=new Set(logs.map(l=>l.entry_date)).size;document.getElementById('adminStats').innerHTML='<div class="wl-stat"><div class="val">'+th.toFixed(1)+'</div><div class="lbl">Total Hours</div></div><div class="wl-stat"><div class="val">'+logs.length+'</div><div class="lbl">Entries</div></div><div class="wl-stat"><div class="val">'+um+'</div><div class="lbl">Active Members</div></div><div class="wl-stat"><div class="val">'+ud+'</div><div class="lbl">Active Days</div></div>'}
+
+function renderTable(logs,cid,canDel,showMem){const el=document.getElementById(cid);if(!logs.length){el.innerHTML='<div class="wl-empty">No entries yet</div>';return}const cn=id=>{const c=categories.find(x=>x.id===id);if(!c)return'';const p=categories.find(x=>x.id===c.parent_id);return p?p.name:c.name};const sn=id=>{const c=categories.find(x=>x.id===id);return c?c.name:''};const mn=id=>{const m=allMembers.find(x=>x.id===id);return m?m.display_name:currentMember.display_name};let h='<table class="wl-table"><thead><tr><th>Date</th>';if(showMem)h+='<th>Member</th>';h+='<th>Category</th><th>Subcategory</th><th>Hours</th><th>Description</th>';if(canDel)h+='<th></th>';h+='</tr></thead><tbody>';logs.forEach(l=>{h+='<tr><td>'+l.entry_date+'</td>';if(showMem)h+='<td>'+mn(l.member_id)+'</td>';h+='<td><span class="wl-badge">'+cn(l.category_id)+'</span></td><td>'+sn(l.category_id)+'</td><td class="wl-hours">'+parseFloat(l.hours_spent).toFixed(1)+'h</td><td style="color:var(--ink-soft);max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+(l.description||'—')+'</td>';if(canDel)h+='<td><button class="wl-del" onclick="deleteLog(\''+l.id+'\')" title="Delete">&#10005;</button></td>';h+='</tr>'});h+='</tbody></table>';el.innerHTML=h}
+async function deleteLog(id){if(!confirm('Delete this entry?'))return;await sb.from('work_logs').delete().eq('id',id);await loadRecent();if(!document.getElementById('tab-history').classList.contains('wl-hidden'))loadHistory()}
+function exportCSV(){const t=document.querySelector('#adminTable table');if(!t)return alert('No data to export');const csv=Array.from(t.querySelectorAll('tr')).map(r=>Array.from(r.querySelectorAll('th, td')).map(c=>'"'+c.textContent.replace(/"/g,'""').trim()+'"').join(',')).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='medad_worklog_'+new Date().toISOString().split('T')[0]+'.csv';a.click()}
+function switchTab(tab){document.querySelectorAll('.wl-tab').forEach(t=>t.classList.remove('active'));document.querySelector('.wl-tab[data-tab="'+tab+'"]').classList.add('active');document.querySelectorAll('[id^="tab-"]').forEach(p=>p.classList.add('wl-hidden'));document.getElementById('tab-'+tab).classList.remove('wl-hidden');if(tab==='history')loadHistory();if(tab==='admin')loadAdmin()}
+init();
+</script>
+</body>
+</html>
