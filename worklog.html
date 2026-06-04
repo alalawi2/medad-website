@@ -322,31 +322,30 @@ a{color:inherit;text-decoration:none}
 <script>
 const SUPABASE_URL='https://xrxekxvyzayudgkixmza.supabase.co';
 const SUPABASE_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyeGVreHZ5emF5dWRna2l4bXphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1MDM1NzIsImV4cCI6MjA5NjA3OTU3Mn0.dK21GXduLQV2aOsfs743FpYthhA3UNjIRxwYXDAIEHw';
+// Register listener IMMEDIATELY after createClient — before Supabase processes the hash
 const sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON);
 let currentMember=null,categories=[],allMembers=[],hourGuides=[];
 let isRecoveryMode=false;
 
-async function init(){
-  // Supabase auto-processes #access_token hash during createClient.
-  // Listen for PASSWORD_RECOVERY event which fires when hash contains type=recovery
-  sb.auth.onAuthStateChange((event,session)=>{
-    if(event==='PASSWORD_RECOVERY'){
-      isRecoveryMode=true;
-      showResetView();
-    }
-  });
+// This MUST be right after createClient — Supabase replays the initial event to the first listener
+sb.auth.onAuthStateChange((event,session)=>{
+  if(event==='PASSWORD_RECOVERY'){
+    isRecoveryMode=true;
+    showResetView();
+  }
+});
 
-  // Also handle PKCE ?code= flow
+async function init(){
+  // Handle PKCE ?code= flow
   const params=new URLSearchParams(window.location.search);
   if(params.has('code')){
     await sb.auth.exchangeCodeForSession(params.get('code'));
     window.history.replaceState(null,'',window.location.pathname);
-    // onAuthStateChange will fire PASSWORD_RECOVERY if applicable
-    await new Promise(r=>setTimeout(r,800));
+    await new Promise(r=>setTimeout(r,500));
     if(isRecoveryMode)return;
   }
 
-  // Normal flow
+  // Normal flow (skip if recovery already detected by listener above)
   if(!isRecoveryMode){
     const{data:{session}}=await sb.auth.getSession();
     if(session){await onLogin(session.user)}else{document.getElementById('loginView').classList.remove('wl-hidden');document.getElementById('appView').classList.add('wl-hidden')}
