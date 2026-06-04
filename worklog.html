@@ -315,40 +315,43 @@ const sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON);
 let currentMember=null,categories=[],allMembers=[],hourGuides=[];
 
 async function init(){
-  // Handle PKCE code exchange (newer Supabase sends ?code=xxx in URL)
-  const params=new URLSearchParams(window.location.search);
-  const code=params.get('code');
-  if(code){
-    const{data,error}=await sb.auth.exchangeCodeForSession(code);
-    // Clean URL
-    window.history.replaceState(null,'',window.location.pathname);
-    if(data?.session){
-      // Check if this was a recovery flow
-      const hash=window.location.hash;
-      if(params.get('type')==='recovery'||hash.includes('type=recovery')){
-        showReset();return;
-      }
-    }
-  }
+  let isRecovery=false;
 
-  // Listen for PASSWORD_RECOVERY event (works for both hash and PKCE flows)
+  // 1. Set up auth state listener FIRST (catches PASSWORD_RECOVERY from code exchange)
   sb.auth.onAuthStateChange(async(event,session)=>{
     if(event==='PASSWORD_RECOVERY'){
+      isRecovery=true;
       document.getElementById('loginView').classList.remove('wl-hidden');
       document.getElementById('appView').classList.add('wl-hidden');
       showReset();
     }
   });
 
-  // Also check hash fragment (older flow)
+  // 2. Handle PKCE code exchange (Supabase redirects with ?code=xxx)
+  const params=new URLSearchParams(window.location.search);
+  const code=params.get('code');
+  if(code){
+    await sb.auth.exchangeCodeForSession(code);
+    window.history.replaceState(null,'',window.location.pathname);
+    // Wait briefly for onAuthStateChange to fire
+    await new Promise(r=>setTimeout(r,500));
+    if(isRecovery)return;
+  }
+
+  // 3. Check hash fragment (older implicit flow)
   const hash=window.location.hash;
-  if(hash.includes('type=recovery')||params.get('type')==='recovery'){
+  if(hash.includes('type=recovery')){
+    await new Promise(r=>setTimeout(r,500));
+    if(isRecovery)return;
     const{data:{session}}=await sb.auth.getSession();
     if(session){showReset();return}
   }
 
-  const{data:{session}}=await sb.auth.getSession();
-  if(session){await onLogin(session.user)}else{document.getElementById('loginView').classList.remove('wl-hidden');document.getElementById('appView').classList.add('wl-hidden')}
+  // 4. Normal session check
+  if(!isRecovery){
+    const{data:{session}}=await sb.auth.getSession();
+    if(session){await onLogin(session.user)}else{document.getElementById('loginView').classList.remove('wl-hidden');document.getElementById('appView').classList.add('wl-hidden')}
+  }
 }
 function showForgot(){document.getElementById('loginForm').classList.add('wl-hidden');document.getElementById('forgotForm').classList.remove('wl-hidden');document.getElementById('resetForm').classList.add('wl-hidden');document.getElementById('loginAlert').style.display='none'}
 function showLogin(){document.getElementById('loginForm').classList.remove('wl-hidden');document.getElementById('forgotForm').classList.add('wl-hidden');document.getElementById('resetForm').classList.add('wl-hidden');document.getElementById('loginAlert').style.display='none'}
