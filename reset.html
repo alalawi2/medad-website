@@ -79,11 +79,21 @@ const SUPABASE_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 const sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON);
 
 function show(id){['loadingView','errorView','resetView','successView'].forEach(v=>document.getElementById(v).style.display='none');document.getElementById(id).style.display='block'}
+async function waitForSession(timeoutMs=5000,stepMs=150){
+  const deadline=Date.now()+timeoutMs;
+  while(Date.now()<deadline){
+    const{data:{session}}=await sb.auth.getSession();
+    if(session)return session;
+    await new Promise(r=>setTimeout(r,stepMs));
+  }
+  return null;
+}
 
 async function init(){
   const params=new URLSearchParams(window.location.search);
   const code=params.get('code');
   const hash=window.location.hash;
+  const isRecoveryHash=hash.includes('type=recovery')||hash.includes('access_token');
 
   // PKCE flow: ?code=xxx
   if(code){
@@ -95,10 +105,8 @@ async function init(){
   }
 
   // Implicit flow: #access_token=xxx&type=recovery
-  if(hash.includes('access_token')){
-    // Supabase client auto-processes the hash
-    await new Promise(r=>setTimeout(r,300));
-    const{data:{session}}=await sb.auth.getSession();
+  if(isRecoveryHash){
+    const session=await waitForSession();
     if(session){show('resetView');return}
   }
 

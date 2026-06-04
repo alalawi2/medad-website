@@ -310,11 +310,22 @@ const sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON);
 let currentMember=null,categories=[],allMembers=[],hourGuides=[];
 
 async function init(){
+  const params=new URLSearchParams(window.location.search);
+  const hasRecoveryCode=params.has('code');
+  const hash=window.location.hash;
+  const hasRecoveryHash=hash.includes('type=recovery')||hash.includes('access_token');
+
+  // Old reset links may still point to /worklog. Send recovery traffic to the dedicated reset page.
+  if(hasRecoveryCode||hasRecoveryHash){
+    window.location.replace(RESET_REDIRECT+window.location.search+window.location.hash);
+    return;
+  }
+
   const{data:{session}}=await sb.auth.getSession();
   if(session){await onLogin(session.user)}else{document.getElementById('loginView').classList.remove('wl-hidden');document.getElementById('appView').classList.add('wl-hidden')}
 }
-function showForgot(){document.getElementById('loginForm').classList.add('wl-hidden');document.getElementById('forgotForm').classList.remove('wl-hidden');document.getElementById('resetForm').classList.add('wl-hidden');document.getElementById('loginAlert').style.display='none'}
-function showLogin(){document.getElementById('loginForm').classList.remove('wl-hidden');document.getElementById('forgotForm').classList.add('wl-hidden');document.getElementById('resetForm').classList.add('wl-hidden');document.getElementById('loginAlert').style.display='none'}
+function showForgot(){document.getElementById('loginForm').classList.add('wl-hidden');document.getElementById('forgotForm').classList.remove('wl-hidden');document.getElementById('loginAlert').style.display='none'}
+function showLogin(){document.getElementById('loginForm').classList.remove('wl-hidden');document.getElementById('forgotForm').classList.add('wl-hidden');document.getElementById('loginAlert').style.display='none'}
 document.getElementById('forgotForm').addEventListener('submit',async(e)=>{e.preventDefault();const email=document.getElementById('forgotEmail').value.trim();const btn=document.getElementById('forgotBtn');const a=document.getElementById('loginAlert');btn.disabled=true;btn.textContent='Sending...';a.style.display='none';const{error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:RESET_REDIRECT});if(error){a.className='wl-alert wl-alert-error';a.textContent=error.message}else{a.className='wl-alert wl-alert-success';a.textContent='Reset link sent! Check your email.'}a.style.display='block';btn.disabled=false;btn.textContent='Send Reset Link'});
 document.getElementById('loginForm').addEventListener('submit',async(e)=>{e.preventDefault();const email=document.getElementById('loginEmail').value.trim();const pw=document.getElementById('loginPassword').value;const btn=document.getElementById('loginBtn');const a=document.getElementById('loginAlert');a.style.display='none';btn.disabled=true;btn.textContent='Signing in...';const{data,error}=await sb.auth.signInWithPassword({email,password:pw});if(error){a.textContent=error.message;a.className='wl-alert wl-alert-error';a.style.display='block';btn.disabled=false;btn.textContent='Sign In';return}await onLogin(data.user)});
 
