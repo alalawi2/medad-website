@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Work Log — Medad</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Noto+Kufi+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css">
+    <script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <style>
+        /* ---- WORKLOG-SPECIFIC STYLES ---- */
+        .wl-wrap { min-height: 80vh; display: flex; align-items: center; justify-content: center; padding: 2rem; }
+        .wl-card {
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px; padding: 2.5rem; max-width: 420px; width: 100%;
+        }
+        .wl-card h2 { margin-bottom: 0.3rem; font-size: 1.4rem; }
+        .wl-card p { color: var(--muted); margin-bottom: 1.5rem; font-size: 0.9rem; }
+
+        .wl-container { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+        .wl-tab-bar {
+            display: flex; gap: 0; border-bottom: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.02); padding: 0 1.5rem;
+        }
+        .wl-tab {
+            padding: 0.75rem 1.25rem; cursor: pointer; color: var(--muted);
+            border-bottom: 2px solid transparent; font-size: 0.9rem; transition: all 0.2s;
+        }
+        .wl-tab:hover { color: var(--foreground); }
+        .wl-tab.active { color: var(--accent, #6c63ff); border-bottom-color: var(--accent, #6c63ff); }
+
+        .wl-user-bar {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0.75rem 1.5rem; background: rgba(255,255,255,0.02);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        .wl-user-bar .name { font-weight: 600; font-size: 0.9rem; }
+        .wl-user-bar .btn-logout {
+            padding: 0.35rem 0.8rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.12);
+            background: transparent; color: var(--muted); cursor: pointer; font-size: 0.8rem;
+            font-family: inherit; transition: all 0.2s;
+        }
+        .wl-user-bar .btn-logout:hover { border-color: var(--accent, #6c63ff); color: var(--accent, #6c63ff); }
+
+        .wl-field { margin-bottom: 1rem; }
+        .wl-field label { display: block; font-size: 0.8rem; color: var(--muted); margin-bottom: 0.35rem; font-weight: 500; }
+        .wl-field input, .wl-field select, .wl-field textarea {
+            width: 100%; padding: 0.6rem 0.8rem; background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: var(--foreground);
+            font-size: 0.9rem; font-family: inherit; outline: none; transition: border-color 0.2s;
+        }
+        .wl-field input:focus, .wl-field select:focus, .wl-field textarea:focus {
+            border-color: var(--accent, #6c63ff);
+        }
+        .wl-field textarea { min-height: 80px; resize: vertical; }
+        .wl-field select { cursor: pointer; }
+        .wl-field .hint { font-size: 0.75rem; color: var(--muted); margin-top: 0.25rem; font-style: italic; }
+        .wl-field .search-wrap { position: relative; }
+        .wl-field .search-wrap input { padding-left: 2rem; }
+        .wl-field .search-icon {
+            position: absolute; left: 0.65rem; top: 50%; transform: translateY(-50%);
+            color: var(--muted); font-size: 0.85rem; pointer-events: none;
+        }
+        .wl-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+        .wl-btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+            padding: 0.65rem 1.5rem; border-radius: 8px; border: none;
+            font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s;
+            font-family: inherit;
+        }
+        .wl-btn-primary { background: var(--accent, #6c63ff); color: #fff; }
+        .wl-btn-primary:hover { opacity: 0.9; }
+        .wl-btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+        .wl-btn-block { width: 100%; }
+        .wl-btn-outline { background: transparent; border: 1px solid rgba(255,255,255,0.12); color: var(--foreground); }
+        .wl-btn-outline:hover { border-color: var(--accent, #6c63ff); color: var(--accent, #6c63ff); }
+        .wl-btn-sm {
+            padding: 0.4rem 0.9rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.12);
+            background: transparent; color: var(--muted); cursor: pointer; font-size: 0.8rem;
+            font-family: inherit; transition: all 0.2s;
+        }
+        .wl-btn-sm:hover { border-color: var(--accent, #6c63ff); color: var(--accent, #6c63ff); }
+
+        .wl-alert {
+            padding: 0.75rem 1rem; border-radius: 8px; font-size: 0.85rem;
+            margin-bottom: 1rem; display: none;
+        }
+        .wl-alert-error { background: rgba(239,68,68,0.15); color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
+        .wl-alert-success { background: rgba(34,197,94,0.15); color: #4ade80; border: 1px solid rgba(34,197,94,0.3); }
+
+        .wl-section-title {
+            font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .wl-card-inner {
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px; padding: 1.5rem; margin-bottom: 1.25rem;
+        }
+
+        /* Table */
+        .wl-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+        .wl-table th {
+            text-align: left; padding: 0.6rem 0.75rem; color: var(--muted);
+            border-bottom: 1px solid rgba(255,255,255,0.08); font-weight: 500; font-size: 0.8rem;
+        }
+        .wl-table td {
+            padding: 0.6rem 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.06);
+            vertical-align: top;
+        }
+        .wl-table tr:hover td { background: rgba(108,99,255,0.05); }
+        .wl-badge {
+            display: inline-block; padding: 0.15rem 0.5rem; border-radius: 4px;
+            background: rgba(108,99,255,0.15); color: #8b83ff; font-size: 0.75rem;
+        }
+        .wl-hours { font-weight: 600; color: var(--accent, #6c63ff); }
+        .wl-del-btn {
+            background: none; border: none; color: var(--muted); cursor: pointer;
+            font-size: 0.8rem; padding: 0.2rem 0.4rem; border-radius: 4px;
+        }
+        .wl-del-btn:hover { color: #ef4444; background: rgba(239,68,68,0.1); }
+        .wl-empty { text-align: center; padding: 3rem; color: var(--muted); }
+
+        /* Stats */
+        .wl-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+        .wl-stat {
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px; padding: 1rem; text-align: center;
+        }
+        .wl-stat .val { font-size: 1.5rem; font-weight: 700; color: var(--accent, #6c63ff); }
+        .wl-stat .lbl { font-size: 0.75rem; color: var(--muted); margin-top: 0.25rem; }
+
+        /* Filters */
+        .wl-filters { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1rem; align-items: end; }
+        .wl-filters .wl-field { margin-bottom: 0; flex: 1; min-width: 150px; }
+        .wl-filters .wl-btn { align-self: end; }
+
+        /* Modal */
+        .wl-modal-bg {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+            display: none; align-items: center; justify-content: center; z-index: 200; padding: 1rem;
+        }
+        .wl-modal-bg.show { display: flex; }
+        .wl-modal {
+            background: var(--background, #0a0a0f); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px; max-width: 600px; width: 100%;
+            max-height: 80vh; overflow-y: auto; padding: 1.5rem;
+        }
+        .wl-modal h3 { margin-bottom: 1rem; }
+        .wl-modal .close-x {
+            float: right; background: none; border: none; color: var(--muted);
+            font-size: 1.2rem; cursor: pointer;
+        }
+        .wl-guide-row { display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 0.85rem; }
+        .wl-guide-row .activity { flex: 1; }
+        .wl-guide-row .hours { color: var(--accent, #6c63ff); font-weight: 500; min-width: 100px; text-align: right; }
+        .wl-guide-row .notes { color: var(--muted); font-size: 0.8rem; margin-top: 0.2rem; }
+
+        .wl-hidden { display: none !important; }
+
+        @media (max-width: 640px) {
+            .wl-row { grid-template-columns: 1fr; }
+            .wl-stats { grid-template-columns: 1fr 1fr; }
+            .wl-filters { flex-direction: column; }
+            .wl-table { font-size: 0.8rem; }
+            .wl-table th:nth-child(4), .wl-table td:nth-child(4) { display: none; }
+            .wl-tab { padding: 0.6rem 0.8rem; font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- SITE NAV (same as all pages) -->
+<nav class="nav scrolled" id="nav">
+    <div class="container nav-inner">
+        <a href="/" class="logo"><span class="logo-mark">مداد</span><span class="logo-text">MEDAD</span></a>
+        <div class="nav-links" id="navLinks">
+            <a href="./" class="nav-link">Home</a>
+            <a href="./team.html" class="nav-link">Team</a>
+            <a href="./news.html" class="nav-link">News</a>
+            <a href="./join.html" class="nav-link">Join Us</a>
+            <a href="./worklog.html" class="nav-link active">Work Log</a>
+            <a href="./join.html#apply" class="nav-cta">Apply Now</a>
+        </div>
+        <button class="nav-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</nav>
+
+<!-- =============== LOGIN VIEW =============== -->
+<div id="loginView">
+    <div class="wl-wrap">
+        <div class="wl-card">
+            <div style="text-align:center; margin-bottom: 1.5rem;">
+                <span style="font-family:'Noto Kufi Arabic'; font-size:2rem; color:var(--accent, #6c63ff)">مداد</span>
+                <div style="font-weight:700; font-size:1.1rem; margin-top:0.25rem;">Team Work Log</div>
+            </div>
+            <div id="loginAlert" class="wl-alert wl-alert-error"></div>
+
+            <form id="loginForm">
+                <div class="wl-field">
+                    <label>Email</label>
+                    <input type="email" id="loginEmail" required placeholder="your@email.com" autocomplete="email">
+                </div>
+                <div class="wl-field">
+                    <label>Password</label>
+                    <input type="password" id="loginPassword" required placeholder="••••••••" autocomplete="current-password">
+                </div>
+                <button type="submit" class="wl-btn wl-btn-primary wl-btn-block" id="loginBtn">Sign In</button>
+                <p style="text-align:center; margin-top:0.75rem;">
+                    <a href="#" onclick="showForgot(); return false;" style="color:var(--accent, #6c63ff); font-size:0.8rem; text-decoration:none;">Forgot password?</a>
+                </p>
+            </form>
+
+            <form id="forgotForm" class="wl-hidden">
+                <div class="wl-field">
+                    <label>Email</label>
+                    <input type="email" id="forgotEmail" required placeholder="your@email.com" autocomplete="email">
+                </div>
+                <button type="submit" class="wl-btn wl-btn-primary wl-btn-block" id="forgotBtn">Send Reset Link</button>
+                <p style="text-align:center; margin-top:0.75rem;">
+                    <a href="#" onclick="showLogin(); return false;" style="color:var(--accent, #6c63ff); font-size:0.8rem; text-decoration:none;">Back to Sign In</a>
+                </p>
+            </form>
+
+            <form id="resetForm" class="wl-hidden">
+                <div class="wl-field">
+                    <label>New Password</label>
+                    <input type="password" id="resetPassword" required placeholder="••••••••" minlength="6" autocomplete="new-password">
+                </div>
+                <div class="wl-field">
+                    <label>Confirm Password</label>
+                    <input type="password" id="resetConfirm" required placeholder="••••••••" minlength="6" autocomplete="new-password">
+                </div>
+                <button type="submit" class="wl-btn wl-btn-primary wl-btn-block" id="resetBtn">Update Password</button>
+            </form>
+
+            <p style="text-align:center; margin-top:1rem; font-size:0.8rem; color:var(--muted)">
+                Contact admin for account access
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- =============== APP VIEW =============== -->
+<div id="appView" class="wl-hidden">
+    <div class="wl-user-bar">
+        <span class="name" id="userName"></span>
+        <button class="btn-logout" onclick="signOut()">Sign Out</button>
+    </div>
+
+    <div class="wl-tab-bar">
+        <div class="wl-tab active" data-tab="log" onclick="switchTab('log')">Log Work</div>
+        <div class="wl-tab" data-tab="history" onclick="switchTab('history')">My History</div>
+        <div class="wl-tab wl-hidden" data-tab="admin" id="adminTab" onclick="switchTab('admin')">Admin</div>
+    </div>
+
+    <!-- LOG TAB -->
+    <div id="tab-log" class="wl-container">
+        <div class="wl-card-inner">
+            <div class="wl-section-title">
+                <span>New Work Entry</span>
+                <button class="wl-btn-sm" style="margin-left:auto" onclick="showGuide()">Hour Guide</button>
+            </div>
+            <div id="logAlert" class="wl-alert"></div>
+            <form id="logForm">
+                <div class="wl-row">
+                    <div class="wl-field">
+                        <label>Date</label>
+                        <input type="date" id="logDate" required>
+                    </div>
+                    <div class="wl-field">
+                        <label>Hours Spent</label>
+                        <input type="number" id="logHours" required min="0.25" max="24" step="0.25" placeholder="e.g. 2.5">
+                    </div>
+                </div>
+                <div class="wl-field">
+                    <label>Category</label>
+                    <select id="logCategory" required>
+                        <option value="">Select category...</option>
+                    </select>
+                </div>
+                <div class="wl-field">
+                    <label>Subcategory</label>
+                    <div class="search-wrap">
+                        <span class="search-icon">&#128269;</span>
+                        <input type="text" id="subSearch" placeholder="Search subcategories..." autocomplete="off">
+                    </div>
+                    <select id="logSubcategory" required style="margin-top:0.35rem">
+                        <option value="">Select subcategory...</option>
+                    </select>
+                    <div class="hint" id="guideHint"></div>
+                </div>
+                <div class="wl-field">
+                    <label>Description <span style="color:var(--muted)">(optional)</span></label>
+                    <textarea id="logDescription" placeholder="e.g. Drafted IRB amendment for clinical audio protocol..."></textarea>
+                </div>
+                <button type="submit" class="wl-btn wl-btn-primary" id="submitLog">Save Entry</button>
+            </form>
+        </div>
+        <div class="wl-section-title">Recent Entries</div>
+        <div id="recentLogs"></div>
+    </div>
+
+    <!-- HISTORY TAB -->
+    <div id="tab-history" class="wl-container wl-hidden">
+        <div class="wl-stats" id="myStats"></div>
+        <div class="wl-card-inner">
+            <div class="wl-section-title">My Work Log</div>
+            <div class="wl-filters">
+                <div class="wl-field"><label>From</label><input type="date" id="histFrom"></div>
+                <div class="wl-field"><label>To</label><input type="date" id="histTo"></div>
+                <div class="wl-field"><label>Category</label><select id="histCategory"><option value="">All</option></select></div>
+                <button class="wl-btn wl-btn-outline" onclick="loadHistory()">Filter</button>
+            </div>
+            <div id="historyTable"></div>
+        </div>
+    </div>
+
+    <!-- ADMIN TAB -->
+    <div id="tab-admin" class="wl-container wl-hidden">
+        <div class="wl-stats" id="adminStats"></div>
+        <div class="wl-card-inner">
+            <div class="wl-section-title">All Team Logs</div>
+            <div class="wl-filters">
+                <div class="wl-field"><label>Team Member</label><select id="adminMember"><option value="">All Members</option></select></div>
+                <div class="wl-field"><label>From</label><input type="date" id="adminFrom"></div>
+                <div class="wl-field"><label>To</label><input type="date" id="adminTo"></div>
+                <div class="wl-field"><label>Category</label><select id="adminCategory"><option value="">All</option></select></div>
+                <button class="wl-btn wl-btn-outline" onclick="loadAdmin()">Filter</button>
+                <button class="wl-btn wl-btn-outline" onclick="exportCSV()">Export CSV</button>
+            </div>
+            <div id="adminTable"></div>
+        </div>
+    </div>
+</div>
+
+<!-- HOUR GUIDE MODAL -->
+<div class="wl-modal-bg" id="guideModal">
+    <div class="wl-modal">
+        <button class="close-x" onclick="hideGuide()">&times;</button>
+        <h3>Hour Estimation Guide</h3>
+        <p style="color:var(--muted); font-size:0.85rem; margin-bottom:1rem;">
+            Log the <strong>actual time spent</strong> including preparation, execution, and follow-up.
+        </p>
+        <div id="guideContent"></div>
+    </div>
+</div>
+
+<!-- SITE FOOTER (same as all pages) -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div><div class="footer-logo"><span class="logo-mark">مداد</span> MEDAD</div><p class="footer-desc">AI-Powered Arabic Medical Transcription for Omani Healthcare.</p></div>
+            <div><h4>Pages</h4><ul><li><a href="/">Home</a></li><li><a href="./team.html">Team</a></li><li><a href="./news.html">News</a></li><li><a href="./join.html">Join Us</a></li><li><a href="./worklog.html">Work Log</a></li></ul></div>
+            <div><h4>Contact</h4><ul><li>Muscat, Oman</li><li><a href="mailto:dr.abdullahalalawi@gmail.com">dr.abdullahalalawi@gmail.com</a></li></ul></div>
+        </div>
+        <div class="footer-bottom"><p>&copy; 2026 Medad. All rights reserved.</p></div>
+    </div>
+</footer>
+
+<script src="./main.js"></script>
+<script>
+const SUPABASE_URL = 'https://xrxekxvyzayudgkixmza.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyeGVreHZ5emF5dWRna2l4bXphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1MDM1NzIsImV4cCI6MjA5NjA3OTU3Mn0.dK21GXduLQV2aOsfs743FpYthhA3UNjIRxwYXDAIEHw';
+const RESET_REDIRECT = 'https://medad.om/worklog.html';
+
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+let currentMember = null, categories = [], allMembers = [], hourGuides = [];
+
+// AUTH
+async function init() {
+    const hash = window.location.hash;
+    const params = new URLSearchParams(window.location.search);
+
+    sb.auth.onAuthStateChange(async (event, session) => {
+        if (event === 'PASSWORD_RECOVERY') {
+            document.getElementById('loginView').classList.remove('wl-hidden');
+            document.getElementById('appView').classList.add('wl-hidden');
+            showReset();
+        }
+    });
+
+    if (hash.includes('type=recovery') || params.get('type') === 'recovery') {
+        const { data: { session } } = await sb.auth.getSession();
+        if (session) { showReset(); return; }
+    }
+
+    const { data: { session } } = await sb.auth.getSession();
+    if (session) {
+        await onLogin(session.user);
+    } else {
+        document.getElementById('loginView').classList.remove('wl-hidden');
+        document.getElementById('appView').classList.add('wl-hidden');
+    }
+}
+
+function showForgot() {
+    document.getElementById('loginForm').classList.add('wl-hidden');
+    document.getElementById('forgotForm').classList.remove('wl-hidden');
+    document.getElementById('resetForm').classList.add('wl-hidden');
+    document.getElementById('loginAlert').style.display = 'none';
+}
+function showLogin() {
+    document.getElementById('loginForm').classList.remove('wl-hidden');
+    document.getElementById('forgotForm').classList.add('wl-hidden');
+    document.getElementById('resetForm').classList.add('wl-hidden');
+    document.getElementById('loginAlert').style.display = 'none';
+}
+function showReset() {
+    document.getElementById('loginForm').classList.add('wl-hidden');
+    document.getElementById('forgotForm').classList.add('wl-hidden');
+    document.getElementById('resetForm').classList.remove('wl-hidden');
+    const a = document.getElementById('loginAlert');
+    a.className = 'wl-alert wl-alert-success'; a.textContent = 'Set your new password below.'; a.style.display = 'block';
+}
+
+document.getElementById('forgotForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('forgotEmail').value.trim();
+    const btn = document.getElementById('forgotBtn');
+    const a = document.getElementById('loginAlert');
+    btn.disabled = true; btn.textContent = 'Sending...'; a.style.display = 'none';
+    const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: RESET_REDIRECT });
+    if (error) { a.className = 'wl-alert wl-alert-error'; a.textContent = error.message; }
+    else { a.className = 'wl-alert wl-alert-success'; a.textContent = 'Reset link sent! Check your email.'; }
+    a.style.display = 'block'; btn.disabled = false; btn.textContent = 'Send Reset Link';
+});
+
+document.getElementById('resetForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const pw = document.getElementById('resetPassword').value;
+    const c = document.getElementById('resetConfirm').value;
+    const btn = document.getElementById('resetBtn');
+    const a = document.getElementById('loginAlert');
+    a.style.display = 'none';
+    if (pw !== c) { a.className = 'wl-alert wl-alert-error'; a.textContent = 'Passwords do not match.'; a.style.display = 'block'; return; }
+    if (pw.length < 6) { a.className = 'wl-alert wl-alert-error'; a.textContent = 'Min 6 characters.'; a.style.display = 'block'; return; }
+    btn.disabled = true; btn.textContent = 'Updating...';
+    const { error } = await sb.auth.updateUser({ password: pw });
+    if (error) { a.className = 'wl-alert wl-alert-error'; a.textContent = error.message; }
+    else {
+        a.className = 'wl-alert wl-alert-success'; a.textContent = 'Password updated! Signing you in...';
+        window.history.replaceState(null, '', window.location.pathname);
+        setTimeout(async () => { const { data: { session } } = await sb.auth.getSession(); if (session) await onLogin(session.user); }, 1500);
+    }
+    a.style.display = 'block'; btn.disabled = false; btn.textContent = 'Update Password';
+});
+
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('loginEmail').value.trim();
+    const pw = document.getElementById('loginPassword').value;
+    const btn = document.getElementById('loginBtn');
+    const a = document.getElementById('loginAlert');
+    a.style.display = 'none'; btn.disabled = true; btn.textContent = 'Signing in...';
+    const { data, error } = await sb.auth.signInWithPassword({ email, password: pw });
+    if (error) { a.textContent = error.message; a.className = 'wl-alert wl-alert-error'; a.style.display = 'block'; btn.disabled = false; btn.textContent = 'Sign In'; return; }
+    await onLogin(data.user);
+});
+
+async function onLogin(user) {
+    let { data: member } = await sb.from('team_members').select('*').eq('auth_id', user.id).limit(1).single();
+    if (!member) {
+        const { data: byEmail } = await sb.from('team_members').select('*').eq('email', user.email).limit(1).single();
+        if (byEmail) {
+            await sb.from('team_members').update({ auth_id: user.id }).eq('id', byEmail.id);
+            member = { ...byEmail, auth_id: user.id };
+        } else {
+            const a = document.getElementById('loginAlert');
+            a.className = 'wl-alert wl-alert-error'; a.textContent = 'Your email is not registered as a team member.'; a.style.display = 'block';
+            await sb.auth.signOut(); return;
+        }
+    }
+    currentMember = member;
+    document.getElementById('loginView').classList.add('wl-hidden');
+    document.getElementById('appView').classList.remove('wl-hidden');
+    document.getElementById('userName').textContent = member.display_name;
+    if (member.role === 'admin') document.getElementById('adminTab').classList.remove('wl-hidden');
+    document.getElementById('logDate').value = new Date().toISOString().split('T')[0];
+    await loadCategories(); await loadHourGuides(); await loadRecent();
+}
+
+async function signOut() {
+    await sb.auth.signOut(); currentMember = null;
+    document.getElementById('loginView').classList.remove('wl-hidden');
+    document.getElementById('appView').classList.add('wl-hidden');
+    document.getElementById('loginAlert').style.display = 'none';
+    document.getElementById('loginBtn').disabled = false; document.getElementById('loginBtn').textContent = 'Sign In';
+}
+
+// CATEGORIES
+async function loadCategories() {
+    const { data } = await sb.from('work_categories').select('id, parent_id, name, sort_order').eq('is_active', true).order('sort_order').limit(500);
+    categories = data || [];
+    const parents = categories.filter(c => !c.parent_id);
+    ['logCategory', 'histCategory', 'adminCategory'].forEach(selId => {
+        const sel = document.getElementById(selId);
+        const f = sel.options[0]; sel.innerHTML = ''; sel.appendChild(f);
+        parents.forEach(p => { const o = document.createElement('option'); o.value = p.id; o.textContent = p.name; sel.appendChild(o); });
+    });
+}
+
+document.getElementById('logCategory').addEventListener('change', (e) => {
+    const pid = parseInt(e.target.value);
+    const subs = categories.filter(c => c.parent_id === pid);
+    const sel = document.getElementById('logSubcategory');
+    sel.innerHTML = '<option value="">Select subcategory...</option>';
+    subs.forEach(s => { const o = document.createElement('option'); o.value = s.id; o.textContent = s.name; sel.appendChild(o); });
+    document.getElementById('subSearch').value = ''; document.getElementById('guideHint').textContent = '';
+});
+
+document.getElementById('subSearch').addEventListener('input', (e) => {
+    const q = e.target.value.toLowerCase();
+    const pid = parseInt(document.getElementById('logCategory').value);
+    if (!pid) return;
+    const subs = categories.filter(c => c.parent_id === pid && c.name.toLowerCase().includes(q));
+    const sel = document.getElementById('logSubcategory');
+    sel.innerHTML = '<option value="">Select subcategory...</option>';
+    subs.forEach(s => { const o = document.createElement('option'); o.value = s.id; o.textContent = s.name; sel.appendChild(o); });
+});
+
+document.getElementById('logSubcategory').addEventListener('change', (e) => {
+    const g = hourGuides.find(g => g.category_id === parseInt(e.target.value));
+    document.getElementById('guideHint').textContent = g ? `Typical: ${g.typical_hours} — ${g.notes || ''}` : '';
+});
+
+// HOUR GUIDES
+async function loadHourGuides() { const { data } = await sb.from('hour_guides').select('*').limit(100); hourGuides = data || []; }
+
+function showGuide() {
+    const grouped = {};
+    hourGuides.forEach(g => {
+        const cat = categories.find(c => c.id === g.category_id); if (!cat) return;
+        const parent = categories.find(c => c.id === cat.parent_id);
+        const pn = parent ? parent.name : 'Other';
+        if (!grouped[pn]) grouped[pn] = [];
+        grouped[pn].push({ ...g, subName: cat.name });
+    });
+    let html = '';
+    Object.keys(grouped).forEach(pn => {
+        html += `<h4 style="color:var(--accent, #6c63ff); margin:1rem 0 0.5rem; font-size:0.9rem">${pn}</h4>`;
+        grouped[pn].forEach(g => {
+            html += `<div class="wl-guide-row"><div><div class="activity">${g.subName}</div><div class="notes">${g.activity_example}${g.notes ? ' — '+g.notes : ''}</div></div><div class="hours">${g.typical_hours}</div></div>`;
+        });
+    });
+    document.getElementById('guideContent').innerHTML = html;
+    document.getElementById('guideModal').classList.add('show');
+}
+function hideGuide() { document.getElementById('guideModal').classList.remove('show'); }
+document.getElementById('guideModal').addEventListener('click', (e) => { if (e.target === e.currentTarget) hideGuide(); });
+
+// LOG ENTRY
+document.getElementById('logForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const a = document.getElementById('logAlert'); const btn = document.getElementById('submitLog');
+    a.style.display = 'none'; btn.disabled = true; btn.textContent = 'Saving...';
+    const entry = {
+        member_id: currentMember.id, category_id: parseInt(document.getElementById('logSubcategory').value),
+        entry_date: document.getElementById('logDate').value, hours_spent: parseFloat(document.getElementById('logHours').value),
+        description: document.getElementById('logDescription').value.trim() || null
+    };
+    if (!entry.category_id) { a.className='wl-alert wl-alert-error'; a.textContent='Please select a subcategory.'; a.style.display='block'; btn.disabled=false; btn.textContent='Save Entry'; return; }
+    const { error } = await sb.from('work_logs').insert(entry);
+    if (error) { a.className='wl-alert wl-alert-error'; a.textContent=error.message; }
+    else {
+        a.className='wl-alert wl-alert-success'; a.textContent='Entry saved!';
+        document.getElementById('logForm').reset(); document.getElementById('logDate').value = new Date().toISOString().split('T')[0];
+        document.getElementById('logSubcategory').innerHTML='<option value="">Select subcategory...</option>'; document.getElementById('guideHint').textContent='';
+        setTimeout(() => a.style.display='none', 3000); await loadRecent();
+    }
+    a.style.display='block'; btn.disabled=false; btn.textContent='Save Entry';
+});
+
+// RECENT
+async function loadRecent() {
+    const { data } = await sb.from('work_logs').select('id, entry_date, hours_spent, description, category_id, created_at')
+        .eq('member_id', currentMember.id).order('entry_date', { ascending: false }).order('created_at', { ascending: false }).limit(10);
+    renderTable(data || [], 'recentLogs', true);
+}
+
+// HISTORY
+async function loadHistory() {
+    let q = sb.from('work_logs').select('id, entry_date, hours_spent, description, category_id, created_at')
+        .eq('member_id', currentMember.id).order('entry_date', { ascending: false }).limit(500);
+    const f = document.getElementById('histFrom').value, t = document.getElementById('histTo').value, c = document.getElementById('histCategory').value;
+    if (f) q = q.gte('entry_date', f); if (t) q = q.lte('entry_date', t);
+    if (c) { const ids = categories.filter(x => x.parent_id === parseInt(c)).map(x => x.id); if (ids.length) q = q.in('category_id', ids); }
+    const { data } = await q;
+    renderTable(data || [], 'historyTable', true);
+    const logs = data || [], th = logs.reduce((s,l) => s+parseFloat(l.hours_spent), 0), ud = new Set(logs.map(l => l.entry_date)).size;
+    document.getElementById('myStats').innerHTML = `
+        <div class="wl-stat"><div class="val">${th.toFixed(1)}</div><div class="lbl">Total Hours</div></div>
+        <div class="wl-stat"><div class="val">${logs.length}</div><div class="lbl">Entries</div></div>
+        <div class="wl-stat"><div class="val">${ud}</div><div class="lbl">Active Days</div></div>
+        <div class="wl-stat"><div class="val">${ud?(th/ud).toFixed(1):0}</div><div class="lbl">Avg Hours/Day</div></div>`;
+}
+
+// ADMIN
+async function loadAdmin() {
+    if (!allMembers.length) {
+        const { data } = await sb.from('team_members').select('id, display_name').eq('is_active', true).order('display_name').limit(50);
+        allMembers = data || [];
+        const sel = document.getElementById('adminMember');
+        allMembers.forEach(m => { const o = document.createElement('option'); o.value = m.id; o.textContent = m.display_name; sel.appendChild(o); });
+    }
+    let q = sb.from('work_logs').select('id, entry_date, hours_spent, description, category_id, member_id, created_at')
+        .order('entry_date', { ascending: false }).limit(1000);
+    const mid = document.getElementById('adminMember').value, f = document.getElementById('adminFrom').value,
+        t = document.getElementById('adminTo').value, c = document.getElementById('adminCategory').value;
+    if (mid) q = q.eq('member_id', mid); if (f) q = q.gte('entry_date', f); if (t) q = q.lte('entry_date', t);
+    if (c) { const ids = categories.filter(x => x.parent_id === parseInt(c)).map(x => x.id); if (ids.length) q = q.in('category_id', ids); }
+    const { data } = await q;
+    renderTable(data || [], 'adminTable', false, true);
+    const logs = data || [], th = logs.reduce((s,l) => s+parseFloat(l.hours_spent), 0),
+        um = new Set(logs.map(l => l.member_id)).size, ud = new Set(logs.map(l => l.entry_date)).size;
+    document.getElementById('adminStats').innerHTML = `
+        <div class="wl-stat"><div class="val">${th.toFixed(1)}</div><div class="lbl">Total Hours</div></div>
+        <div class="wl-stat"><div class="val">${logs.length}</div><div class="lbl">Entries</div></div>
+        <div class="wl-stat"><div class="val">${um}</div><div class="lbl">Active Members</div></div>
+        <div class="wl-stat"><div class="val">${ud}</div><div class="lbl">Active Days</div></div>`;
+}
+
+// RENDER TABLE
+function renderTable(logs, cid, canDel, showMem) {
+    const el = document.getElementById(cid);
+    if (!logs.length) { el.innerHTML = '<div class="wl-empty">No entries yet</div>'; return; }
+    const cn = id => { const c = categories.find(x => x.id === id); if (!c) return ''; const p = categories.find(x => x.id === c.parent_id); return p ? p.name : c.name; };
+    const sn = id => { const c = categories.find(x => x.id === id); return c ? c.name : ''; };
+    const mn = id => { const m = allMembers.find(x => x.id === id); return m ? m.display_name : currentMember.display_name; };
+    let h = '<table class="wl-table"><thead><tr><th>Date</th>';
+    if (showMem) h += '<th>Member</th>';
+    h += '<th>Category</th><th>Subcategory</th><th>Hours</th><th>Description</th>';
+    if (canDel) h += '<th></th>';
+    h += '</tr></thead><tbody>';
+    logs.forEach(l => {
+        h += '<tr>';
+        h += `<td>${l.entry_date}</td>`;
+        if (showMem) h += `<td>${mn(l.member_id)}</td>`;
+        h += `<td><span class="wl-badge">${cn(l.category_id)}</span></td>`;
+        h += `<td>${sn(l.category_id)}</td>`;
+        h += `<td class="wl-hours">${parseFloat(l.hours_spent).toFixed(1)}h</td>`;
+        h += `<td style="color:var(--muted); max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${l.description || '—'}</td>`;
+        if (canDel) h += `<td><button class="wl-del-btn" onclick="deleteLog('${l.id}')" title="Delete">&#10005;</button></td>`;
+        h += '</tr>';
+    });
+    h += '</tbody></table>';
+    el.innerHTML = h;
+}
+
+async function deleteLog(id) {
+    if (!confirm('Delete this entry?')) return;
+    await sb.from('work_logs').delete().eq('id', id);
+    await loadRecent();
+    if (!document.getElementById('tab-history').classList.contains('wl-hidden')) loadHistory();
+}
+
+function exportCSV() {
+    const t = document.querySelector('#adminTable table');
+    if (!t) return alert('No data to export');
+    const csv = Array.from(t.querySelectorAll('tr')).map(r =>
+        Array.from(r.querySelectorAll('th, td')).map(c => '"'+c.textContent.replace(/"/g,'""').trim()+'"').join(',')
+    ).join('\n');
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
+    a.download = `medad_worklog_${new Date().toISOString().split('T')[0]}.csv`;
+    a.click();
+}
+
+function switchTab(tab) {
+    document.querySelectorAll('.wl-tab').forEach(t => t.classList.remove('active'));
+    document.querySelector(`.wl-tab[data-tab="${tab}"]`).classList.add('active');
+    document.querySelectorAll('[id^="tab-"]').forEach(p => p.classList.add('wl-hidden'));
+    document.getElementById('tab-' + tab).classList.remove('wl-hidden');
+    if (tab === 'history') loadHistory();
+    if (tab === 'admin') loadAdmin();
+}
+
+init();
+</script>
+</body>
+</html>

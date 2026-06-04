@@ -1,1 +1,232 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta http-equiv="refresh" content="0;url=/#progress"><title>News — Medad</title></head><body><script>window.location.replace('/#progress')</script><p>Redirecting to <a href="/#progress">progress section</a>...</p></body></html>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News & Updates — Medad</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Noto+Kufi+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+
+<nav class="nav scrolled" id="nav">
+    <div class="container nav-inner">
+        <a href="/" class="logo"><span class="logo-mark">مداد</span><span class="logo-text">MEDAD</span></a>
+        <div class="nav-links" id="navLinks">
+            <a href="./" class="nav-link">Home</a>
+            <a href="./team.html" class="nav-link">Team</a>
+            <a href="./news.html" class="nav-link active">News</a>
+            <a href="./join.html" class="nav-link">Join Us</a>
+            <a href="./worklog.html" class="nav-link">Work Log</a>
+            <a href="./join.html#apply" class="nav-cta">Apply Now</a>
+        </div>
+        <button class="nav-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</nav>
+
+<div class="page-header">
+    <div class="container">
+        <div class="section-label" style="justify-content:center">Updates</div>
+        <h1>News & Progress</h1>
+        <p>Follow our journey building the future of Arabic clinical documentation.</p>
+    </div>
+</div>
+
+<section class="section">
+    <div class="container">
+        <!-- Milestone Tracker -->
+        <div class="milestone-tracker reveal">
+            <div class="ms-pill done">
+                <div class="ms-dot"></div>
+                <div class="ms-pill-text">Team Assembled<span class="ms-pill-sub">Q4 2024</span></div>
+            </div>
+            <div class="ms-pill done">
+                <div class="ms-dot"></div>
+                <div class="ms-pill-text">IRB Submitted<span class="ms-pill-sub">Q1 2025</span></div>
+            </div>
+            <div class="ms-pill done">
+                <div class="ms-dot"></div>
+                <div class="ms-pill-text">Hardware Setup<span class="ms-pill-sub">Completed</span></div>
+            </div>
+            <div class="ms-pill current">
+                <div class="ms-dot"></div>
+                <div class="ms-pill-text">Data Collection<span class="ms-pill-sub">In Progress</span></div>
+            </div>
+            <div class="ms-pill current">
+                <div class="ms-dot"></div>
+                <div class="ms-pill-text">Model Training<span class="ms-pill-sub">In Progress</span></div>
+            </div>
+            <div class="ms-pill current">
+                <div class="ms-dot"></div>
+                <div class="ms-pill-text">Corpus Builder<span class="ms-pill-sub">Launched</span></div>
+            </div>
+        </div>
+
+        <!-- News Cards -->
+        <div class="news-grid">
+            <!-- FEATURED: Sada - Arabic Medical Speech Corpus Builder -->
+            <div class="n-card n-card-featured reveal" style="grid-column:1/-1;">
+                <div class="n-card-body" style="padding:2.5rem;">
+                    <div class="n-card-meta">
+                        <span class="n-card-tag milestone">Major Launch</span>
+                        <span class="n-card-date">March 2026</span>
+                    </div>
+                    <h3 style="font-size:1.5rem; margin-bottom:.75rem;">Introducing Sada (سَدَا) — Arabic Medical Speech Corpus Builder</h3>
+                    <p style="font-size:.95rem; line-height:1.7;">We are proud to announce <strong>Sada</strong> — a first-of-its-kind full-stack platform purpose-built for constructing high-quality Arabic medical speech datasets. Sada is the engine behind Medad's data collection pipeline, enabling clinicians to record, transcribe, validate, and annotate real-world doctor-patient conversations in Gulf Arabic.</p>
+
+                    <!-- Platform Capabilities -->
+                    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin:1.75rem 0;">
+                        <div style="padding:1.25rem; background:rgba(45,127,249,0.05); border:1px solid rgba(45,127,249,0.1); border-radius:var(--radius-sm);">
+                            <div style="font-family:var(--font-mono); font-size:.65rem; text-transform:uppercase; letter-spacing:.1em; color:var(--accent); margin-bottom:.5rem;">Recording</div>
+                            <p style="font-size:.78rem; color:var(--text-muted); line-height:1.5; margin:0;">Live microphone recording with real-time transcription, plus batch upload of audio files (MP3, WAV, M4A, WebM).</p>
+                        </div>
+                        <div style="padding:1.25rem; background:rgba(139,92,246,0.05); border:1px solid rgba(139,92,246,0.1); border-radius:var(--radius-sm);">
+                            <div style="font-family:var(--font-mono); font-size:.65rem; text-transform:uppercase; letter-spacing:.1em; color:var(--purple); margin-bottom:.5rem;">AI Processing</div>
+                            <p style="font-size:.78rem; color:var(--text-muted); line-height:1.5; margin:0;">GPU-accelerated Whisper transcription, automatic speaker diarization, language detection, and AI-generated summaries with key points.</p>
+                        </div>
+                        <div style="padding:1.25rem; background:rgba(16,185,129,0.05); border:1px solid rgba(16,185,129,0.1); border-radius:var(--radius-sm);">
+                            <div style="font-family:var(--font-mono); font-size:.65rem; text-transform:uppercase; letter-spacing:.1em; color:var(--green); margin-bottom:.5rem;">Data Sovereignty</div>
+                            <p style="font-size:.78rem; color:var(--text-muted); line-height:1.5; margin:0;">100% on-premise deployment. All patient audio and transcriptions stay on local GPU servers — zero data leaves the hospital network.</p>
+                        </div>
+                    </div>
+
+                    <!-- Tech Highlights -->
+                    <div style="display:flex; flex-wrap:wrap; gap:.4rem; margin-bottom:1.25rem;">
+                        <span style="font-family:var(--font-mono); font-size:.6rem; padding:.2rem .6rem; border-radius:4px; background:rgba(255,255,255,0.04); color:var(--text-dim); border:1px solid var(--border);">React + TypeScript</span>
+                        <span style="font-family:var(--font-mono); font-size:.6rem; padding:.2rem .6rem; border-radius:4px; background:rgba(255,255,255,0.04); color:var(--text-dim); border:1px solid var(--border);">OpenAI Whisper</span>
+                        <span style="font-family:var(--font-mono); font-size:.6rem; padding:.2rem .6rem; border-radius:4px; background:rgba(255,255,255,0.04); color:var(--text-dim); border:1px solid var(--border);">Speaker Diarization</span>
+                        <span style="font-family:var(--font-mono); font-size:.6rem; padding:.2rem .6rem; border-radius:4px; background:rgba(255,255,255,0.04); color:var(--text-dim); border:1px solid var(--border);">NVIDIA CUDA</span>
+                        <span style="font-family:var(--font-mono); font-size:.6rem; padding:.2rem .6rem; border-radius:4px; background:rgba(255,255,255,0.04); color:var(--text-dim); border:1px solid var(--border);">Real-time Socket.io</span>
+                        <span style="font-family:var(--font-mono); font-size:.6rem; padding:.2rem .6rem; border-radius:4px; background:rgba(255,255,255,0.04); color:var(--text-dim); border:1px solid var(--border);">tRPC</span>
+                        <span style="font-family:var(--font-mono); font-size:.6rem; padding:.2rem .6rem; border-radius:4px; background:rgba(255,255,255,0.04); color:var(--text-dim); border:1px solid var(--border);">Multi-format Export</span>
+                        <span style="font-family:var(--font-mono); font-size:.6rem; padding:.2rem .6rem; border-radius:4px; background:rgba(255,255,255,0.04); color:var(--text-dim); border:1px solid var(--border);">Gulf Arabic Dialects</span>
+                    </div>
+
+                    <p style="color:var(--text-muted); font-size:.85rem; line-height:1.7;">Sada supports full-text search across transcriptions, folder-based organization, multi-format export (TXT, JSON, SRT), and secure shareable links — all managed through an intuitive dashboard. The platform is engineered with AI-assisted development and designed to scale across multiple hospitals and research institutions.</p>
+
+                    <div style="margin-top:1.5rem; padding-top:1.25rem; border-top:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem;">
+                        <div>
+                            <p style="font-size:.9rem; color:var(--accent-strong); font-weight:600; margin-bottom:.25rem;">Collaborate With Us</p>
+                            <p style="font-size:.8rem; color:var(--text-muted); margin:0;">Hospitals, universities, and researchers — help us build the largest Arabic clinical speech corpus.</p>
+                        </div>
+                        <a href="mailto:dr.abdullahalalawi@gmail.com" class="btn btn-primary" style="flex-shrink:0;">Get in Touch</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="n-card reveal">
+                <div class="n-card-visual">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg>
+                </div>
+                <div class="n-card-body">
+                    <div class="n-card-meta">
+                        <span class="n-card-tag milestone">Milestone</span>
+                        <span class="n-card-date">March 2026</span>
+                    </div>
+                    <h3>Data Collection Has Begun</h3>
+                    <p>Clinical data collection is now underway across participating hospitals in Muscat. Our team is actively recording real-world doctor-patient conversations in Gulf Arabic, building the foundation for Medad's speech recognition and clinical note generation models.</p>
+                </div>
+            </div>
+
+            <div class="n-card reveal reveal-delay-1">
+                <div class="n-card-visual">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="7.5 4.21 12 6.81 16.5 4.21"/><polyline points="7.5 19.79 7.5 14.6 3 12"/><polyline points="21 12 16.5 14.6 16.5 19.79"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+                </div>
+                <div class="n-card-body">
+                    <div class="n-card-meta">
+                        <span class="n-card-tag tech">Technical</span>
+                        <span class="n-card-date">March 2026</span>
+                    </div>
+                    <h3>Model Training Initiated</h3>
+                    <p>Initial model training has kicked off using collected speech data. We are fine-tuning Arabic ASR models and local LLMs on Omani medical terminology, Gulf dialect patterns, and clinical note structures — all processed on our on-premise GPU infrastructure.</p>
+                </div>
+            </div>
+
+            <div class="n-card reveal">
+                <div class="n-card-visual">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </div>
+                <div class="n-card-body">
+                    <div class="n-card-meta">
+                        <span class="n-card-tag">Team</span>
+                        <span class="n-card-date">February 2025</span>
+                    </div>
+                    <h3>Medad Research Team Formed</h3>
+                    <p>A multidisciplinary team of 11 clinicians, researchers, and engineers from across Oman's top medical institutions has come together to build Medad — the first Arabic ambient clinical documentation system.</p>
+                </div>
+            </div>
+
+            <div class="n-card reveal reveal-delay-1">
+                <div class="n-card-visual">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+                </div>
+                <div class="n-card-body">
+                    <div class="n-card-meta">
+                        <span class="n-card-tag milestone">Milestone</span>
+                        <span class="n-card-date">January 2025</span>
+                    </div>
+                    <h3>IRB Application Submitted</h3>
+                    <p>Institutional Review Board application submitted for ethical approval of clinical data collection across participating hospitals in Muscat. A critical step toward starting real-world recording sessions.</p>
+                </div>
+            </div>
+
+            <div class="n-card reveal">
+                <div class="n-card-visual">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg>
+                </div>
+                <div class="n-card-body">
+                    <div class="n-card-meta">
+                        <span class="n-card-tag tech">Technical</span>
+                        <span class="n-card-date">December 2024</span>
+                    </div>
+                    <h3>Local Infrastructure Planning</h3>
+                    <p>Evaluating on-premise GPU servers and local LLM deployment strategies to ensure 100% data sovereignty for Omani patient information. Testing various hardware configurations for optimal performance.</p>
+                </div>
+            </div>
+
+            <div class="n-card reveal reveal-delay-1">
+                <div class="n-card-visual">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2 2 7l10 5 10-5-10-5Z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg>
+                </div>
+                <div class="n-card-body">
+                    <div class="n-card-meta">
+                        <span class="n-card-tag">Project</span>
+                        <span class="n-card-date">November 2024</span>
+                    </div>
+                    <h3>Project Inception & Planning</h3>
+                    <p>Initial project concept developed and research methodology designed. Identifying key collaborators across Omani medical institutions and defining the technical architecture for the system.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-cta section">
+    <div class="container centered">
+        <h2 class="h2">Collaborate With Us</h2>
+        <p class="sub-text" style="margin:0 auto 1rem;">We are building the largest Arabic clinical speech corpus and welcome partnerships with hospitals, universities, and research institutions across the Arab world.</p>
+        <p style="color:var(--text-muted); font-size:.9rem; margin-bottom:1.5rem;">Whether you can contribute clinical recordings, linguistic expertise, or engineering resources — we want to hear from you.</p>
+        <div class="hero-actions" style="justify-content:center; gap:1rem;">
+            <a href="mailto:dr.abdullahalalawi@gmail.com" class="btn btn-primary">Contact for Collaboration</a>
+            <a href="./join.html" class="btn btn-ghost">View Open Roles</a>
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div><div class="footer-logo"><span class="logo-mark">مداد</span> MEDAD</div><p class="footer-desc">AI-Powered Arabic Medical Transcription for Omani Healthcare.</p></div>
+            <div><h4>Pages</h4><ul><li><a href="/">Home</a></li><li><a href="./team.html">Team</a></li><li><a href="./news.html">News</a></li><li><a href="./join.html">Join Us</a></li></ul></div>
+            <div><h4>Contact</h4><ul><li>Muscat, Oman</li><li><a href="mailto:dr.abdullahalalawi@gmail.com">dr.abdullahalalawi@gmail.com</a></li></ul></div>
+        </div>
+        <div class="footer-bottom"><p>&copy; 2026 Medad. All rights reserved.</p></div>
+    </div>
+</footer>
+<script src="./main.js"></script>
+</body>
+</html>

@@ -1,716 +1,178 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
-<meta charset="UTF-8">
-<title>The Team — Medad مداد | Omani Clinicians & Engineers Building Arabic Medical AI</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Meet the 13 contributors building Medad — clinicians, engineers, and researchers from SQUH, OMSB, UMC, SQU, and GUtech. Led by Dr. Abdullah Al Alawi, Program Director of Internal Medicine at OMSB.">
-<meta name="robots" content="index, follow">
-<link rel="canonical" href="https://www.medad.om/team.html">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://www.medad.om/team.html">
-<meta property="og:title" content="The Team — Medad مداد">
-<meta property="og:description" content="13 contributors from 5 Omani institutions building the first Arabic ambient clinical documentation AI.">
-<meta property="og:image" content="https://www.medad.om/images/oman-culture.jpg">
-<meta name="twitter:card" content="summary_large_image">
-<link rel="preconnect" href="https://fonts.googleapis.com/">
-<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Amiri:ital,wght@0,400;0,700;1,400&family=Reem+Kufi:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<style>
-/* =========================================================
-   MEDAD — modern, clean, Omani identity
-   ========================================================= */
-
-:root{
-  --paper:#faf8f4;
-  --paper-2:#f0ede7;
-  --paper-3:#e5e1da;
-  --ink:#14110d;
-  --ink-2:#1e1a16;
-  --ink-soft:#38322c;
-  --gold:#b8853a;
-  --gold-2:#d4a24c;
-  --gold-deep:#8e6326;
-  --seal:#8a2e2e;
-  --rule:rgba(20,17,13,0.16);
-  --rule-soft:rgba(20,17,13,0.08);
-  --serif:'Helvetica Neue', Helvetica, 'Söhne', Arial, sans-serif;
-  --sans:'Helvetica Neue', Helvetica, 'Söhne', Arial, sans-serif;
-  --mono:'JetBrains Mono', ui-monospace, monospace;
-  --ar:'Amiri', 'Noto Naskh Arabic', serif;
-  --kufi:'Reem Kufi', 'Noto Kufi Arabic', sans-serif;
-}
-
-*{margin:0;padding:0;box-sizing:border-box}
-html,body{background:#faf8f4;color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
-a{color:inherit;text-decoration:none}
-img{max-width:100%;display:block}
-::selection{background:var(--gold);color:var(--ink)}
-
-/* layout --------------------------------------------------- */
-.wrap{max-width:1380px;margin:0 auto;padding:0 56px;position:relative;z-index:2}
-.rule{height:1px;background:var(--rule);margin:0}
-
-/* nav ------------------------------------------------------- */
-.nav{
-  position:sticky;top:0;z-index:60;background:rgba(250,248,244,0.92);backdrop-filter:saturate(140%) blur(8px);
-  border-bottom:1px solid var(--rule);
-}
-.nav-inner{display:flex;align-items:center;justify-content:space-between;padding:18px 56px;max-width:1380px;margin:0 auto}
-.brand{display:flex;align-items:center;gap:14px}
-.brand-glyph{
-  font-family:var(--ar);font-size:30px;font-weight:700;color:var(--ink);letter-spacing:-0.01em;line-height:1;
-  position:relative;padding-right:4px;
-}
-.brand-glyph::after{
-  content:'';position:absolute;bottom:-3px;left:0;right:4px;height:2px;
-  background:linear-gradient(90deg, var(--gold) 0%, var(--gold) 60%, transparent 100%);
-}
-.brand-logo{height:38px;width:auto;border-radius:6px}
-.brand-en{font-family:var(--mono);font-size:12px;letter-spacing:.32em;color:var(--ink-2);padding-top:4px;border-left:1px solid var(--rule);padding-left:14px}
-.nav-links{display:flex;gap:2px;align-items:center}
-.nav-link{padding:8px 14px;font-size:13px;color:var(--ink-soft);transition:.2s;border-radius:2px}
-.nav-link:hover, .nav-link.active{color:var(--ink);background:rgba(20,17,13,0.05)}
-.nav-cta{
-  display:inline-flex;align-items:center;gap:8px;
-  background:#008080;color:#fff;padding:10px 18px;font-size:12.5px;
-  letter-spacing:.04em;font-weight:500;margin-left:8px;border:1px solid #008080;transition:.2s;border-radius:6px;
-}
-.nav-cta:hover{background:#006666;border-color:#006666}
-
-/* ============ shared headings ============ */
-.h2{font-family:var(--sans);font-size:clamp(32px,4.5vw,56px);line-height:1.05;letter-spacing:-0.03em;font-weight:700;color:var(--ink)}
-.h2 .it{font-style:italic;color:var(--gold-deep)}
-.h2 .ar{font-family:var(--ar);font-style:normal;font-weight:700;font-size:0.9em;color:var(--gold-deep)}
-.h2-deck{font-family:var(--sans);font-size:18px;line-height:1.55;color:var(--ink-2);max-width:520px}
-.h2-deck b{color:var(--ink);font-weight:500}
-.inst-heading{font-family:var(--sans);font-size:clamp(24px,3vw,36px);font-weight:700;text-align:center;color:var(--ink);margin-bottom:12px;letter-spacing:-0.02em}
-.inst-sub{text-align:center;font-size:15px;color:var(--ink-soft);margin-bottom:40px}
-.btn{
-  display:inline-flex;align-items:center;gap:10px;padding:14px 22px;
-  font-family:var(--sans);font-size:13.5px;font-weight:500;letter-spacing:.02em;
-  border:1px solid var(--ink);transition:.25s;cursor:pointer;border-radius:6px;
-}
-.btn-primary{background:var(--ink);color:var(--paper)}
-.btn-primary:hover{background:var(--seal);border-color:var(--seal)}
-
-/* ============ PAGE HEADER ============ */
-.page-header{padding:80px 0 60px;border-bottom:1px solid var(--rule);text-align:center}
-.page-header h1{font-family:var(--sans);font-size:clamp(40px,5vw,64px);font-weight:700;line-height:1.05;letter-spacing:-0.03em;color:var(--ink)}
-.page-header p{font-size:18px;color:var(--ink-soft);margin-top:16px;max-width:640px;margin-left:auto;margin-right:auto;line-height:1.55}
-
-/* ============ TEAM ============ */
-.team{padding:120px 0;border-bottom:1px solid var(--rule);background:var(--paper)}
-.team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px 24px;margin-top:48px}
-.t-card{display:flex;flex-direction:column;gap:14px;cursor:default}
-.t-photo{
-  aspect-ratio:1/1.18;background:var(--paper-3);overflow:hidden;position:relative;
-  border:1px solid var(--ink);
-  filter:sepia(0.18) saturate(0.9) contrast(1.05);transition:.4s;
-}
-.t-photo img{width:100%;height:100%;object-fit:cover;object-position:top 20%;display:block;transition:.6s}
-.t-card:hover .t-photo{filter:sepia(0) saturate(1) contrast(1)}
-.t-card:hover .t-photo img{transform:scale(1.04)}
-.t-init{
-  width:100%;height:100%;display:flex;align-items:center;justify-content:center;
-  font-family:var(--ar);font-size:64px;color:var(--ink);background:linear-gradient(135deg, var(--gold-2) 0%, var(--gold) 100%);font-weight:700;letter-spacing:-0.02em;
-}
-.t-photo::after{
-  content:'';position:absolute;left:0;right:0;bottom:0;height:30%;
-  background:linear-gradient(0deg, rgba(20,17,13,0.5), transparent);pointer-events:none;
-}
-.t-num{position:absolute;top:10px;left:12px;font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--paper);z-index:2;text-transform:uppercase}
-.t-role{font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--gold-deep);text-transform:uppercase}
-.t-name{font-family:var(--sans);font-size:22px;font-weight:600;line-height:1.1;letter-spacing:-0.015em;color:var(--ink)}
-.t-bio{font-size:14px;line-height:1.6;color:var(--ink-soft)}
-.t-aff{font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--ink-soft);padding-top:10px;border-top:1px solid var(--rule)}
-
-.t-card.lead{display:grid;grid-template-columns:280px 1fr;gap:24px;grid-column:span 4}
-.t-card.lead .t-photo{aspect-ratio:3/4;max-height:none;overflow:hidden}
-.t-card.lead .t-photo img{width:100%;height:100%;object-fit:cover;object-position:top center}
-.t-card.lead .t-name{font-size:32px}
-.t-card.lead .t-bio{font-size:14.5px;max-width:520px}
-
-/* ============ VISION 2040 ============ */
-.vision{padding:140px 0;border-bottom:1px solid var(--rule);position:relative;overflow:hidden}
-.vision-bg{position:absolute;inset:0;font-family:var(--ar);font-size:60vw;line-height:0.7;color:var(--gold);opacity:.05;direction:rtl;display:flex;align-items:center;justify-content:flex-start;padding:0 56px;pointer-events:none;font-weight:700;user-select:none;transform:translateX(-15%)}
-.vision-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:80px;align-items:start;position:relative}
-.vision-stamp{
-  width:160px;height:160px;border-radius:50%;border:2px solid var(--seal);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--seal);
-  font-family:var(--ar);font-size:38px;font-weight:700;line-height:1;text-align:center;
-  position:relative;background:rgba(138,46,46,0.04);transform:rotate(-8deg);
-  margin-bottom:32px;
-}
-.vision-stamp::before, .vision-stamp::after{
-  content:'';position:absolute;border:1px solid var(--seal);border-radius:50%;opacity:.45;
-}
-.vision-stamp::before{inset:6px}
-.vision-stamp::after{inset:-12px;border-style:dashed}
-.vision-stamp small{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;font-weight:400;margin-top:6px;color:var(--seal)}
-
-.vision-pillars{display:flex;flex-direction:column;gap:24px;margin-top:36px}
-.vp{
-  display:grid;grid-template-columns:60px 1fr;gap:20px;padding:20px 0;border-bottom:1px solid var(--rule);
-}
-.vp:first-child{border-top:1px solid var(--rule)}
-.vp-num{font-family:var(--ar);font-size:32px;font-style:italic;color:var(--gold-deep);line-height:1;font-weight:700}
-.vp h4{font-family:var(--sans);font-size:24px;font-weight:600;line-height:1.2;letter-spacing:-0.01em;margin-bottom:6px;color:var(--ink)}
-.vp h4 .it{font-style:italic;color:var(--gold-deep)}
-.vp p{font-size:14px;line-height:1.6;color:var(--ink-soft);max-width:520px}
-
-/* ============ ATLAS ============ */
-.atlas{padding:120px 0;border-bottom:1px solid var(--rule);background:var(--paper)}
-.atlas-head{margin-bottom:56px;max-width:760px}
-.atlas-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:64px;align-items:start}
-.atlas-list{display:flex;flex-direction:column;border-top:1px solid var(--ink)}
-.atlas-row{
-  display:grid;grid-template-columns:48px 1fr 1.5fr 90px;gap:18px;
-  padding:22px 0;border-bottom:1px solid var(--rule-soft);align-items:start;cursor:pointer;transition:.2s;
-}
-.atlas-row:hover{background:var(--paper-2);padding-left:8px}
-.atlas-row.active{background:var(--paper-3);padding-left:8px}
-.atlas-row.active .atlas-num{color:var(--seal)}
-.atlas-num{font-family:var(--mono);font-size:13px;letter-spacing:.06em;color:var(--ink-soft);padding-top:4px}
-.atlas-region{font-family:var(--sans);font-size:24px;line-height:1.1;font-weight:600;color:var(--ink)}
-.atlas-region .ar{display:block;font-family:var(--ar);font-size:18px;color:var(--gold-deep);margin-top:4px;direction:rtl;text-align:left;font-style:italic}
-.atlas-phrase{font-family:var(--ar);font-size:17px;direction:rtl;line-height:1.7;color:var(--ink-2)}
-.atlas-phrase b{color:var(--seal);font-weight:700}
-.atlas-pop{font-family:var(--mono);font-size:13px;color:var(--ink-soft);text-align:right;padding-top:6px}
-
-.atlas-mapwrap{position:sticky;top:80px}
-.atlas-map{
-  background:var(--paper-2);border:1px solid var(--ink);padding:36px 32px;position:relative;
-}
-.atlas-map h5{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:18px;display:flex;justify-content:space-between}
-.atlas-map h5 .ar{font-family:var(--ar);font-style:italic;color:var(--gold-deep);letter-spacing:0;font-size:14px}
-.atlas-map svg{width:100%;height:auto;display:block}
-.atlas-region-shape{fill:var(--paper-3);stroke:var(--ink);stroke-width:1;transition:.3s;cursor:pointer}
-.atlas-region-shape:hover, .atlas-region-shape.active{fill:var(--gold);stroke:var(--seal);stroke-width:1.5}
-.atlas-pin{fill:var(--seal);transition:.3s;opacity:0}
-.atlas-pin.active{opacity:1;animation:pinpulse 1.6s infinite}
-@keyframes pinpulse{0%,100%{r:5}50%{r:8}}
-
-.atlas-detail{
-  margin-top:24px;padding:20px;background:var(--paper);border:1px solid var(--rule);
-  font-family:var(--ar);font-size:16px;direction:rtl;line-height:1.8;color:var(--ink-2);min-height:80px;
-}
-.atlas-detail .en{display:block;font-family:var(--mono);font-size:12px;color:var(--ink-soft);
-  letter-spacing:.06em;direction:ltr;text-align:left;margin-top:12px;text-transform:uppercase;line-height:1.6}
-
-/* pipe-head reuse for roadmap */
-.pipe-head{display:grid;grid-template-columns:1fr 1.2fr;gap:64px;margin-bottom:64px;align-items:end}
-
-/* ============ FOOTER ============ */
-.foot{padding:64px 0 32px;background:var(--paper-2);border-top:1px solid var(--ink)}
-.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px}
-.foot-desc{font-family:var(--sans);font-size:16px;color:var(--ink-2);max-width:380px;margin-top:18px;line-height:1.5}
-.foot h5{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:14px}
-.foot ul{list-style:none;display:flex;flex-direction:column;gap:8px}
-.foot a{font-size:13.5px;color:var(--ink-2);transition:.2s;border-bottom:1px solid transparent}
-.foot a:hover{color:var(--seal);border-bottom-color:var(--seal)}
-.foot-bottom{margin-top:48px;padding-top:24px;border-top:1px solid var(--rule);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--ink-soft);text-transform:uppercase}
-.foot-bottom .ar{font-family:var(--ar);font-size:14px;font-style:italic;letter-spacing:0;color:var(--gold-deep);text-transform:none}
-
-/* ============ RESPONSIVE ============ */
-@media(max-width:1100px){
-  .pipe-head, .atlas-grid, .vision-grid{grid-template-columns:1fr;gap:40px}
-  .team-grid{grid-template-columns:repeat(3,1fr)}
-  .t-card.lead{grid-column:span 3;grid-template-columns:240px 1fr}
-  .foot-grid{grid-template-columns:1fr 1fr}
-  .atlas-mapwrap{position:relative;top:0}
-  .atlas-row{grid-template-columns:36px 1fr 90px;gap:12px}
-  .atlas-phrase{display:none}
-}
-@media(max-width:720px){
-  .wrap{padding:0 20px}
-  .nav-inner{padding:12px 20px}
-  .nav-links a:not(.nav-cta){display:none}
-  .page-header h1{font-size:clamp(28px,6vw,40px)}
-  .team-grid{grid-template-columns:1fr 1fr;gap:16px}
-  .t-card.lead{grid-column:span 2;grid-template-columns:1fr}
-  .t-card.lead .t-photo{aspect-ratio:3/2}
-  .t-card.lead .t-name{font-size:24px}
-  .t-name{font-size:18px}
-  .t-bio{font-size:13px}
-  .h2{font-size:clamp(24px,5vw,36px)}
-  .h2-deck{font-size:16px}
-  .vp{grid-template-columns:40px 1fr;gap:14px}
-  .vp h4{font-size:20px}
-  .atlas-grid{grid-template-columns:1fr}
-  .atlas-row{grid-template-columns:36px 1fr 70px;gap:10px;padding:14px 0}
-  .atlas-region{font-size:18px}
-  .atlas-pop{font-size:10px}
-  .stat-fig{font-size:48px}
-  .stats-grid{grid-template-columns:1fr 1fr}
-  .stat{padding:20px 16px}
-  .foot-grid{grid-template-columns:1fr}
-  .foot-bottom{flex-direction:column;text-align:center;gap:8px}
-  .brand-en{display:none}
-  .brand-logo{width:30px;height:30px}
-  .brand-glyph{font-size:24px}
-  .vision-stamp{width:120px;height:120px;font-size:28px}
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Team — Medad</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Noto+Kufi+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
 
-<!-- ============ NAV ============ -->
-<nav class="nav">
-  <div class="nav-inner">
-    <a class="brand" href="./">
-      <svg class="brand-logo" width="36" height="36" viewBox="0 0 120 120"><defs><linearGradient id="g1" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#E8B860"/><stop offset="1" stop-color="#B8853A"/></linearGradient></defs><path d="M60 14 C60 14 30 46 30 70 C30 87 43 100 60 100 C77 100 90 87 90 70 C90 46 60 14 60 14 Z" fill="url(#g1)"/><path d="M22 72 L40 72 L46 60 L52 86 L58 50 L64 80 L70 66 L98 66" stroke="#14110d" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="brand-glyph" style="font-family:'Amiri','Noto Naskh Arabic',serif">مداد</span>
-      <span class="brand-en">MEDAD</span>
-    </a>
-    <div class="nav-links">
-      <a class="nav-link" href="./">Home</a>
-      <a class="nav-link active" href="./team.html">The Team</a>
-      <a class="nav-link" href="./challenge.html">🏆 Challenge</a>
-      <a class="nav-link" href="./join.html">Join</a>
-      <a class="nav-link" href="https://annotate.medad.om" style="font-weight:500">Annotator Login</a>
-      <a class="nav-cta" href="./join.html">Join the Project
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
-      </a>
+<nav class="nav scrolled" id="nav">
+    <div class="container nav-inner">
+        <a href="/" class="logo"><span class="logo-mark">مداد</span><span class="logo-text">MEDAD</span></a>
+        <div class="nav-links" id="navLinks">
+            <a href="./" class="nav-link">Home</a>
+            <a href="./team.html" class="nav-link active">Team</a>
+            <a href="./news.html" class="nav-link">News</a>
+            <a href="./join.html" class="nav-link">Join Us</a>
+            <a href="./worklog.html" class="nav-link">Work Log</a>
+            <a href="./join.html#apply" class="nav-cta">Apply Now</a>
+        </div>
+        <button class="nav-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
     </div>
-  </div>
 </nav>
 
-<!-- ============ PAGE HEADER ============ -->
-<section class="page-header">
-  <div class="wrap">
-    <h1>The Team</h1>
-    <p>13 contributors. 5 institutions. Clinicians who code and coders who listen.</p>
-  </div>
-</section>
-
-<!-- ============ CULTURE BANNER ============ -->
-<div style="position:relative;overflow:hidden;border-bottom:1px solid var(--rule)">
-  <img src="./images/oman-culture.jpg" alt="Traditional Omani healthcare setting with mashrabiya architecture" style="width:100%;height:auto;display:block">
-  <div style="position:absolute;inset:0;background:linear-gradient(0deg,var(--paper) 0%,transparent 30%,transparent 70%,var(--paper) 100%)"></div>
+<div class="page-header">
+    <div class="container">
+        <div class="section-label" style="justify-content:center">Research Team</div>
+        <h1>The People Behind Medad</h1>
+        <p>A multidisciplinary team of clinicians, researchers, and engineers from across Oman's top medical institutions.</p>
+    </div>
 </div>
 
-<!-- ============ TEAM ============ -->
-<section class="team" id="team">
-  <div class="wrap">
-    <div class="team-grid">
-      <article class="t-card lead">
-        <div class="t-photo"><span class="t-num">CONTRIB · 01 · PRINCIPAL INVESTIGATOR</span><img src="./abdullah.jpg" alt="Dr. Abdullah M. Al Alawi" onerror="this.outerHTML='<span class=&quot;t-init&quot;>أ</span>'"></div>
-        <div class="t-role">Principal Investigator</div>
-        <div class="t-name">Dr. Abdullah M. Al Alawi</div>
-        <p class="t-bio">Senior Consultant in General Internal Medicine. Program Director, Internal Medicine Residency at OMSB. Clinician-researcher in hospital medicine, patient outcomes, and AI in medicine.</p>
-        <div class="t-aff">SQUH · OMSB</div>
-      </article>
+<section class="section">
+    <div class="container">
+        <div class="team-grid">
+            <!-- Lead PI -->
+            <div class="t-card t-card-lead reveal">
+                <img src="./abdullah.jpg" alt="Dr. Abdullah M. Al Alawi" class="t-card-img" onerror="this.outerHTML='<div class=\'t-card-initials\'>AA</div>'">
+                <div class="t-card-body">
+                    <div class="t-card-role">Principal Investigator</div>
+                    <h3>Dr. Abdullah M. Al Alawi</h3>
+                    <p>Senior Consultant in General Internal Medicine and Program Director of the Internal Medicine Residency at OMSB. An active clinician–researcher focused on hospital medicine, patient outcomes, and AI in medicine.</p>
+                </div>
+            </div>
 
-      <article class="t-card">
-        <div class="t-photo"><span class="t-num">02</span><img src="./rawahi.jpg" alt="Dr. Mohamed Najeeb Al-Rawahi" onerror="this.outerHTML='<span class=&quot;t-init&quot;>م</span>'"></div>
-        <div class="t-role">Cardiac Electrophysiologist</div>
-        <div class="t-name">Dr. Mohamed Najeeb Al-Rawahi</div>
-        <p class="t-bio">SQUH and the National Heart Center. AI in cardiovascular care, arrhythmia detection, decision support.</p>
-        <div class="t-aff">SQUH · NHC</div>
-      </article>
+            <!-- Team members -->
+            <div class="t-card reveal reveal-delay-1">
+                <img src="./rawahi.jpg" alt="Dr. Mohamed Najeeb Al-Rawahi" class="t-card-img" onerror="this.outerHTML='<div class=\'t-card-initials\'>MR</div>'">
+                <div class="t-card-body">
+                    <div class="t-card-role">Cardiac Electrophysiologist</div>
+                    <h3>Dr. Mohamed Najeeb Al-Rawahi</h3>
+                    <p>Cardiac electrophysiologist at SQUH and the National Heart Center. Interests include AI in cardiovascular care, arrhythmia detection, and clinical decision support.</p>
+                </div>
+            </div>
 
-      <article class="t-card">
-        <div class="t-photo"><span class="t-num">03</span><img src="./salim.jpg" alt="Dr. Salim Al-Busaidi" onerror="this.outerHTML='<span class=&quot;t-init&quot;>س</span>'"></div>
-        <div class="t-role">Specialist, Internal Medicine</div>
-        <div class="t-name">Dr. Salim Al-Busaidi</div>
-        <p class="t-bio">Clinical research, medical education, digital health innovation.</p>
-        <div class="t-aff">SQUH</div>
-      </article>
+            <div class="t-card reveal reveal-delay-2">
+                <img src="./salim.jpg" alt="Dr. Salim Al-Busaidi" class="t-card-img" onerror="this.outerHTML='<div class=\'t-card-initials\'>SB</div>'">
+                <div class="t-card-body">
+                    <div class="t-card-role">Specialist, Internal Medicine</div>
+                    <h3>Dr. Salim Al-Busaidi</h3>
+                    <p>Specialist Physician in Internal Medicine with interests in clinical research, medical education, and digital health innovation.</p>
+                </div>
+            </div>
 
-      <article class="t-card">
-        <div class="t-photo"><span class="t-num">04</span><img src="./shoaib.jpg" alt="Dr. Muhammad Shoaib" onerror="this.outerHTML='<span class=&quot;t-init&quot;>م</span>'"></div>
-        <div class="t-role">Consultant, General Internal Medicine</div>
-        <div class="t-name">Dr. Muhammad Shoaib</div>
-        <p class="t-bio">Hospital medicine, lipidology, preventive cardiovascular care, AI-based risk prediction.</p>
-        <div class="t-aff">SQUH</div>
-      </article>
+            <div class="t-card reveal reveal-delay-3">
+                <img src="./shoaib.jpg" alt="Dr. Muhammad Shoaib" class="t-card-img" onerror="this.outerHTML='<div class=\'t-card-initials\'>MS</div>'">
+                <div class="t-card-body">
+                    <div class="t-card-role">Consultant, General Internal Medicine</div>
+                    <h3>Dr. Muhammad Shoaib</h3>
+                    <p>Consultant at SQUH. Interests span hospital medicine, lipidology, preventive cardiovascular care, and AI-based risk prediction.</p>
+                </div>
+            </div>
 
-      <article class="t-card">
-        <div class="t-photo"><span class="t-num">05</span><img src="./falahi.jpg" alt="Dr. Zubaida Al Falahi" onerror="this.outerHTML='<span class=&quot;t-init&quot;>ز</span>'"></div>
-        <div class="t-role">Consultant, Internal Medicine (Acute Care &amp; General Medicine)</div>
-        <div class="t-name">Dr. Zubaida Al Falahi</div>
-        <p class="t-bio">Acute Care Medicine. Clinical excellence, education, and service development.</p>
-        <div class="t-aff">SQUH</div>
-      </article>
+            <div class="t-card reveal">
+                <img src="./falahi.jpg" alt="Dr. Zubaida Al Falahi" class="t-card-img" onerror="this.outerHTML='<div class=\'t-card-initials\'>ZF</div>'">
+                <div class="t-card-body">
+                    <div class="t-card-role">Acute Medicine Professional</div>
+                    <h3>Dr. Zubaida Al Falahi</h3>
+                    <p>Medical professional in acute medicine with an interest in clinical excellence, medical education, and service development.</p>
+                </div>
+            </div>
 
-      <article class="t-card">
-        <div class="t-photo"><span class="t-num">06</span><img src="./tamadher.jpg" alt="Dr. Tamadhir Al-Mahrouqi" onerror="this.outerHTML='<span class=&quot;t-init&quot;>ت</span>'"></div>
-        <div class="t-role">Psychiatry Physician</div>
-        <div class="t-name">Dr. Tamadhir Al-Mahrouqi</div>
-        <p class="t-bio">SQUH. Digital mental health innovations and AI integration.</p>
-        <div class="t-aff">SQUH</div>
-      </article>
+            <div class="t-card reveal reveal-delay-1">
+                <img src="./tamadher.jpg" alt="Dr. Tamadhir Al-Mahrouqi" class="t-card-img" onerror="this.outerHTML='<div class=\'t-card-initials\'>TM</div>'">
+                <div class="t-card-body">
+                    <div class="t-card-role">Psychiatry Physician</div>
+                    <h3>Dr. Tamadhir Al-Mahrouqi</h3>
+                    <p>Psychiatry physician at SQUH, engaged in clinical care, research, and medical education. Focus on digital mental health innovations and AI integration.</p>
+                </div>
+            </div>
 
-      <article class="t-card">
-        <div class="t-photo"><span class="t-num">07</span><img src="./kawthar.jpg" alt="Dr. Kawthar Al Lawati" onerror="this.outerHTML='<span class=&quot;t-init&quot;>ك</span>'"></div>
-        <div class="t-role">Internal Medicine Resident</div>
-        <div class="t-name">Dr. Kawthar Al Lawati</div>
-        <p class="t-bio">Internal Medicine Resident at OMSB. Active in medical research.</p>
-        <div class="t-aff">OMSB</div>
-      </article>
+            <div class="t-card reveal reveal-delay-2">
+                <img src="./kawthar.jpg" alt="Dr. Kawthar Al Lawati" class="t-card-img" onerror="this.outerHTML='<div class=\'t-card-initials\'>KL</div>'">
+                <div class="t-card-body">
+                    <div class="t-card-role">Internal Medicine Resident</div>
+                    <h3>Dr. Kawthar Al Lawati</h3>
+                    <p>Third year Internal Medicine Resident at OMSB. Keen about the world of medical research.</p>
+                </div>
+            </div>
 
-      <article class="t-card">
-        <div class="t-photo"><span class="t-init">HK</span><span class="t-num">08</span></div>
-        <div class="t-role">Internal Medicine Specialist</div>
-        <div class="t-name">Dr. Hour Al Kaabi</div>
-        <p class="t-bio">MCMSS. Leadership, medical education, research, AI integration in medicine.</p>
-        <div class="t-aff">MCMSS</div>
-      </article>
+            <div class="t-card reveal">
+                <div class="t-card-initials">HK</div>
+                <div class="t-card-body">
+                    <div class="t-card-role">Internal Medicine Specialist</div>
+                    <h3>Dr. Hour Al Kaabi</h3>
+                    <p>Internal Medicine Specialist at MCMSS, with a focus on leadership, medical education, research, and AI integration in medicine.</p>
+                </div>
+            </div>
 
-      <article class="t-card">
-        <div class="t-photo"><span class="t-num">09</span><img src="./noor.jpg" alt="Dr. Noor Alkaabi" onerror="this.outerHTML='<span class=&quot;t-init&quot;>ن</span>'"></div>
-        <div class="t-role">Internal Medicine Resident</div>
-        <div class="t-name">Dr. Noor Alkaabi</div>
-        <p class="t-bio">OMSB · SQU graduate. Medical research and AI in healthcare.</p>
-        <div class="t-aff">OMSB · SQU</div>
-      </article>
+            <div class="t-card reveal reveal-delay-1">
+                <img src="./noor.jpg" alt="Dr. Noor Alkaabi" class="t-card-img" onerror="this.outerHTML='<div class=\'t-card-initials\'>NA</div>'">
+                <div class="t-card-body">
+                    <div class="t-card-role">Internal Medicine Resident</div>
+                    <h3>Dr. Noor Alkaabi</h3>
+                    <p>Internal Medicine Resident at OMSB, graduate of SQU, interested in medical research and AI in healthcare.</p>
+                </div>
+            </div>
 
-      <article class="t-card">
-        <div class="t-photo"><span class="t-num">10</span><img src="./harthi.jpg" alt="Mohammed Al Habsi" onerror="this.outerHTML='<span class=&quot;t-init&quot;>م</span>'"></div>
-        <div class="t-role">Medical Student &amp; Researcher</div>
-        <div class="t-name">Mohammed Al Habsi</div>
-        <p class="t-bio">SQU. Cardiology, AI, and population-based clinical studies.</p>
-        <div class="t-aff">SQU</div>
-      </article>
+            <div class="t-card reveal reveal-delay-2">
+                <img src="./harthi.jpg" alt="Mohammed Al Habsi" class="t-card-img" onerror="this.outerHTML='<div class=\'t-card-initials\'>MH</div>'">
+                <div class="t-card-body">
+                    <div class="t-card-role">Medical Student & Researcher</div>
+                    <h3>Mohammed Al Habsi</h3>
+                    <p>Medical student at SQU, researcher with interests in cardiology, AI, and population-based clinical studies.</p>
+                </div>
+            </div>
 
-      <article class="t-card">
-        <div class="t-photo"><span class="t-init">AB</span><span class="t-num">11</span></div>
-        <div class="t-role">AI Engineer</div>
-        <div class="t-name">Afra Albadi</div>
-        <p class="t-bio">GUtech. Full-stack, machine learning, RAG pipelines, local LLM deployment.</p>
-        <div class="t-aff">GUtech</div>
-      </article>
-
-      <article class="t-card">
-        <div class="t-photo"><span class="t-num">12</span><img src="./dawood.jpg" alt="Dawood Al Amri" onerror="this.outerHTML='<span class=&quot;t-init&quot;>د</span>'"></div>
-        <div class="t-role">Staff Nurse, SQUH/UMC</div>
-        <div class="t-name">Dawood Al Amri</div>
-        <p class="t-bio">BSN, MSN in Adult and Critical Care Nursing. Frontline clinical documentation expertise.</p>
-        <div class="t-aff">SQUH/UMC</div>
-      </article>
+            <div class="t-card reveal reveal-delay-3">
+                <div class="t-card-initials">AB</div>
+                <div class="t-card-body">
+                    <div class="t-card-role">AI Engineer</div>
+                    <h3>Afra Albadi</h3>
+                    <p>AI student at GUtech experienced in full-stack development, machine learning, and hardware configuration. Skilled in RAG pipelines and local LLM deployment.</p>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 </section>
 
-<!-- ============ VISION 2040 ============ -->
-<section class="vision" id="vision">
-  <div class="vision-bg" aria-hidden="true">٢٠٤٠</div>
-  <div class="wrap">
-    <div class="vision-grid">
-      <div>
-        <div class="vision-stamp">
-          رؤية<br>٢٠٤٠
-          <small>OMAN VISION</small>
+<section class="section-cta section" style="border-bottom:1px solid rgba(255,255,255,0.08)">
+    <div class="container centered">
+        <h2 class="h2">Team Members</h2>
+        <p class="sub-text">Already part of the team? Log your work hours and track project contributions.</p>
+        <div class="hero-actions" style="justify-content:center; margin-top:1.5rem">
+            <a href="./worklog.html" class="btn btn-primary">Team Work Log</a>
         </div>
-        <h2 class="h2">Built for the <span class="it">Sultanate</span>.<br>Built <span class="it">in</span> the Sultanate.</h2>
-        <p class="h2-deck" style="margin-top:24px">Sovereign AI. Knowledge economy. Healthcare in the citizen's own language.</p>
-      </div>
-
-      <div class="vision-pillars">
-        <div class="vp">
-          <div class="vp-num">١</div>
-          <div>
-            <h4>An <span class="it">Omani</span> AI sector</h4>
-            <p>Trained, hosted, and operated on Omani soil. Every line of code, every weight, every recording — in-country. Nothing federated abroad.</p>
-          </div>
-        </div>
-        <div class="vp">
-          <div class="vp-num">٢</div>
-          <div>
-            <h4>Arabic as a <span class="it">first-class</span> medical language</h4>
-            <p>Closing the gap between how patients speak and how charts are written. Not translating — listening, in the dialect of the bedside.</p>
-          </div>
-        </div>
-        <div class="vp">
-          <div class="vp-num">٣</div>
-          <div>
-            <h4>Clinicians who <span class="it">build</span>, not buy</h4>
-            <p>Doctors, residents, and engineers from SQUH, OMSB, MCMSS, SQU, and GUtech — co-designing the system that serves them. A national capability, not a vendor relationship.</p>
-          </div>
-        </div>
-        <div class="vp">
-          <div class="vp-num">٤</div>
-          <div>
-            <h4>A blueprint for the <span class="it">Arab world</span></h4>
-            <p>What works in Muscat scales to Riyadh, Cairo, Amman, Doha. Built to be lifted, not licensed.</p>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
 </section>
 
-<!-- ============ PROGRESS / ROADMAP ============ -->
-<section id="progress" style="padding:120px 0;border-bottom:1px solid var(--rule);background:var(--paper-2)">
-  <div class="wrap">
-    <div class="pipe-head">
-      <h2 class="h2">Honest <span class="it">progress</span>, in public.</h2>
-      <p class="h2-deck">Real numbers from a real pipeline. No demos — this is live data from our annotation platform.</p>
+<section class="section-cta section">
+    <div class="container centered">
+        <h2 class="h2">Want to Join the Team?</h2>
+        <p class="sub-text">We're looking for engineers, researchers, and clinicians across the Arab world.</p>
+        <div class="hero-actions" style="justify-content:center; margin-top:1.5rem">
+            <a href="./join.html" class="btn btn-primary">View Open Roles</a>
+        </div>
     </div>
-
-    <!-- Hero Milestones -->
-    <div style="background:var(--ink);border-radius:12px;overflow:hidden;margin-bottom:48px">
-      <!-- Top row: Big headline numbers -->
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0;padding:40px 0;border-bottom:1px solid rgba(255,255,255,0.08)">
-        <div style="text-align:center;border-right:1px solid rgba(255,255,255,0.08)">
-          <div style="font-size:52px;font-weight:800;color:var(--gold);font-family:var(--mono);letter-spacing:-0.02em">5,846</div>
-          <div style="font-size:13px;color:rgba(255,255,255,0.5);font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase;margin-top:4px">Hours of Arabic Audio</div>
-          <div style="font-size:11px;color:rgba(255,255,255,0.3);margin-top:2px">Harvested · Transcribed · Segmented</div>
-        </div>
-        <div style="text-align:center;border-right:1px solid rgba(255,255,255,0.08)">
-          <div style="font-size:52px;font-weight:800;color:var(--gold);font-family:var(--mono);letter-spacing:-0.02em">16,864</div>
-          <div style="font-size:13px;color:rgba(255,255,255,0.5);font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase;margin-top:4px">Annotation Tasks</div>
-          <div style="font-size:11px;color:rgba(255,255,255,0.3);margin-top:2px">Created · Queued · Assigned</div>
-        </div>
-        <div style="text-align:center">
-          <div style="font-size:52px;font-weight:800;color:#2a7d4f;font-family:var(--mono);letter-spacing:-0.02em">3,933</div>
-          <div style="font-size:13px;color:rgba(255,255,255,0.5);font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase;margin-top:4px">Clips Fully Verified</div>
-          <div style="font-size:11px;color:rgba(255,255,255,0.3);margin-top:2px">Dual-reviewed · Quality-scored</div>
-        </div>
-      </div>
-      <!-- Bottom row: Supporting metrics -->
-      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:0;padding:24px 0">
-        <div style="text-align:center;border-right:1px solid rgba(255,255,255,0.06)">
-          <div style="font-size:28px;font-weight:700;color:var(--paper);font-family:var(--mono)">52</div>
-          <div style="font-size:10px;color:rgba(255,255,255,0.4);font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase;margin-top:4px">Annotators</div>
-        </div>
-        <div style="text-align:center;border-right:1px solid rgba(255,255,255,0.06)">
-          <div style="font-size:28px;font-weight:700;color:var(--paper);font-family:var(--mono)">9,187</div>
-          <div style="font-size:10px;color:rgba(255,255,255,0.4);font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase;margin-top:4px">Review Touches</div>
-        </div>
-        <div style="text-align:center;border-right:1px solid rgba(255,255,255,0.06)">
-          <div style="font-size:28px;font-weight:700;color:#2a7d4f;font-family:var(--mono)">79.3%</div>
-          <div style="font-size:10px;color:rgba(255,255,255,0.4);font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase;margin-top:4px">Agreement Rate</div>
-        </div>
-        <div style="text-align:center;border-right:1px solid rgba(255,255,255,0.06)">
-          <div style="font-size:28px;font-weight:700;color:var(--paper);font-family:var(--mono)">6</div>
-          <div style="font-size:10px;color:rgba(255,255,255,0.4);font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase;margin-top:4px">Arabic Dialects</div>
-        </div>
-        <div style="text-align:center">
-          <div style="font-size:28px;font-weight:700;color:var(--paper);font-family:var(--mono)">93<small style="font-size:14px">h</small></div>
-          <div style="font-size:10px;color:rgba(255,255,255,0.4);font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase;margin-top:4px">Human Annotation</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Phases -->
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)">
-      <div style="padding:36px 28px;border-right:1px solid var(--rule);background:var(--paper)">
-        <div style="font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--gold-deep);text-transform:uppercase;margin-bottom:16px">PHASE 01 · <span style="color:#2a7d4f">✓ DONE</span></div>
-        <h4 style="font-family:var(--sans);font-size:22px;font-weight:600;line-height:1.2;color:var(--ink);margin-bottom:10px">Team &amp; <span style="font-style:italic;color:var(--gold-deep)">infrastructure</span></h4>
-        <p style="font-size:13px;color:var(--ink-soft);line-height:1.6">52 contributors from 6 dialect backgrounds. Two GPU workstations. 5,846 hours of Arabic audio harvested and transcribed on-prem.</p>
-        <div style="margin-top:16px;display:flex;gap:6px"><div style="flex:1;height:4px;background:#2a7d4f"></div><div style="flex:1;height:4px;background:#2a7d4f"></div><div style="flex:1;height:4px;background:#2a7d4f"></div></div>
-      </div>
-      <div style="padding:36px 28px;border-right:1px solid var(--rule);background:var(--paper)">
-        <div style="font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--gold-deep);text-transform:uppercase;margin-bottom:16px">PHASE 02 · <span style="color:var(--seal)">⊙ ACTIVE — WE NEED YOU</span></div>
-        <h4 style="font-family:var(--sans);font-size:22px;font-weight:600;line-height:1.2;color:var(--ink);margin-bottom:10px">Annotation &amp; <span style="font-style:italic;color:var(--gold-deep)">dialect data</span></h4>
-        <p style="font-size:13px;color:var(--ink-soft);line-height:1.6">3,933 clips fully verified through dual-review. 9,187 total annotation touches. 79% inter-annotator agreement. 93 hours of human effort. <b style="color:var(--seal)">Join us — 16,000+ clips still in queue.</b></p>
-        <div style="margin-top:16px;display:flex;gap:6px"><div style="flex:1;height:4px;background:#2a7d4f"></div><div style="flex:1;height:4px;background:var(--seal)"></div><div style="flex:1;height:4px;background:var(--rule)"></div></div>
-      </div>
-      <div style="padding:36px 28px;border-right:1px solid var(--rule);background:var(--paper)">
-        <div style="font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:16px">PHASE 03 · NEXT</div>
-        <h4 style="font-family:var(--sans);font-size:22px;font-weight:600;line-height:1.2;color:var(--ink);margin-bottom:10px">Fine-tuning &amp; <span style="font-style:italic;color:var(--gold-deep)">SOAP extraction</span></h4>
-        <p style="font-size:13px;color:var(--ink-soft);line-height:1.6">Fine-tune Whisper on the Omani corpus. Train a local LLM to structure transcripts into SOAP notes. Targeted Q3 2026.</p>
-        <div style="margin-top:16px;display:flex;gap:6px"><div style="flex:1;height:4px;background:var(--rule)"></div><div style="flex:1;height:4px;background:var(--rule)"></div><div style="flex:1;height:4px;background:var(--rule)"></div></div>
-      </div>
-      <div style="padding:36px 28px;background:var(--paper)">
-        <div style="font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:16px">PHASE 04 · LATER</div>
-        <h4 style="font-family:var(--sans);font-size:22px;font-weight:600;line-height:1.2;color:var(--ink);margin-bottom:10px">Bedside <span style="font-style:italic;color:var(--gold-deep)">research pilot</span></h4>
-        <p style="font-size:13px;color:var(--ink-soft);line-height:1.6">A small, IRB-approved bedside study at SQUH. Measure clinician time saved, note quality, patient comfort. <b>2027, not before.</b></p>
-        <div style="margin-top:16px;display:flex;gap:6px"><div style="flex:1;height:4px;background:var(--rule)"></div><div style="flex:1;height:4px;background:var(--rule)"></div><div style="flex:1;height:4px;background:var(--rule)"></div></div>
-      </div>
-    </div>
-  </div>
 </section>
 
-<!-- ============ BUDGET ============ -->
-<section style="padding:80px 0;border-bottom:1px solid var(--rule);background:var(--paper)">
-  <div class="wrap">
-    <h2 class="inst-heading">Project Budget</h2>
-    <p class="inst-sub">Transparently funded through national research grants.</p>
-
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:480px;margin:0 auto 32px">
-      <div style="text-align:center;padding:24px;border:1px solid var(--rule);border-radius:8px;background:var(--paper-2)">
-        <div style="font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:8px">Total Budget</div>
-        <div style="font-size:36px;font-weight:700;color:var(--gold-deep);letter-spacing:-0.02em">25,500</div>
-        <div style="font-size:13px;color:var(--ink-soft)">OMR</div>
-      </div>
-      <div style="text-align:center;padding:24px;border:1px solid var(--rule);border-radius:8px;background:var(--paper-2)">
-        <div style="font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:8px">Spent to Date</div>
-        <div style="font-size:36px;font-weight:700;color:#2a7d4f;letter-spacing:-0.02em">8,275</div>
-        <div style="font-size:13px;color:var(--ink-soft)">OMR (32%)</div>
-      </div>
-    </div>
-
-    <div style="max-width:600px;margin:0 auto;display:flex;flex-direction:column;gap:12px">
-      <div style="display:flex;align-items:center;gap:14px;padding:14px 18px;border:1px solid var(--rule-soft);border-radius:6px;background:var(--paper-2)">
-        <span style="font-size:14px;font-weight:600;flex:1">Hardware & Equipment</span>
-        <span style="font-family:var(--mono);font-size:13px;color:var(--gold-deep);font-weight:600">60%</span>
-        <div style="width:120px;height:6px;background:var(--paper-3);border-radius:100px;overflow:hidden"><div style="width:60%;height:100%;background:var(--gold);border-radius:100px"></div></div>
-      </div>
-      <div style="display:flex;align-items:center;gap:14px;padding:14px 18px;border:1px solid var(--rule-soft);border-radius:6px;background:var(--paper-2)">
-        <span style="font-size:14px;font-weight:600;flex:1">AI & Software</span>
-        <span style="font-family:var(--mono);font-size:13px;color:var(--gold-deep);font-weight:600">22%</span>
-        <div style="width:120px;height:6px;background:var(--paper-3);border-radius:100px;overflow:hidden"><div style="width:22%;height:100%;background:var(--gold);border-radius:100px"></div></div>
-      </div>
-      <div style="display:flex;align-items:center;gap:14px;padding:14px 18px;border:1px solid var(--rule-soft);border-radius:6px;background:var(--paper-2)">
-        <span style="font-size:14px;font-weight:600;flex:1">Research Team</span>
-        <span style="font-family:var(--mono);font-size:13px;color:var(--gold-deep);font-weight:600">15%</span>
-        <div style="width:120px;height:6px;background:var(--paper-3);border-radius:100px;overflow:hidden"><div style="width:15%;height:100%;background:var(--gold);border-radius:100px"></div></div>
-      </div>
-      <div style="display:flex;align-items:center;gap:14px;padding:14px 18px;border:1px solid var(--rule-soft);border-radius:6px;background:var(--paper-2)">
-        <span style="font-size:14px;font-weight:600;flex:1">Operational</span>
-        <span style="font-family:var(--mono);font-size:13px;color:var(--gold-deep);font-weight:600">3%</span>
-        <div style="width:120px;height:6px;background:var(--paper-3);border-radius:100px;overflow:hidden"><div style="width:3%;height:100%;background:var(--gold);border-radius:100px"></div></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ ATLAS — bedside Arabic across Oman ============ -->
-<section class="atlas" id="atlas">
-  <div class="wrap">
-    <div class="atlas-head">
-      <h2 class="h2">A nation of rich <span class="it">heritage</span>,<br>a medicine of many <span class="it">voices</span>.</h2>
-      <p class="h2-deck" style="margin-top:20px">Oman's healthcare is shaped by centuries of trade, tradition, and a mosaic of Arabic dialects. Every governorate has its own way of describing pain, illness, and healing. Medad is trained on this country — not generic Arabic from elsewhere.</p>
-    </div>
-
-    <div class="atlas-grid">
-      <div class="atlas-list" id="atlasList">
-        <!-- rows populated by JS below -->
-      </div>
-
-      <div class="atlas-mapwrap">
-        <div class="atlas-map">
-          <h5><span>OMAN · GOVERNORATES</span><span class="ar">سلطنة عُمان</span></h5>
-          <svg viewBox="0 0 500 450" id="mapSvg">
-            <g>
-              <path class="atlas-region-shape" data-id="dakhiliyah" d="M343.2,162.0L345.3,162.7L359.1,161.2L360.8,158.7L372.5,151.9L384.2,150.9L397.9,160.5L395.4,169.7L387.2,171.1L378.2,175.1L374.9,175.4L362.5,182.1L357.2,189.8L381.8,246.9L275.7,210.2L286.4,200.6L295.0,182.8L305.4,150.8L321.0,150.2L337.0,161.5L343.2,162.0Z"/>
-              <path class="atlas-region-shape" data-id="batinah-n" d="M278.4,90.2L287.8,105.9L307.6,124.5L321.5,132.6L347.5,139.1L345.3,145.3L328.3,145.1L321.0,150.2L305.4,150.8L299.4,136.8L283.4,127.0L275.0,124.4L274.6,120.9L269.3,108.4L262.4,102.2L262.3,100.0L265.9,99.9L268.9,96.3L276.2,93.7L276.4,90.7L278.4,90.2Z"/>
-              <path class="atlas-region-shape" data-id="batinah-s" d="M354.9,138.9L359.6,141.8L372.9,142.2L371.2,147.9L372.5,151.9L360.8,158.7L359.1,161.2L345.3,162.7L337.0,161.5L321.0,150.2L328.3,145.1L345.3,145.3L347.5,139.1L354.9,138.9Z"/>
-              <path class="atlas-region-shape" data-id="buraimi" d="M260.4,93.7L261.0,94.8L257.2,94.3L262.3,100.0L262.4,102.2L269.3,108.4L274.6,120.9L275.0,124.4L230.7,146.2L231.8,142.8L235.0,139.1L234.7,134.9L230.3,132.8L230.0,131.5L238.8,129.0L246.1,128.7L248.7,129.7L259.4,127.0L255.4,120.5L250.8,121.5L246.2,120.6L249.3,115.7L249.1,113.8L247.2,112.5L246.5,107.5L249.6,103.4L248.2,100.6L248.2,94.1L251.3,91.4L255.8,90.0L259.6,90.8L260.4,93.7Z"/>
-              <path class="atlas-region-shape" data-id="dhahirah" d="M275.7,210.2L237.8,216.0L240.1,210.9L215.3,181.7L215.9,170.1L217.3,166.4L223.0,159.5L225.9,151.5L229.6,148.8L230.7,146.2L275.0,124.4L283.4,127.0L299.4,136.8L305.4,150.8L295.0,182.8L286.4,200.6L275.7,210.2Z"/>
-              <path class="atlas-region-shape" data-id="wusta" d="M370.3,269.1L369.9,272.1L363.3,274.8L363.2,276.2L364.8,276.7L363.9,278.0L356.6,282.5L357.2,285.4L356.0,291.0L352.0,298.2L348.7,301.4L349.2,303.2L351.2,303.8L349.8,309.1L353.3,314.1L352.4,320.6L353.6,322.9L355.6,323.6L355.2,327.0L357.6,329.8L350.3,332.1L337.6,332.2L289.3,323.3L223.4,247.6L237.8,216.0L275.7,210.2L406.6,255.7L406.3,257.8L405.0,258.4L405.2,257.0L401.2,260.2L404.4,260.5L403.4,261.1L405.6,260.4L405.9,258.3L406.2,260.6L398.0,265.2L399.2,265.7L395.6,270.1L394.7,273.5L390.2,276.6L385.2,275.3L380.5,275.8L382.6,275.4L377.0,274.4L380.7,267.1L376.5,266.1L370.3,269.1Z"/>
-              <path class="atlas-region-shape" data-id="sharqiyah-n" d="M417.4,231.9L430.8,236.0L412.5,247.9L409.3,251.3L409.5,253.2L406.6,255.7L381.8,246.9L357.2,189.8L362.5,182.1L374.9,175.4L378.2,175.1L387.2,171.1L395.4,169.7L411.6,177.3L429.3,178.9L430.3,184.0L458.6,197.2L424.6,211.9L417.4,231.9Z"/>
-              <path class="atlas-region-shape" data-id="sharqiyah-s" d="M414.8,262.7L415.7,263.2L415.0,266.3L418.2,269.9L410.8,273.7L408.6,279.5L400.5,284.0L400.4,276.8L404.9,272.8L405.3,273.7L408.0,272.9L408.6,269.8L412.9,265.9L413.3,263.1L414.8,262.7Z M432.9,176.3L436.0,180.2L449.2,188.0L448.0,188.8L449.4,187.9L459.6,189.3L458.8,190.7L460.7,191.8L462.0,191.2L459.9,189.3L461.9,190.1L461.3,189.5L463.1,189.2L465.5,193.9L464.3,195.5L463.9,201.8L456.8,208.0L455.1,213.4L446.9,220.5L444.8,225.4L438.9,231.9L439.0,233.4L430.8,236.0L417.4,231.9L424.6,211.9L458.6,197.2L430.3,184.0L429.3,178.9L432.9,176.3Z"/>
-              <path class="atlas-region-shape" data-id="dhofar" d="M260.9,386.3L261.4,387.8L263.3,388.1L258.8,389.2L255.8,388.2L260.9,386.3Z M223.4,247.6L289.3,323.3L337.6,332.2L315.2,335.1L300.4,340.1L292.4,346.6L292.3,347.5L293.3,346.0L292.0,348.3L292.3,351.5L287.5,361.9L287.9,364.0L281.7,367.0L281.1,368.5L277.3,370.5L277.2,372.1L267.8,371.1L257.4,371.6L252.3,373.1L235.8,373.7L227.1,376.0L224.5,381.4L218.4,384.3L216.3,387.2L216.8,389.9L220.6,392.5L217.2,397.1L218.4,398.6L214.7,402.3L212.1,402.8L205.2,407.9L203.7,407.1L200.7,408.8L192.9,410.1L187.9,409.3L187.0,407.4L184.1,406.8L173.4,406.3L152.5,408.2L148.4,411.5L136.8,412.9L132.4,416.4L127.7,417.6L120.5,417.4L100.3,421.6L101.8,421.3L98.1,415.5L93.2,415.6L80.5,404.7L81.7,398.4L86.7,398.1L85.9,396.8L82.3,396.4L84.3,394.3L42.0,329.7L204.1,290.3L223.4,247.6Z"/>
-              <path class="atlas-region-shape" data-id="musandam" d="M278.6,32.1L278.8,33.3L280.6,32.9L280.3,34.2L281.9,33.6L281.9,34.6L284.7,34.9L283.8,33.7L285.0,33.2L286.3,35.0L279.5,36.4L281.0,38.6L284.7,38.5L283.7,38.9L284.4,40.4L283.0,39.2L281.6,40.2L281.7,41.5L283.5,41.4L284.5,42.8L281.1,42.7L280.6,40.4L278.5,42.0L279.7,40.5L278.8,39.8L275.7,41.7L276.9,42.0L276.1,44.2L278.3,42.6L278.5,44.6L279.5,43.6L280.5,44.9L283.8,44.7L281.9,45.2L281.8,46.4L278.9,46.6L281.2,47.1L281.5,48.8L279.8,49.4L282.9,50.4L282.1,51.4L279.4,50.9L280.3,52.5L277.9,54.1L279.0,54.6L277.6,54.8L278.1,56.1L273.0,60.0L272.6,63.3L270.1,64.4L266.2,61.7L267.2,45.6L263.4,45.1L269.5,37.6L270.1,40.1L273.5,39.0L274.3,40.6L280.6,39.7L279.2,38.2L274.5,39.7L275.4,36.3L278.4,37.6L275.6,35.7L277.8,35.1L278.6,32.1Z"/>
-              <path class="atlas-region-shape" data-id="muscat" d="M372.8,142.1L384.6,146.2L390.0,146.0L393.3,144.5L398.3,145.2L399.2,147.5L401.2,148.6L406.9,149.5L409.6,154.7L415.8,157.8L416.3,160.3L419.7,162.4L420.8,165.7L425.7,170.0L430.3,171.9L432.9,176.3L429.3,178.9L411.6,177.3L395.4,169.7L397.9,160.5L384.2,150.9L372.5,151.9L371.2,147.9L372.8,142.1Z"/>
-            </g>
-            <g id="pins">
-              <circle class="atlas-pin" data-id="muscat" cx="404" cy="161" r="5"></circle>
-              <circle class="atlas-pin" data-id="batinah-n" cx="300" cy="126" r="5"></circle>
-              <circle class="atlas-pin" data-id="batinah-s" cx="349" cy="151" r="5"></circle>
-              <circle class="atlas-pin" data-id="dakhiliyah" cx="336" cy="193" r="5"></circle>
-              <circle class="atlas-pin" data-id="sharqiyah-n" cx="400" cy="208" r="5"></circle>
-              <circle class="atlas-pin" data-id="sharqiyah-s" cx="441" cy="211" r="5"></circle>
-              <circle class="atlas-pin" data-id="dhahirah" cx="261" cy="170" r="5"></circle>
-              <circle class="atlas-pin" data-id="buraimi" cx="255" cy="118" r="5"></circle>
-              <circle class="atlas-pin" data-id="wusta" cx="306" cy="267" r="5"></circle>
-              <circle class="atlas-pin" data-id="dhofar" cx="177" cy="346" r="5"></circle>
-              <circle class="atlas-pin" data-id="musandam" cx="273" cy="49" r="5"></circle>
-            </g>
-            <g transform="translate(470,420)" font-family="JetBrains Mono" font-size="9" fill="var(--ink-soft)">
-              <line x1="0" y1="-12" x2="0" y2="12" stroke="var(--ink)" stroke-width="0.8"></line>
-              <text x="-3" y="-14">N</text>
-            </g>
-          </svg>
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div><div class="footer-logo"><span class="logo-mark">مداد</span> MEDAD</div><p class="footer-desc">AI-Powered Arabic Medical Transcription for Omani Healthcare.</p></div>
+            <div><h4>Pages</h4><ul><li><a href="/">Home</a></li><li><a href="./team.html">Team</a></li><li><a href="./news.html">News</a></li><li><a href="./join.html">Join Us</a></li></ul></div>
+            <div><h4>Contact</h4><ul><li>Muscat, Oman</li><li><a href="mailto:dr.abdullahalalawi@gmail.com">dr.abdullahalalawi@gmail.com</a></li></ul></div>
         </div>
-
-        <div class="atlas-detail" id="atlasDetail"><span style="font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--seal);direction:ltr;display:block;text-align:left;text-transform:uppercase;margin-bottom:10px">▸ OMAN · STATUS · ACTIVE pop.</span>عُمان · نقطة البداية. الفريق والبيانات والمرضى. لهجات خليجية مع إدخال للمصطلحات الإنجليزية في المستشفيات الجامعية.<span class="en">OMAN · ORIGIN. The team, the data, the patients. Khaleeji bedside Arabic with English medical terminology mixing.</span></div>
-      </div>
+        <div class="footer-bottom"><p>&copy; 2026 Medad. All rights reserved.</p></div>
     </div>
-  </div>
-</section>
-
-<!-- ============ FOOTER ============ -->
-<footer class="foot">
-  <div class="wrap">
-    <div class="foot-grid">
-      <div>
-        <div class="brand">
-          <span class="brand-glyph" style="font-family:'Amiri','Noto Naskh Arabic',serif">مداد</span>
-          <span class="brand-en">MEDAD</span>
-        </div>
-        <p class="foot-desc">Ambient clinical documentation, in Arabic, on-premise. <i>Made in Oman, for the Arab world.</i></p>
-      </div>
-      <div>
-        <h5>The Project</h5>
-        <ul>
-          <li><a href="./">Home</a></li>
-          <li><a href="./#pipe">How it works</a></li>
-          <li><a href="./team.html">The Team</a></li>
-        </ul>
-      </div>
-      <div>
-        <h5>Get Involved</h5>
-        <ul>
-          <li><a href="./join.html">Join the Project</a></li>
-          <li><a href="https://annotate.medad.om">Become an Annotator</a></li>
-          <li><a href="mailto:dr.abdullahalalawi@gmail.com">dr.abdullahalalawi@gmail.com</a></li>
-        </ul>
-      </div>
-      <div>
-        <h5>Imprint</h5>
-        <ul>
-          <li>Muscat, Oman</li>
-          <li>SQUH · OMSB · MCMSS</li>
-          <li>SQU · GUtech</li>
-          <li>EST. 2025</li>
-        </ul>
-      </div>
-    </div>
-    <div class="foot-bottom">
-      <span>&copy; 2026 Medad · A National AI Initiative · v2.0</span>
-      <span class="ar">المُداد يستمع · يكتب · يتعلّم</span>
-    </div>
-  </div>
 </footer>
-
-<!-- ============ SCRIPTS — ATLAS INTERACTIVITY ============ -->
-<script>
-/* ===== LANGUAGE ATLAS ===== */
-const atlas = [
-  { id:'oman', en:'Oman', ar:'عُمان', phrase:'<b>Origin.</b> Where the team is, where data collection begins. Khaleeji bedside Arabic with English code-mixing in tertiary centres.', pop:'STATUS · ACTIVE', detail:'عُمان · نقطة البداية. الفريق والبيانات والمرضى. لهجات خليجية مع إدخال للمصطلحات الإنجليزية في المستشفيات الجامعية.', detailEn:'OMAN · ORIGIN. The team, the data, the patients. Khaleeji bedside Arabic with English medical terminology mixing.' },
-  { id:'gulf', en:'Gulf · GCC', ar:'دول الخليج', phrase:'<b>Next.</b> UAE, Saudi Eastern Province, Qatar, Bahrain, Kuwait. Closest dialect family to Omani Arabic; shared bedside vocabulary across borders.', pop:'PHASE · NEXT', detail:'دول مجلس التعاون · التوسع الأول. لهجات قريبة ومفردات سريرية متشابهة. التعاون مع جامعات الخليج.', detailEn:'GCC · First expansion. Closest dialect family. Targeted research collaborations with Gulf university hospitals.' },
-  { id:'saudi', en:'Saudi Arabia', ar:'المملكة العربية السعودية', phrase:'<b>Hijazi, Najdi, Southern.</b> The largest Arabic-speaking healthcare market. Multiple dialect families inside one country.', pop:'PHASE · NEXT', detail:'المملكة · عدّة لهجات رئيسة داخل دولة واحدة · حجازي، نجدي، جنوبي. أكبر سوق صحي عربي.', detailEn:'KSA · Multiple major dialect families inside one country. The largest Arabic-speaking healthcare system.' },
-  { id:'levant', en:'Levant', ar:'بلاد الشام', phrase:'<b>Future.</b> Jordan, Lebanon, Syria, Palestine. Distinct phonology and pharmaceutical-terms tradition.', pop:'PHASE · LATER', detail:'بلاد الشام · لهجات وتقاليد صيدلانية مستقلة. مرحلة لاحقة تتطلب بيانات جديدة وشركاء محليين.', detailEn:'LEVANT · Distinct phonology and pharmacy traditions. Later phase — requires fresh data and local partners.' },
-  { id:'egypt', en:'Egypt', ar:'مصر', phrase:'<b>Future.</b> Most-spoken Arabic dialect globally. The dominant training set for off-the-shelf models — useful baseline, not a substitute.', pop:'PHASE · LATER', detail:'مصر · أكثر اللهجات العربية انتشاراً. المصدر الغالب لبيانات التدريب الجاهزة · أساس مفيد وليس بديلاً.', detailEn:'EGYPT · Most-spoken Arabic dialect globally. Dominant in off-the-shelf training data — a baseline, not a substitute.' },
-  { id:'maghreb', en:'Maghreb', ar:'المغرب العربي', phrase:'<b>Future.</b> Morocco, Algeria, Tunisia, Libya. Heavy code-switching with French; Maghrebi varieties differ markedly from Khaleeji.', pop:'PHASE · LATER', detail:'المغرب العربي · دارجة ولهجات مغاربية · استخدام واسع للفرنسية في العيادة. مرحلة أبعد تتطلب التقاط ثلاثي اللغات.', detailEn:'MAGHREB · Maghrebi varieties; heavy clinical use of French. Furthest phase — trilingual capture required.' }
-];
-
-const list = document.getElementById('atlasList');
-atlas.forEach((a, i) => {
-  const row = document.createElement('div');
-  row.className = 'atlas-row';
-  row.dataset.id = a.id;
-  row.innerHTML = `
-    <div class="atlas-num">${String(i+1).padStart(2,'0')}</div>
-    <div class="atlas-region">${a.en}<span class="ar">${a.ar}</span></div>
-    <div class="atlas-phrase">${a.phrase}</div>
-    <div class="atlas-pop">${a.pop}</div>
-  `;
-  list.appendChild(row);
-});
-
-const detail = document.getElementById('atlasDetail');
-function activate(id){
-  document.querySelectorAll('.atlas-row, .atlas-region-shape, .atlas-pin').forEach(el => el.classList.remove('active'));
-  document.querySelectorAll(`[data-id="${id}"]`).forEach(el => el.classList.add('active'));
-  const a = atlas.find(x => x.id === id);
-  if(!a) return;
-  detail.innerHTML = `<span style="font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--seal);direction:ltr;display:block;text-align:left;text-transform:uppercase;margin-bottom:10px">▸ ${a.en.toUpperCase()} · ${a.pop} pop.</span>${a.detail}<span class="en">${a.detailEn}</span>`;
-}
-document.querySelectorAll('.atlas-row').forEach(r => r.addEventListener('mouseenter', () => activate(r.dataset.id)));
-document.querySelectorAll('.atlas-region-shape, .atlas-pin').forEach(p => p.addEventListener('mouseenter', () => activate(p.dataset.id)));
-// auto-cycle on load
-let atlasI = 0;
-const atlasTimer = setInterval(() => { activate(atlas[atlasI].id); atlasI = (atlasI+1) % atlas.length; }, 2400);
-// stop autocycle on first user hover
-['mouseenter','click','touchstart'].forEach(ev =>
-  document.getElementById('atlas').addEventListener(ev, () => clearInterval(atlasTimer), { once:true })
-);
-</script>
-
+<script src="./main.js"></script>
 </body>
 </html>
