@@ -276,6 +276,23 @@ a{color:inherit;text-decoration:none}
   </div>
 </div>
 
+<!-- RESET PASSWORD VIEW (shown when clicking email reset link) -->
+<div id="resetView" class="wl-hidden">
+  <section class="page-header">
+    <div class="wrap"><h1>Reset Password</h1><p>Set your new password below.</p></div>
+  </section>
+  <div class="wl-login">
+    <div class="wl-login-card">
+      <div id="resetPwAlert" class="wl-alert"></div>
+      <form id="resetPwForm">
+        <div class="wl-field"><label>New Password</label><input type="password" id="resetPw1" required placeholder="Min 6 characters" minlength="6" autocomplete="new-password"></div>
+        <div class="wl-field"><label>Confirm Password</label><input type="password" id="resetPw2" required placeholder="Repeat password" minlength="6" autocomplete="new-password"></div>
+        <button type="submit" class="wl-btn wl-btn-primary wl-btn-block" id="resetPwBtn">Update Password</button>
+      </form>
+    </div>
+  </div>
+</div>
+
 <!-- HOUR GUIDE MODAL -->
 <div class="wl-modal-bg" id="guideModal">
   <div class="wl-modal">
@@ -303,30 +320,62 @@ a{color:inherit;text-decoration:none}
 </footer>
 
 <script>
-// CRITICAL: Check for recovery BEFORE Supabase client init (which consumes the hash)
-(function(){
-  var hash=window.location.hash;
-  var params=new URLSearchParams(window.location.search);
-  var isRecovery=hash.includes('type=recovery')||hash.includes('access_token')||params.has('code');
-  if(isRecovery){
-    window.location.replace('https://medad.om/reset'+window.location.search+window.location.hash);
-    return;
-  }
-})();
-
 const SUPABASE_URL='https://xrxekxvyzayudgkixmza.supabase.co';
 const SUPABASE_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyeGVreHZ5emF5dWRna2l4bXphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1MDM1NzIsImV4cCI6MjA5NjA3OTU3Mn0.dK21GXduLQV2aOsfs743FpYthhA3UNjIRxwYXDAIEHw';
-const RESET_REDIRECT='https://medad.om/reset';
 const sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON);
 let currentMember=null,categories=[],allMembers=[],hourGuides=[];
+let isRecoveryMode=false;
 
 async function init(){
-  const{data:{session}}=await sb.auth.getSession();
-  if(session){await onLogin(session.user)}else{document.getElementById('loginView').classList.remove('wl-hidden');document.getElementById('appView').classList.add('wl-hidden')}
+  // Supabase auto-processes #access_token hash during createClient.
+  // Listen for PASSWORD_RECOVERY event which fires when hash contains type=recovery
+  sb.auth.onAuthStateChange((event,session)=>{
+    if(event==='PASSWORD_RECOVERY'){
+      isRecoveryMode=true;
+      showResetView();
+    }
+  });
+
+  // Also handle PKCE ?code= flow
+  const params=new URLSearchParams(window.location.search);
+  if(params.has('code')){
+    await sb.auth.exchangeCodeForSession(params.get('code'));
+    window.history.replaceState(null,'',window.location.pathname);
+    // onAuthStateChange will fire PASSWORD_RECOVERY if applicable
+    await new Promise(r=>setTimeout(r,800));
+    if(isRecoveryMode)return;
+  }
+
+  // Normal flow
+  if(!isRecoveryMode){
+    const{data:{session}}=await sb.auth.getSession();
+    if(session){await onLogin(session.user)}else{document.getElementById('loginView').classList.remove('wl-hidden');document.getElementById('appView').classList.add('wl-hidden')}
+  }
 }
+
+function showResetView(){
+  document.getElementById('loginView').classList.add('wl-hidden');
+  document.getElementById('appView').classList.add('wl-hidden');
+  document.getElementById('resetView').classList.remove('wl-hidden');
+}
+
+document.getElementById('resetPwForm').addEventListener('submit',async(e)=>{
+  e.preventDefault();
+  const pw=document.getElementById('resetPw1').value;
+  const pw2=document.getElementById('resetPw2').value;
+  const btn=document.getElementById('resetPwBtn');
+  const a=document.getElementById('resetPwAlert');
+  a.style.display='none';
+  if(pw!==pw2){a.className='wl-alert wl-alert-error';a.textContent='Passwords do not match.';a.style.display='block';return}
+  if(pw.length<6){a.className='wl-alert wl-alert-error';a.textContent='Min 6 characters.';a.style.display='block';return}
+  btn.disabled=true;btn.textContent='Updating...';
+  const{error}=await sb.auth.updateUser({password:pw});
+  if(error){a.className='wl-alert wl-alert-error';a.textContent=error.message;a.style.display='block';btn.disabled=false;btn.textContent='Update Password'}
+  else{a.className='wl-alert wl-alert-success';a.textContent='Password updated! Redirecting...';a.style.display='block';setTimeout(()=>{window.location.href='./worklog'},2000)}
+});
 function showForgot(){document.getElementById('loginForm').classList.add('wl-hidden');document.getElementById('forgotForm').classList.remove('wl-hidden');document.getElementById('loginAlert').style.display='none'}
 function showLogin(){document.getElementById('loginForm').classList.remove('wl-hidden');document.getElementById('forgotForm').classList.add('wl-hidden');document.getElementById('loginAlert').style.display='none'}
-document.getElementById('forgotForm').addEventListener('submit',async(e)=>{e.preventDefault();const email=document.getElementById('forgotEmail').value.trim();const btn=document.getElementById('forgotBtn');const a=document.getElementById('loginAlert');btn.disabled=true;btn.textContent='Sending...';a.style.display='none';const{error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:RESET_REDIRECT});if(error){a.className='wl-alert wl-alert-error';a.textContent=error.message}else{a.className='wl-alert wl-alert-success';a.textContent='Reset link sent! Check your email.'}a.style.display='block';btn.disabled=false;btn.textContent='Send Reset Link'});
+document.getElementById('forgotForm').addEventListener('submit',async(e)=>{e.preventDefault();const email=document.getElementById('forgotEmail').value.trim();const btn=document.getElementById('forgotBtn');const a=document.getElementById('loginAlert');btn.disabled=true;btn.textContent='Sending...';a.style.display='none';const{error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:'https://medad.om/worklog'});if(error){a.className='wl-alert wl-alert-error';a.textContent=error.message}else{a.className='wl-alert wl-alert-success';a.textContent='Reset link sent! Check your email.'}a.style.display='block';btn.disabled=false;btn.textContent='Send Reset Link'});
 document.getElementById('loginForm').addEventListener('submit',async(e)=>{e.preventDefault();const email=document.getElementById('loginEmail').value.trim();const pw=document.getElementById('loginPassword').value;const btn=document.getElementById('loginBtn');const a=document.getElementById('loginAlert');a.style.display='none';btn.disabled=true;btn.textContent='Signing in...';const{data,error}=await sb.auth.signInWithPassword({email,password:pw});if(error){a.textContent=error.message;a.className='wl-alert wl-alert-error';a.style.display='block';btn.disabled=false;btn.textContent='Sign In';return}await onLogin(data.user)});
 
 async function onLogin(user){
