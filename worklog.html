@@ -201,11 +201,6 @@ a{color:inherit;text-decoration:none}
         <button type="submit" class="wl-btn wl-btn-primary wl-btn-block" id="forgotBtn">Send Reset Link</button>
         <p style="text-align:center;margin-top:10px"><a href="#" onclick="showLogin();return false" style="color:var(--gold-deep);font-size:13px">Back to Sign In</a></p>
       </form>
-      <form id="resetForm" class="wl-hidden">
-        <div class="wl-field"><label>New Password</label><input type="password" id="resetPassword" required placeholder="Min 6 characters" minlength="6" autocomplete="new-password"></div>
-        <div class="wl-field"><label>Confirm Password</label><input type="password" id="resetConfirm" required placeholder="Repeat password" minlength="6" autocomplete="new-password"></div>
-        <button type="submit" class="wl-btn wl-btn-primary wl-btn-block" id="resetBtn">Update Password</button>
-      </form>
       <p style="text-align:center;margin-top:16px;font-size:12px;color:var(--ink-soft)">Contact admin for account access</p>
     </div>
   </div>
@@ -310,48 +305,17 @@ a{color:inherit;text-decoration:none}
 <script>
 const SUPABASE_URL='https://xrxekxvyzayudgkixmza.supabase.co';
 const SUPABASE_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyeGVreHZ5emF5dWRna2l4bXphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1MDM1NzIsImV4cCI6MjA5NjA3OTU3Mn0.dK21GXduLQV2aOsfs743FpYthhA3UNjIRxwYXDAIEHw';
-const RESET_REDIRECT='https://medad.om/worklog';
+const RESET_REDIRECT='https://medad.om/reset';
 const sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON);
 let currentMember=null,categories=[],allMembers=[],hourGuides=[];
 
 async function init(){
-  // Handle PKCE code exchange (Supabase redirects with ?code=xxx after reset link click)
-  const params=new URLSearchParams(window.location.search);
-  const code=params.get('code');
-  const pendingReset=localStorage.getItem('medad_pending_reset');
-
-  if(code){
-    const{data,error}=await sb.auth.exchangeCodeForSession(code);
-    window.history.replaceState(null,'',window.location.pathname);
-    if(pendingReset){
-      localStorage.removeItem('medad_pending_reset');
-      showReset();
-      return;
-    }
-    // If code exchange succeeded but no reset flag, it's a normal login
-    if(data?.session){await onLogin(data.session.user);return}
-  }
-
-  // Handle hash fragment (older implicit flow)
-  const hash=window.location.hash;
-  if(hash.includes('type=recovery')||hash.includes('access_token')){
-    // Wait for Supabase to process the hash
-    sb.auth.onAuthStateChange(async(event)=>{
-      if(event==='PASSWORD_RECOVERY'){showReset()}
-    });
-    return;
-  }
-
-  // Normal session check
   const{data:{session}}=await sb.auth.getSession();
   if(session){await onLogin(session.user)}else{document.getElementById('loginView').classList.remove('wl-hidden');document.getElementById('appView').classList.add('wl-hidden')}
 }
 function showForgot(){document.getElementById('loginForm').classList.add('wl-hidden');document.getElementById('forgotForm').classList.remove('wl-hidden');document.getElementById('resetForm').classList.add('wl-hidden');document.getElementById('loginAlert').style.display='none'}
 function showLogin(){document.getElementById('loginForm').classList.remove('wl-hidden');document.getElementById('forgotForm').classList.add('wl-hidden');document.getElementById('resetForm').classList.add('wl-hidden');document.getElementById('loginAlert').style.display='none'}
-function showReset(){document.getElementById('loginForm').classList.add('wl-hidden');document.getElementById('forgotForm').classList.add('wl-hidden');document.getElementById('resetForm').classList.remove('wl-hidden');const a=document.getElementById('loginAlert');a.className='wl-alert wl-alert-success';a.textContent='Set your new password below.';a.style.display='block'}
-
-document.getElementById('forgotForm').addEventListener('submit',async(e)=>{e.preventDefault();const email=document.getElementById('forgotEmail').value.trim();const btn=document.getElementById('forgotBtn');const a=document.getElementById('loginAlert');btn.disabled=true;btn.textContent='Sending...';a.style.display='none';const{error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:RESET_REDIRECT});if(error){a.className='wl-alert wl-alert-error';a.textContent=error.message}else{localStorage.setItem('medad_pending_reset','1');a.className='wl-alert wl-alert-success';a.textContent='Reset link sent! Check your email.'}a.style.display='block';btn.disabled=false;btn.textContent='Send Reset Link'});
-document.getElementById('resetForm').addEventListener('submit',async(e)=>{e.preventDefault();const pw=document.getElementById('resetPassword').value;const c=document.getElementById('resetConfirm').value;const btn=document.getElementById('resetBtn');const a=document.getElementById('loginAlert');a.style.display='none';if(pw!==c){a.className='wl-alert wl-alert-error';a.textContent='Passwords do not match.';a.style.display='block';return}if(pw.length<6){a.className='wl-alert wl-alert-error';a.textContent='Min 6 characters.';a.style.display='block';return}btn.disabled=true;btn.textContent='Updating...';const{error}=await sb.auth.updateUser({password:pw});if(error){a.className='wl-alert wl-alert-error';a.textContent=error.message}else{a.className='wl-alert wl-alert-success';a.textContent='Password updated! Signing you in...';window.history.replaceState(null,'',window.location.pathname);setTimeout(async()=>{const{data:{session}}=await sb.auth.getSession();if(session)await onLogin(session.user)},1500)}a.style.display='block';btn.disabled=false;btn.textContent='Update Password'});
+document.getElementById('forgotForm').addEventListener('submit',async(e)=>{e.preventDefault();const email=document.getElementById('forgotEmail').value.trim();const btn=document.getElementById('forgotBtn');const a=document.getElementById('loginAlert');btn.disabled=true;btn.textContent='Sending...';a.style.display='none';const{error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:RESET_REDIRECT});if(error){a.className='wl-alert wl-alert-error';a.textContent=error.message}else{a.className='wl-alert wl-alert-success';a.textContent='Reset link sent! Check your email.'}a.style.display='block';btn.disabled=false;btn.textContent='Send Reset Link'});
 document.getElementById('loginForm').addEventListener('submit',async(e)=>{e.preventDefault();const email=document.getElementById('loginEmail').value.trim();const pw=document.getElementById('loginPassword').value;const btn=document.getElementById('loginBtn');const a=document.getElementById('loginAlert');a.style.display='none';btn.disabled=true;btn.textContent='Signing in...';const{data,error}=await sb.auth.signInWithPassword({email,password:pw});if(error){a.textContent=error.message;a.className='wl-alert wl-alert-error';a.style.display='block';btn.disabled=false;btn.textContent='Sign In';return}await onLogin(data.user)});
 
 async function onLogin(user){
