@@ -303,6 +303,17 @@ a{color:inherit;text-decoration:none}
 </footer>
 
 <script>
+// CRITICAL: Check for recovery BEFORE Supabase client init (which consumes the hash)
+(function(){
+  var hash=window.location.hash;
+  var params=new URLSearchParams(window.location.search);
+  var isRecovery=hash.includes('type=recovery')||hash.includes('access_token')||params.has('code');
+  if(isRecovery){
+    window.location.replace('https://medad.om/reset'+window.location.search+window.location.hash);
+    return;
+  }
+})();
+
 const SUPABASE_URL='https://xrxekxvyzayudgkixmza.supabase.co';
 const SUPABASE_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyeGVreHZ5emF5dWRna2l4bXphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1MDM1NzIsImV4cCI6MjA5NjA3OTU3Mn0.dK21GXduLQV2aOsfs743FpYthhA3UNjIRxwYXDAIEHw';
 const RESET_REDIRECT='https://medad.om/reset';
@@ -310,17 +321,6 @@ const sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON);
 let currentMember=null,categories=[],allMembers=[],hourGuides=[];
 
 async function init(){
-  const params=new URLSearchParams(window.location.search);
-  const hasRecoveryCode=params.has('code');
-  const hash=window.location.hash;
-  const hasRecoveryHash=hash.includes('type=recovery')||hash.includes('access_token');
-
-  // Old reset links may still point to /worklog. Send recovery traffic to the dedicated reset page.
-  if(hasRecoveryCode||hasRecoveryHash){
-    window.location.replace(RESET_REDIRECT+window.location.search+window.location.hash);
-    return;
-  }
-
   const{data:{session}}=await sb.auth.getSession();
   if(session){await onLogin(session.user)}else{document.getElementById('loginView').classList.remove('wl-hidden');document.getElementById('appView').classList.add('wl-hidden')}
 }
