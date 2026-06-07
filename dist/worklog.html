@@ -156,6 +156,24 @@ a{color:inherit;text-decoration:none}
 
 .wl-hidden{display:none !important}
 
+/* status badges */
+.wl-status{display:inline-block;padding:2px 8px;border-radius:3px;font-size:11px;font-family:var(--mono);letter-spacing:.04em;font-weight:500}
+.wl-status-pending{background:#FFEB9C;color:#9C6500}
+.wl-status-approved{background:#C6EFCE;color:#006100}
+.wl-status-amended{background:#D6E4F0;color:#2F5496}
+.wl-status-rejected{background:#FFC7CE;color:#9C0006}
+
+/* admin action buttons */
+.wl-action-btn{background:none;border:1px solid var(--rule);cursor:pointer;padding:4px 8px;border-radius:4px;font-size:12px;transition:.2s;margin-right:2px}
+.wl-action-btn:hover{border-color:var(--gold)}
+.wl-action-approve{color:#006100}.wl-action-approve:hover{background:#C6EFCE;border-color:#006100}
+.wl-action-reject{color:#9C0006}.wl-action-reject:hover{background:#FFC7CE;border-color:#9C0006}
+.wl-action-edit{color:#2F5496}.wl-action-edit:hover{background:#D6E4F0;border-color:#2F5496}
+
+/* bulk bar */
+.wl-bulk-bar{display:flex;gap:10px;align-items:center;margin-bottom:14px}
+.wl-bulk-bar .count{font-size:12px;color:var(--ink-soft);font-family:var(--mono)}
+
 @media(max-width:720px){
   .wrap,.wl-user-bar,.wl-tabs{padding-left:20px;padding-right:20px}
   .nav-inner{padding:12px 20px}
@@ -283,8 +301,13 @@ a{color:inherit;text-decoration:none}
         <div class="wl-field"><label>From</label><input type="date" id="adminFrom"></div>
         <div class="wl-field"><label>To</label><input type="date" id="adminTo"></div>
         <div class="wl-field"><label>Category</label><select id="adminCategory"><option value="">All</option></select></div>
+        <div class="wl-field"><label>Status</label><select id="adminStatus"><option value="">All Statuses</option><option value="pending">Pending</option><option value="approved">Approved</option><option value="amended">Amended</option><option value="rejected">Rejected</option></select></div>
         <button class="wl-btn wl-btn-ghost" onclick="loadAdmin()">Filter</button>
         <button class="wl-btn wl-btn-ghost" onclick="exportCSV()">Export CSV</button>
+      </div>
+      <div class="wl-bulk-bar" id="bulkBar" style="display:none">
+        <button class="wl-btn-sm wl-action-approve" onclick="bulkApprove()" style="border-color:#006100;padding:6px 16px">&#10003; Approve All Visible Pending</button>
+        <span class="count" id="pendingCount"></span>
       </div>
       <div id="adminTable"></div>
     </div>
@@ -298,6 +321,27 @@ a{color:inherit;text-decoration:none}
     <h3>Hour Estimation Guide</h3>
     <p style="color:var(--ink-soft);font-size:13px;margin-bottom:16px">Log <b>actual time spent</b> including preparation, execution, and follow-up.</p>
     <div id="guideContent"></div>
+  </div>
+</div>
+
+<!-- EDIT LOG MODAL -->
+<div class="wl-modal-bg" id="editModal">
+  <div class="wl-modal">
+    <button class="close-x" onclick="hideEditModal()">&times;</button>
+    <h3>Edit Work Log Entry</h3>
+    <div id="editAlert" class="wl-alert"></div>
+    <form id="editForm">
+      <input type="hidden" id="editLogId">
+      <div class="wl-field"><label>Category</label><select id="editCategory" required><option value="">Select category...</option></select></div>
+      <div class="wl-field"><label>Subcategory</label><select id="editSubcategory" required><option value="">Select subcategory...</option></select></div>
+      <div class="wl-field"><label>Hours</label><input type="number" id="editHours" required min="0.25" max="999" step="0.25"></div>
+      <div class="wl-field"><label>Description</label><textarea id="editDescription" placeholder="What specifically was done?"></textarea></div>
+      <div class="wl-field"><label>Admin Notes</label><textarea id="editAdminNotes" placeholder="Reason for amendment or notes..." style="min-height:60px"></textarea></div>
+      <div style="display:flex;gap:10px;margin-top:16px">
+        <button type="submit" class="wl-btn wl-btn-primary">Save as Amended</button>
+        <button type="button" class="wl-btn wl-btn-ghost" onclick="hideEditModal()">Cancel</button>
+      </div>
+    </form>
   </div>
 </div>
 
@@ -358,12 +402,96 @@ document.getElementById('logForm').addEventListener('submit',async(e)=>{e.preven
 
 async function loadRecent(){const{data}=await sb.from('work_logs').select('id,entry_date,end_date,hours_spent,description,category_id,created_at').eq('member_id',currentMember.id).order('entry_date',{ascending:false}).order('created_at',{ascending:false}).limit(10);renderTable(data||[],'recentLogs',true)}
 async function loadHistory(){let q=sb.from('work_logs').select('id,entry_date,end_date,hours_spent,description,category_id,created_at').eq('member_id',currentMember.id).order('entry_date',{ascending:false}).limit(500);const f=document.getElementById('histFrom').value,t=document.getElementById('histTo').value,c=document.getElementById('histCategory').value;if(f)q=q.gte('entry_date',f);if(t)q=q.lte('entry_date',t);if(c){const ids=categories.filter(x=>x.parent_id===parseInt(c)).map(x=>x.id);if(ids.length)q=q.in('category_id',ids)}const{data}=await q;renderTable(data||[],'historyTable',true);const logs=data||[],th=logs.reduce((s,l)=>s+parseFloat(l.hours_spent),0),ud=new Set(logs.map(l=>l.entry_date)).size;document.getElementById('myStats').innerHTML='<div class="wl-stat"><div class="val">'+th.toFixed(1)+'</div><div class="lbl">Total Hours</div></div><div class="wl-stat"><div class="val">'+logs.length+'</div><div class="lbl">Entries</div></div><div class="wl-stat"><div class="val">'+ud+'</div><div class="lbl">Active Days</div></div><div class="wl-stat"><div class="val">'+(ud?(th/ud).toFixed(1):0)+'</div><div class="lbl">Avg Hours/Day</div></div>'}
-async function loadAdmin(){if(!allMembers.length){const{data}=await sb.from('team_members').select('id,display_name').eq('is_active',true).order('display_name').limit(50);allMembers=data||[];const sel=document.getElementById('adminMember');allMembers.forEach(m=>{const o=document.createElement('option');o.value=m.id;o.textContent=m.display_name;sel.appendChild(o)})}let q=sb.from('work_logs').select('id,entry_date,end_date,hours_spent,description,category_id,member_id,created_at').order('entry_date',{ascending:false}).limit(1000);const mid=document.getElementById('adminMember').value,f=document.getElementById('adminFrom').value,t=document.getElementById('adminTo').value,c=document.getElementById('adminCategory').value;if(mid)q=q.eq('member_id',mid);if(f)q=q.gte('entry_date',f);if(t)q=q.lte('entry_date',t);if(c){const ids=categories.filter(x=>x.parent_id===parseInt(c)).map(x=>x.id);if(ids.length)q=q.in('category_id',ids)}const{data}=await q;renderTable(data||[],'adminTable',false,true);const logs=data||[],th=logs.reduce((s,l)=>s+parseFloat(l.hours_spent),0),um=new Set(logs.map(l=>l.member_id)).size,ud=new Set(logs.map(l=>l.entry_date)).size;document.getElementById('adminStats').innerHTML='<div class="wl-stat"><div class="val">'+th.toFixed(1)+'</div><div class="lbl">Total Hours</div></div><div class="wl-stat"><div class="val">'+logs.length+'</div><div class="lbl">Entries</div></div><div class="wl-stat"><div class="val">'+um+'</div><div class="lbl">Active Members</div></div><div class="wl-stat"><div class="val">'+ud+'</div><div class="lbl">Active Days</div></div>'}
+async function loadAdmin(){if(!allMembers.length){const{data}=await sb.from('team_members').select('id,display_name').eq('is_active',true).order('display_name').limit(50);allMembers=data||[];const sel=document.getElementById('adminMember');allMembers.forEach(m=>{const o=document.createElement('option');o.value=m.id;o.textContent=m.display_name;sel.appendChild(o)})}let q=sb.from('work_logs').select('id,entry_date,end_date,hours_spent,description,category_id,member_id,created_at,status,admin_notes,reviewed_at,reviewed_by').order('entry_date',{ascending:false}).limit(1000);const mid=document.getElementById('adminMember').value,f=document.getElementById('adminFrom').value,t=document.getElementById('adminTo').value,c=document.getElementById('adminCategory').value,st=document.getElementById('adminStatus').value;if(mid)q=q.eq('member_id',mid);if(f)q=q.gte('entry_date',f);if(t)q=q.lte('entry_date',t);if(st)q=q.eq('status',st);if(c){const ids=categories.filter(x=>x.parent_id===parseInt(c)).map(x=>x.id);if(ids.length)q=q.in('category_id',ids)}const{data}=await q;const logs=data||[];renderTable(logs,'adminTable',false,true);const th=logs.reduce((s,l)=>s+parseFloat(l.hours_spent),0),um=new Set(logs.map(l=>l.member_id)).size,ud=new Set(logs.map(l=>l.entry_date)).size;document.getElementById('adminStats').innerHTML='<div class="wl-stat"><div class="val">'+th.toFixed(1)+'</div><div class="lbl">Total Hours</div></div><div class="wl-stat"><div class="val">'+logs.length+'</div><div class="lbl">Entries</div></div><div class="wl-stat"><div class="val">'+um+'</div><div class="lbl">Active Members</div></div><div class="wl-stat"><div class="val">'+ud+'</div><div class="lbl">Active Days</div></div>';const pc=logs.filter(l=>(l.status||'pending')==='pending').length;const bb=document.getElementById('bulkBar');if(pc>0){bb.style.display='flex';document.getElementById('pendingCount').textContent=pc+' pending entr'+(pc===1?'y':'ies')}else{bb.style.display='none'}}
 
-function renderTable(logs,cid,canDel,showMem){const el=document.getElementById(cid);if(!logs.length){el.innerHTML='<div class="wl-empty">No entries yet</div>';return}const cn=id=>{const c=categories.find(x=>x.id===id);if(!c)return'';const p=categories.find(x=>x.id===c.parent_id);return p?p.name:c.name};const sn=id=>{const c=categories.find(x=>x.id===id);return c?c.name:''};const mn=id=>{const m=allMembers.find(x=>x.id===id);return m?m.display_name:currentMember.display_name};let h='<table class="wl-table"><thead><tr><th>Date</th>';if(showMem)h+='<th>Member</th>';h+='<th>Category</th><th>Subcategory</th><th>Hours</th><th>Description</th>';if(canDel)h+='<th></th>';h+='</tr></thead><tbody>';logs.forEach(l=>{const dateStr=l.end_date&&l.end_date!==l.entry_date?l.entry_date+' → '+l.end_date:l.entry_date;h+='<tr><td>'+dateStr+'</td>';if(showMem)h+='<td>'+mn(l.member_id)+'</td>';h+='<td><span class="wl-badge">'+cn(l.category_id)+'</span></td><td>'+sn(l.category_id)+'</td><td class="wl-hours">'+parseFloat(l.hours_spent).toFixed(1)+'h</td><td style="color:var(--ink-soft);max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+(l.description||'—')+'</td>';if(canDel)h+='<td><button class="wl-del" onclick="deleteLog(\''+l.id+'\')" title="Delete">&#10005;</button></td>';h+='</tr>'});h+='</tbody></table>';el.innerHTML=h}
-async function deleteLog(id){if(!confirm('Delete this entry?'))return;await sb.from('work_logs').delete().eq('id',id);await loadRecent();if(!document.getElementById('tab-history').classList.contains('wl-hidden'))loadHistory()}
+let _adminLogs=[]; // cache of last loaded admin logs for review actions
+function statusBadge(s){s=s||'pending';const labels={pending:'Pending',approved:'Approved',amended:'Amended',rejected:'Rejected'};return'<span class="wl-status wl-status-'+s+'">'+labels[s]+'</span>'}
+function renderTable(logs,cid,canDel,showMem){if(cid==='adminTable')_adminLogs=logs;const el=document.getElementById(cid);if(!logs.length){el.innerHTML='<div class="wl-empty">No entries yet</div>';return}const cn=id=>{const c=categories.find(x=>x.id===id);if(!c)return'';const p=categories.find(x=>x.id===c.parent_id);return p?p.name:c.name};const sn=id=>{const c=categories.find(x=>x.id===id);return c?c.name:''};const mn=id=>{const m=allMembers.find(x=>x.id===id);return m?m.display_name:currentMember.display_name};const isAdmin=showMem&&currentMember&&currentMember.role==='admin';let h='<table class="wl-table"><thead><tr><th>Date</th>';if(showMem)h+='<th>Member</th>';h+='<th>Category</th><th>Subcategory</th><th>Hours</th><th>Description</th>';if(isAdmin)h+='<th>Status</th><th>Actions</th>';else if(canDel)h+='<th></th>';h+='</tr></thead><tbody>';logs.forEach(l=>{const dateStr=l.end_date&&l.end_date!==l.entry_date?l.entry_date+' → '+l.end_date:l.entry_date;h+='<tr><td>'+dateStr+'</td>';if(showMem)h+='<td>'+mn(l.member_id)+'</td>';h+='<td><span class="wl-badge">'+cn(l.category_id)+'</span></td><td>'+sn(l.category_id)+'</td><td class="wl-hours">'+parseFloat(l.hours_spent).toFixed(1)+'h</td><td style="color:var(--ink-soft);max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="'+(l.admin_notes?'Admin: '+l.admin_notes.replace(/"/g,'&quot;'):'')+'">'+(l.description||'—')+'</td>';if(isAdmin){h+='<td>'+statusBadge(l.status)+'</td>';h+='<td style="white-space:nowrap">';h+='<button class="wl-action-btn wl-action-approve" onclick="approveLog(\''+l.id+'\')" title="Approve">&#10003;</button>';h+='<button class="wl-action-btn wl-action-reject" onclick="rejectLog(\''+l.id+'\')" title="Reject">&#10007;</button>';h+='<button class="wl-action-btn wl-action-edit" onclick="editLog(\''+l.id+'\')" title="Edit">&#9998;</button>';h+='<button class="wl-del" onclick="deleteLog(\''+l.id+'\')" title="Delete">&#10005;</button>';h+='</td>'}else if(canDel){h+='<td><button class="wl-del" onclick="deleteLog(\''+l.id+'\')" title="Delete">&#10005;</button></td>'}h+='</tr>'});h+='</tbody></table>';el.innerHTML=h}
+async function deleteLog(id){if(!confirm('Delete this entry?'))return;await sb.from('work_logs').delete().eq('id',id);if(!document.getElementById('tab-admin').classList.contains('wl-hidden')){await loadAdmin()}else{await loadRecent();if(!document.getElementById('tab-history').classList.contains('wl-hidden'))loadHistory()}}
 function exportCSV(){const t=document.querySelector('#adminTable table');if(!t)return alert('No data to export');const csv=Array.from(t.querySelectorAll('tr')).map(r=>Array.from(r.querySelectorAll('th, td')).map(c=>'"'+c.textContent.replace(/"/g,'""').trim()+'"').join(',')).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='medad_worklog_'+new Date().toISOString().split('T')[0]+'.csv';a.click()}
 function switchTab(tab){document.querySelectorAll('.wl-tab').forEach(t=>t.classList.remove('active'));document.querySelector('.wl-tab[data-tab="'+tab+'"]').classList.add('active');document.querySelectorAll('[id^="tab-"]').forEach(p=>p.classList.add('wl-hidden'));document.getElementById('tab-'+tab).classList.remove('wl-hidden');if(tab==='history')loadHistory();if(tab==='admin')loadAdmin()}
+
+// ---- Admin Review Functions ----
+async function approveLog(id){
+  const{error}=await sb.from('work_logs').update({status:'approved',reviewed_at:new Date().toISOString(),reviewed_by:currentMember.id}).eq('id',id);
+  if(error){alert('Error: '+error.message);return}
+  await loadAdmin();
+}
+
+async function rejectLog(id){
+  const reason=prompt('Reason for rejection:');
+  if(reason===null)return;
+  const{error}=await sb.from('work_logs').update({status:'rejected',admin_notes:reason||null,reviewed_at:new Date().toISOString(),reviewed_by:currentMember.id}).eq('id',id);
+  if(error){alert('Error: '+error.message);return}
+  await loadAdmin();
+}
+
+async function bulkApprove(){
+  const pending=_adminLogs.filter(l=>(l.status||'pending')==='pending');
+  if(!pending.length){alert('No pending entries to approve.');return}
+  if(!confirm('Approve '+pending.length+' pending entr'+(pending.length===1?'y':'ies')+'?'))return;
+  const ids=pending.map(l=>l.id);
+  const{error}=await sb.from('work_logs').update({status:'approved',reviewed_at:new Date().toISOString(),reviewed_by:currentMember.id}).in('id',ids);
+  if(error){alert('Error: '+error.message);return}
+  await loadAdmin();
+}
+
+function editLog(id){
+  const log=_adminLogs.find(l=>l.id===id);
+  if(!log)return;
+  document.getElementById('editLogId').value=id;
+  // Populate category dropdown
+  const eSel=document.getElementById('editCategory');
+  const parents=categories.filter(c=>!c.parent_id);
+  eSel.innerHTML='<option value="">Select category...</option>';
+  parents.forEach(p=>{const o=document.createElement('option');o.value=p.id;o.textContent=p.name;eSel.appendChild(o)});
+  // Find current category's parent
+  const curCat=categories.find(c=>c.id===log.category_id);
+  const curParent=curCat?categories.find(c=>c.id===curCat.parent_id):null;
+  if(curParent)eSel.value=curParent.id;
+  // Populate subcategory
+  populateEditSubs(curParent?curParent.id:null,log.category_id);
+  document.getElementById('editHours').value=parseFloat(log.hours_spent);
+  document.getElementById('editDescription').value=log.description||'';
+  document.getElementById('editAdminNotes').value=log.admin_notes||'';
+  document.getElementById('editAlert').style.display='none';
+  document.getElementById('editModal').classList.add('show');
+}
+
+function populateEditSubs(parentId,selectedId){
+  const sel=document.getElementById('editSubcategory');
+  sel.innerHTML='<option value="">Select subcategory...</option>';
+  if(!parentId)return;
+  const subs=categories.filter(c=>c.parent_id===parseInt(parentId));
+  subs.forEach(s=>{const o=document.createElement('option');o.value=s.id;o.textContent=s.name;sel.appendChild(o)});
+  if(selectedId)sel.value=selectedId;
+}
+document.getElementById('editCategory').addEventListener('change',e=>{populateEditSubs(e.target.value,null)});
+
+function hideEditModal(){document.getElementById('editModal').classList.remove('show')}
+document.getElementById('editModal').addEventListener('click',e=>{if(e.target===e.currentTarget)hideEditModal()});
+
+document.getElementById('editForm').addEventListener('submit',async(e)=>{
+  e.preventDefault();
+  const a=document.getElementById('editAlert');
+  const id=document.getElementById('editLogId').value;
+  const catId=parseInt(document.getElementById('editSubcategory').value);
+  if(!catId){a.className='wl-alert wl-alert-error';a.textContent='Please select a subcategory.';a.style.display='block';return}
+  const update={
+    category_id:catId,
+    hours_spent:parseFloat(document.getElementById('editHours').value),
+    description:document.getElementById('editDescription').value.trim()||null,
+    admin_notes:document.getElementById('editAdminNotes').value.trim()||null,
+    status:'amended',
+    reviewed_at:new Date().toISOString(),
+    reviewed_by:currentMember.id
+  };
+  const{error}=await sb.from('work_logs').update(update).eq('id',id);
+  if(error){a.className='wl-alert wl-alert-error';a.textContent=error.message;a.style.display='block';return}
+  hideEditModal();
+  await loadAdmin();
+});
+
 init();
 </script>
 </body>
