@@ -384,6 +384,7 @@ img{max-width:100%;display:block}
     </a>
     <div class="nav-links">
       <a class="nav-link active" href="./">Home</a>
+      <a class="nav-link" href="#milestones">Milestones</a>
       <a class="nav-link" href="./team.html">The Team</a>
       <a class="nav-link" href="./challenge.html">🏆 Challenge</a>
       <a class="nav-link" href="./join.html">Join</a>
@@ -603,6 +604,114 @@ img{max-width:100%;display:block}
     </div>
   </div>
 </section>
+
+<!-- ============ MILESTONES ============ -->
+<section class="milestones" id="milestones">
+  <div class="wrap">
+    <div class="ml-head">
+      <span class="ml-label">SINCE MARCH 2026 · منذ مارس ٢٠٢٦</span>
+      <h2 class="h2">Project milestones <span class="it">·</span> <span class="ar">إنجازات المشروع</span></h2>
+      <p class="ml-sub">Every shipment, every fix, every win — the record of building the first open Arabic clinical AI in 14 weeks.<br><span class="ar">سجل كل إنجاز وكل إصلاح وكل خطوة في بناء أول ذكاء اصطناعي طبي عربي مفتوح خلال ١٤ أسبوعاً.</span></p>
+    </div>
+
+    <ol class="ml-list">
+
+      <li class="ml-item ml-latest">
+        <div class="ml-date">2026-06-18 · NEW</div>
+        <div class="ml-title">🏆 First Reviewer Awards announced · إعلان الفائزين الأربعة</div>
+        <div class="ml-body">
+          Round 1 of the Medad Challenge (15 May → 15 June) closed. After ranking on volume, quality, agreement, audio-listening discipline, dialect breadth, and recency, the four monthly champions are:
+          <ul class="ml-winners">
+            <li>🥇 <b>Dawood Al-Amri</b> — 75 OMR · 55.6 hrs · 15 dialects · 0.90 agreement</li>
+            <li>🥈 <b>Alia Alaamri</b> — 50 OMR · 2,992 clips · 91% audio engagement</li>
+            <li>🥉 <b>Waleed Alshukaili</b> — 30 OMR · quality 4.06/5</li>
+            <li>🏅 <b>Mohammed S</b> — certificate · 0.94 agreement · Quality Champion</li>
+          </ul>
+          <div class="ar">انتهت الجولة الأولى من تحدي مداد، وتمّ تكريم الفائزين الأربعة بناءً على الكمية والجودة ومعدل الاتفاق والاستماع للصوت وتنوع اللهجات.</div>
+        </div>
+      </li>
+
+      <li class="ml-item">
+        <div class="ml-date">2026-06-14</div>
+        <div class="ml-title">🏆🏆 Production ASR champion shipped — Turbo int8</div>
+        <div class="ml-body">
+          <code>medad-omani-turbo-v1-int8</code> beats base Whisper-large-v3 overall by <b>1.83 pp</b> (24.50% vs 26.33% WER), ties on MSA (7.93%), and is <b>9× faster</b> at <b>782 MB on disk</b>. First model from the project deployable on a phone.
+          <div class="ar">إطلاق نموذج Turbo int8: يتفوّق على Whisper-large-v3 الأساسي بـ ١.٨٣٪ في معدل الخطأ، أسرع تسع مرات، ٧٨٢ ميجابايت — أول نموذج قابل للتشغيل على الهاتف.</div>
+        </div>
+      </li>
+
+      <li class="ml-item">
+        <div class="ml-date">2026-06-13</div>
+        <div class="ml-title">✅ Medium-v1 distillation success (Path F)</div>
+        <div class="ml-body">First deployable distill: half the teacher's size, ~2× faster, overall WER 25.84% — the breakthrough that unlocked Turbo the next day.</div>
+      </li>
+
+      <li class="ml-item">
+        <div class="ml-date">2026-06-02</div>
+        <div class="ml-title">📐 Clean WER baseline locked</div>
+        <div class="ml-body">After fixing a transcription-divergence bug that affected 9,351 annotation rows, the Stage-9 kill-switch anchor moved to <code>omani_dialect = 37.07%</code> on a 52-clip register-stratified set — the honest measuring stick every later model is graded against.</div>
+      </li>
+
+      <li class="ml-item">
+        <div class="ml-date">2026-05-25</div>
+        <div class="ml-title">🎯 Register-aware evaluation became standard</div>
+        <div class="ml-body">Discovered that "Omani-all" averaging masked weak performance on real dialect. Split test set into <code>omani_dialect</code> / <code>omani_msa</code> / <code>omani_religious</code>. All later training and reporting use this register-aware view.</div>
+      </li>
+
+      <li class="ml-item">
+        <div class="ml-date">2026-05-23</div>
+        <div class="ml-title">⚙️ Pipeline went 24/7 self-healing · The dialect reclass</div>
+        <div class="ml-body">Six systemd services running <code>Restart=always</code>. Same day, discovered 83% of clips tagged "omani" were actually MSA — real Omani-dialect audio is ~18 hours, not 100. Re-baselined everything.</div>
+      </li>
+
+      <li class="ml-item">
+        <div class="ml-date">2026-05-15</div>
+        <div class="ml-title">🏁 Round 1 of the Medad Challenge opened</div>
+        <div class="ml-body">First public monthly competition for Arabic-speaking reviewers — 75/50/30 OMR cash prizes for top 3, certificates for top 4, Wall of Fame for every champion.</div>
+      </li>
+
+      <li class="ml-item">
+        <div class="ml-date">2026-05-08</div>
+        <div class="ml-title">📣 Annotation pipeline went live</div>
+        <div class="ml-body">First paid reviewers onboarded; 200-clip test set + 800-clip training set published. ~14,645 completed annotations have flowed through since.</div>
+      </li>
+
+      <li class="ml-item">
+        <div class="ml-date">2026-03-13</div>
+        <div class="ml-title">🌱 Project Medad began</div>
+        <div class="ml-body">YouTube-to-Arabic-corpus pipeline scaffolded on a single workstation: harvester → processor → validator → corpus. Day zero.</div>
+      </li>
+
+    </ol>
+  </div>
+</section>
+
+<style>
+  .milestones { padding:7rem 0 4rem; background:#0a0e17; color:#e8edf5; font-family:'DM Sans',-apple-system,sans-serif }
+  .milestones .wrap { max-width:1100px; margin:0 auto; padding:0 1.5rem }
+  .ml-head { text-align:center; margin-bottom:3rem }
+  .ml-label { display:inline-block; font-family:'Space Mono',monospace; font-size:.72rem; letter-spacing:.18em; color:#5b9aff; padding:.4rem .9rem; border:1px solid rgba(91,154,255,.3); border-radius:999px; margin-bottom:1rem }
+  .milestones .h2 { font-size:clamp(1.8rem,4vw,2.6rem); font-weight:700; margin-bottom:1rem; letter-spacing:-.03em }
+  .milestones .h2 .it { color:#5b9aff; font-style:normal }
+  .milestones .h2 .ar { font-family:'Noto Kufi Arabic',sans-serif; font-size:1.6rem; vertical-align:middle }
+  .ml-sub { color:#7d8a9d; max-width:46rem; margin:0 auto; font-size:1rem; line-height:1.7 }
+  .ml-sub .ar { font-family:'Noto Kufi Arabic',sans-serif; display:block; margin-top:.4rem }
+  .ml-list { list-style:none; padding:0; max-width:760px; margin:0 auto; position:relative }
+  .ml-list::before { content:''; position:absolute; left:14px; top:8px; bottom:8px; width:1px; background:linear-gradient(to bottom, rgba(91,154,255,.5), rgba(91,154,255,.1)) }
+  .ml-item { position:relative; padding:1.4rem 0 1.4rem 3rem; border-bottom:1px solid rgba(255,255,255,.06) }
+  .ml-item::before { content:''; position:absolute; left:9px; top:1.8rem; width:11px; height:11px; border-radius:50%; background:#0a0e17; border:2px solid #2d7ff9 }
+  .ml-item.ml-latest::before { background:#10b981; border-color:#10b981; box-shadow:0 0 0 4px rgba(16,185,129,.18) }
+  .ml-date { font-family:'Space Mono',monospace; font-size:.72rem; letter-spacing:.12em; color:#7d8a9d; margin-bottom:.3rem }
+  .ml-item.ml-latest .ml-date { color:#10b981 }
+  .ml-title { font-size:1.08rem; font-weight:600; color:#e8edf5; margin-bottom:.4rem }
+  .ml-body { color:#9ca8b8; font-size:.93rem; line-height:1.65 }
+  .ml-body code { font-family:'Space Mono',monospace; font-size:.85em; background:rgba(91,154,255,.08); border:1px solid rgba(91,154,255,.18); border-radius:4px; padding:1px 6px; color:#5b9aff }
+  .ml-body .ar { font-family:'Noto Kufi Arabic',sans-serif; direction:rtl; text-align:right; display:block; margin-top:.7rem; color:#9ca8b8; font-size:.9rem }
+  .ml-winners { list-style:none; padding:0; margin:.7rem 0; }
+  .ml-winners li { padding:.35rem 0; border-bottom:1px dashed rgba(255,255,255,.06); font-size:.93rem; color:#cbd5e0 }
+  .ml-winners li:last-child { border-bottom:0 }
+  @media (max-width:640px){ .milestones { padding:5rem 0 3rem } .ml-item { padding-left:2.4rem } .ml-list::before { left:11px } .ml-item::before { left:6px } }
+</style>
 
 <!-- ============ INSTITUTIONS ============ -->
 <section class="institutions">
