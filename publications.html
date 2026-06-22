@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<title>Publications Tracker — Medad مداد</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Amiri:ital,wght@0,400;0,700;1,400&family=Reem+Kufi:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+(function(){
+  var search=window.location.search||'';
+  var hash=window.location.hash||'';
+  var searchParams=new URLSearchParams(search);
+  var hashParams=new URLSearchParams(hash.replace(/^#/,''));
+  var hasRecoveryCode=!!searchParams.get('code');
+  var hasRecoveryHash=hashParams.get('type')==='recovery'||hashParams.has('access_token')||hashParams.has('refresh_token');
+  if(!hasRecoveryCode&&!hasRecoveryHash)return;
+  window.location.replace('./reset'+search+hash);
+})();
+</script>
+<style>
+:root{
+  --paper:#faf8f4;--paper-2:#f0ede7;--paper-3:#e5e1da;
+  --ink:#14110d;--ink-2:#1e1a16;--ink-soft:#38322c;
+  --gold:#b8853a;--gold-2:#d4a24c;--gold-deep:#8e6326;
+  --seal:#8a2e2e;
+  --rule:rgba(20,17,13,0.16);--rule-soft:rgba(20,17,13,0.08);
+  --sans:'Helvetica Neue',Helvetica,'Sohne',Arial,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --ar:'Amiri','Noto Naskh Arabic',serif;
+  --kufi:'Reem Kufi','Noto Kufi Arabic',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--gold);color:var(--ink)}
+
+.wrap{max-width:1380px;margin:0 auto;padding:0 56px;position:relative;z-index:2}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:60;background:rgba(250,248,244,0.92);backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid var(--rule)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;padding:18px 56px;max-width:1380px;margin:0 auto}
+.brand{display:flex;align-items:center;gap:14px}
+.brand-glyph{font-family:var(--ar);font-size:30px;font-weight:700;color:var(--ink);line-height:1;position:relative;padding-right:4px}
+.brand-glyph::after{content:'';position:absolute;bottom:-3px;left:0;right:4px;height:2px;background:linear-gradient(90deg,var(--gold) 0%,var(--gold) 60%,transparent 100%)}
+.brand-logo{height:38px;width:auto;border-radius:6px}
+.brand-en{font-family:var(--mono);font-size:12px;letter-spacing:.32em;color:var(--ink-2);padding-top:4px;border-left:1px solid var(--rule);padding-left:14px}
+.nav-links{display:flex;gap:2px;align-items:center}
+.nav-link{padding:8px 14px;font-size:13px;color:var(--ink-soft);transition:.2s;border-radius:2px}
+.nav-link:hover,.nav-link.active{color:var(--ink);background:rgba(20,17,13,0.05)}
+.nav-cta{display:inline-flex;align-items:center;gap:8px;background:#008080;color:#fff;padding:10px 18px;font-size:12.5px;letter-spacing:.04em;font-weight:500;margin-left:8px;border:1px solid #008080;transition:.2s;border-radius:6px}
+.nav-cta:hover{background:#006666;border-color:#006666}
+
+/* page header */
+.page-header{padding:60px 0 48px;border-bottom:1px solid var(--rule);text-align:center}
+.page-header h1{font-family:var(--sans);font-size:clamp(32px,5vw,56px);font-weight:700;line-height:1.05;letter-spacing:-0.03em;color:var(--ink)}
+.page-header p{font-size:17px;color:var(--ink-soft);margin-top:14px;max-width:560px;margin-left:auto;margin-right:auto;line-height:1.55}
+
+/* footer */
+.foot{padding:64px 0 32px;background:var(--paper-2);border-top:1px solid var(--ink)}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px}
+.foot-desc{font-family:var(--sans);font-size:16px;color:var(--ink-2);max-width:380px;margin-top:18px;line-height:1.5}
+.foot h5{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:14px}
+.foot ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+.foot a{font-size:13.5px;color:var(--ink-2);transition:.2s;border-bottom:1px solid transparent}
+.foot a:hover{color:var(--seal);border-bottom-color:var(--seal)}
+.foot-bottom{margin-top:48px;padding-top:24px;border-top:1px solid var(--rule);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--ink-soft);text-transform:uppercase}
+.foot-bottom .ar{font-family:var(--ar);font-size:14px;font-style:italic;letter-spacing:0;color:var(--gold-deep);text-transform:none}
+
+/* ============ PUBLICATIONS ============ */
+.pb-login{min-height:60vh;display:flex;align-items:center;justify-content:center;padding:60px 20px}
+.pb-login-card{background:var(--paper-2);border:1px solid var(--rule);border-radius:8px;padding:40px 36px;max-width:400px;width:100%}
+.pb-login-card h2{font-size:1.3rem;font-weight:700;margin-bottom:4px;text-align:center}
+
+.pb-wrap{max-width:1000px;margin:0 auto;padding:40px 20px}
+.pb-user-bar{display:flex;align-items:center;justify-content:space-between;padding:14px 56px;border-bottom:1px solid var(--rule);max-width:1380px;margin:0 auto}
+.pb-user-bar .name{font-weight:600;font-size:14px}
+
+.pb-tabs{display:flex;gap:0;border-bottom:1px solid var(--rule);padding:0 56px;max-width:1380px;margin:0 auto}
+.pb-tab{padding:12px 18px;cursor:pointer;color:var(--ink-soft);border-bottom:2px solid transparent;font-size:13px;font-family:var(--mono);letter-spacing:.04em;transition:.2s}
+.pb-tab:hover{color:var(--ink)}
+.pb-tab.active{color:var(--ink);border-bottom-color:var(--gold)}
+
+.pb-field{margin-bottom:14px}
+.pb-field label{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:6px}
+.pb-field input,.pb-field select,.pb-field textarea{
+  width:100%;padding:10px 14px;background:var(--paper);border:1px solid var(--rule);border-radius:6px;
+  color:var(--ink);font-size:14px;font-family:var(--sans);outline:none;transition:border-color .2s;
+}
+.pb-field input:focus,.pb-field select:focus,.pb-field textarea:focus{border-color:var(--gold)}
+.pb-field textarea{min-height:80px;resize:vertical}
+.pb-field select{cursor:pointer}
+.pb-field .hint{font-size:12px;color:var(--ink-soft);margin-top:4px;font-style:italic}
+.pb-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.pb-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+
+.pb-btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 22px;border-radius:6px;border:1px solid var(--ink);
+  font-size:13.5px;font-weight:500;cursor:pointer;transition:.25s;font-family:var(--sans);letter-spacing:.02em;
+}
+.pb-btn-primary{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.pb-btn-primary:hover{background:var(--seal);border-color:var(--seal)}
+.pb-btn-primary:disabled{opacity:.5;cursor:not-allowed}
+.pb-btn-block{width:100%}
+.pb-btn-ghost{background:transparent;color:var(--ink)}
+.pb-btn-ghost:hover{background:var(--ink);color:var(--paper)}
+.pb-btn-sm{padding:6px 14px;font-size:12px;font-family:var(--mono);letter-spacing:.04em;border:1px solid var(--rule);background:transparent;color:var(--ink-soft);cursor:pointer;border-radius:4px;transition:.2s}
+.pb-btn-sm:hover{border-color:var(--gold);color:var(--gold-deep)}
+
+.pb-alert{padding:12px 16px;border-radius:6px;font-size:13px;margin-bottom:14px;display:none}
+.pb-alert-error{background:#fef2f2;color:#991b1b;border:1px solid #fca5a5}
+.pb-alert-success{background:#f0fdf4;color:#166534;border:1px solid #86efac}
+
+.pb-card{background:var(--paper-2);border:1px solid var(--rule);border-radius:8px;padding:28px 24px;margin-bottom:20px}
+.pb-section-title{font-size:16px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;letter-spacing:-0.01em}
+
+/* table */
+.pb-table{width:100%;border-collapse:collapse;font-size:13px}
+.pb-table th{text-align:left;padding:8px 10px;color:var(--ink-soft);border-bottom:1px solid var(--ink);font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:500}
+.pb-table td{padding:10px 10px;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+.pb-table tr:hover td{background:var(--paper-2)}
+.pb-badge{display:inline-block;padding:2px 8px;border-radius:3px;font-size:11px;font-family:var(--mono);letter-spacing:.04em;font-weight:500}
+.pb-amount{font-weight:700;color:var(--gold-deep);font-family:var(--mono)}
+.pb-del{background:none;border:none;color:var(--ink-soft);cursor:pointer;font-size:13px;padding:2px 6px;border-radius:4px}
+.pb-del:hover{color:var(--seal);background:rgba(138,46,46,0.08)}
+.pb-empty{text-align:center;padding:48px;color:var(--ink-soft);font-size:14px}
+
+/* stats */
+.pb-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--ink);margin-bottom:24px}
+.pb-stat{padding:20px 16px;text-align:center;border-right:1px solid var(--rule)}
+.pb-stat:last-child{border-right:none}
+.pb-stat .val{font-size:28px;font-weight:700;color:var(--gold-deep);font-family:var(--mono);letter-spacing:-0.02em}
+.pb-stat .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin-top:6px}
+
+/* publication status badges */
+.pb-status-published{background:rgba(34,197,94,0.12);color:#166534}
+.pb-status-accepted{background:rgba(59,130,246,0.12);color:#1e40af}
+.pb-status-under_review{background:rgba(234,179,8,0.12);color:#92400e}
+.pb-status-submitted{background:rgba(120,120,120,0.12);color:#525252}
+.pb-status-rejected{background:rgba(239,68,68,0.12);color:#991b1b}
+
+/* reimbursement status badges */
+.pb-reimb-received{background:rgba(34,197,94,0.12);color:#166534}
+.pb-reimb-approved{background:rgba(59,130,246,0.12);color:#1e40af}
+.pb-reimb-partial{background:rgba(249,115,22,0.12);color:#9a3412}
+.pb-reimb-applied{background:rgba(234,179,8,0.12);color:#92400e}
+.pb-reimb-not_applied{background:rgba(120,120,120,0.12);color:#525252}
+.pb-reimb-rejected{background:rgba(239,68,68,0.12);color:#991b1b}
+
+/* publication cards */
+.pb-pub-card{background:var(--paper-2);border:1px solid var(--rule);border-radius:8px;padding:20px 22px;margin-bottom:14px;transition:border-color .2s}
+.pb-pub-card:hover{border-color:var(--gold)}
+.pb-pub-card .pub-title{font-size:15px;font-weight:700;line-height:1.35;margin-bottom:6px}
+.pb-pub-card .pub-journal{font-size:13px;color:var(--ink-soft);font-style:italic;margin-bottom:8px}
+.pb-pub-card .pub-meta{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:8px}
+.pb-pub-card .pub-links{margin-top:8px;display:flex;gap:10px;font-size:12px}
+.pb-pub-card .pub-links a{color:var(--gold-deep);border-bottom:1px solid var(--gold);font-family:var(--mono);letter-spacing:.02em}
+.pb-pub-card .pub-links a:hover{color:var(--seal);border-bottom-color:var(--seal)}
+.pb-pub-card .pub-money{display:flex;flex-wrap:wrap;gap:16px;margin-top:10px;padding-top:10px;border-top:1px solid var(--rule-soft);font-size:12px;font-family:var(--mono)}
+.pb-pub-card .pub-money .label{color:var(--ink-soft);text-transform:uppercase;letter-spacing:.06em;font-size:10px}
+.pb-pub-card .pub-money .value{font-weight:700;color:var(--ink);margin-top:2px}
+.pb-pub-card .pub-project{display:inline-block;padding:2px 8px;border-radius:3px;background:rgba(184,133,58,0.12);color:var(--gold-deep);font-size:11px;font-family:var(--mono);letter-spacing:.04em}
+.pb-pub-card .pub-actions{margin-top:10px;display:flex;gap:8px}
+
+/* progress bars */
+.pb-progress-wrap{margin-bottom:14px}
+.pb-progress-label{display:flex;justify-content:space-between;font-size:12px;font-family:var(--mono);margin-bottom:4px}
+.pb-progress-label .name{color:var(--ink-soft);text-transform:uppercase;letter-spacing:.06em}
+.pb-progress-label .amt{color:var(--gold-deep);font-weight:700}
+.pb-progress-bar{height:8px;background:var(--paper-3);border-radius:4px;overflow:hidden}
+.pb-progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-2));border-radius:4px;transition:width .4s ease}
+
+/* pool balance card */
+.pb-pool-card{background:var(--ink);color:var(--paper);border-radius:8px;padding:28px 24px;margin-bottom:24px;text-align:center}
+.pb-pool-card .pool-label{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(250,248,244,0.6);margin-bottom:8px}
+.pb-pool-card .pool-balance{font-size:36px;font-weight:700;font-family:var(--mono);letter-spacing:-0.02em;color:var(--gold-2)}
+.pb-pool-card .pool-sub{display:flex;justify-content:center;gap:24px;margin-top:14px;font-size:12px;font-family:var(--mono)}
+.pb-pool-card .pool-sub .item{display:flex;flex-direction:column;gap:2px}
+.pb-pool-card .pool-sub .item .val{font-weight:700;color:var(--paper)}
+.pb-pool-card .pool-sub .item .lbl{color:rgba(250,248,244,0.5);font-size:10px;letter-spacing:.06em;text-transform:uppercase}
+
+/* filters */
+.pb-filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;align-items:end}
+.pb-filters .pb-field{margin-bottom:0;flex:1;min-width:140px}
+
+.pb-hidden{display:none !important}
+
+/* action items */
+.pb-action-item{background:var(--paper-2);border:1px solid var(--rule);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:14px 18px;margin-bottom:10px}
+.pb-action-item .action-title{font-size:14px;font-weight:700;margin-bottom:4px}
+.pb-action-item .action-detail{font-size:12px;color:var(--ink-soft);font-family:var(--mono)}
+
+/* summary cards for admin */
+.pb-summary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-bottom:24px}
+.pb-summary-card{background:var(--paper-2);border:1px solid var(--rule);border-radius:8px;padding:18px 16px;text-align:center}
+.pb-summary-card .sum-label{font-size:10px;font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:6px}
+.pb-summary-card .sum-val{font-size:22px;font-weight:700;color:var(--gold-deep);font-family:var(--mono)}
+
+@media(max-width:720px){
+  .wrap,.pb-user-bar,.pb-tabs{padding-left:20px;padding-right:20px}
+  .nav-inner{padding:12px 20px}
+  .nav-links a:not(.nav-cta){display:none}
+  .pb-row,.pb-row-3{grid-template-columns:1fr}
+  .pb-stats{grid-template-columns:1fr 1fr}
+  .pb-filters{flex-direction:column}
+  .pb-tab{padding:10px 12px;font-size:11px}
+  .foot-grid{grid-template-columns:1fr}
+  .foot-bottom{flex-direction:column;text-align:center;gap:8px}
+  .brand-en{display:none}
+  .brand-glyph{font-size:24px}
+  .page-header h1{font-size:clamp(24px,6vw,36px)}
+  .pb-pool-card .pool-sub{flex-direction:column;gap:10px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="./">
+      <svg class="brand-logo" width="36" height="36" viewBox="0 0 120 120"><defs><linearGradient id="g1" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#E8B860"/><stop offset="1" stop-color="#B8853A"/></linearGradient></defs><path d="M60 14 C60 14 30 46 30 70 C30 87 43 100 60 100 C77 100 90 87 90 70 C90 46 60 14 60 14 Z" fill="url(#g1)"/><path d="M22 72 L40 72 L46 60 L52 86 L58 50 L64 80 L70 66 L98 66" stroke="#14110d" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="brand-glyph">مداد</span>
+      <span class="brand-en">MEDAD</span>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="./">Home</a>
+      <a class="nav-link" href="./team.html">The Team</a>
+      <a class="nav-link" href="./challenge.html">Challenge</a>
+      <a class="nav-link" href="./join.html">Join</a>
+      <a class="nav-link" href="https://annotate.medad.om" style="font-weight:500">Annotator Login</a>
+      <a class="nav-link" href="./worklog.html" style="font-weight:500">Work Log</a>
+      <a class="nav-link" href="./budget.html" style="font-weight:500">Budget</a>
+      <a class="nav-link active" href="./publications.html" style="font-weight:500">Publications</a>
+      <a class="nav-cta" href="./join.html">Join the Project
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- LOGIN VIEW -->
+<div id="loginView">
+  <section class="page-header">
+    <div class="wrap"><h1>Publications Tracker</h1><p>Track publications, APC fees, and reimbursement status.</p></div>
+  </section>
+  <div class="pb-login">
+    <div class="pb-login-card">
+      <div id="loginAlert" class="pb-alert pb-alert-error"></div>
+      <form id="loginForm">
+        <div class="pb-field"><label>Email</label><input type="email" id="loginEmail" required placeholder="your@email.com" autocomplete="email"></div>
+        <div class="pb-field"><label>Password</label><input type="password" id="loginPassword" required placeholder="Min 6 characters" autocomplete="current-password"></div>
+        <button type="submit" class="pb-btn pb-btn-primary pb-btn-block" id="loginBtn">Sign In</button>
+        <p style="text-align:center;margin-top:10px"><a href="#" onclick="showForgot();return false" style="color:var(--gold-deep);font-size:13px">Forgot password?</a></p>
+      </form>
+      <form id="forgotForm" class="pb-hidden">
+        <div class="pb-field"><label>Email</label><input type="email" id="forgotEmail" required placeholder="your@email.com" autocomplete="email"></div>
+        <button type="submit" class="pb-btn pb-btn-primary pb-btn-block" id="forgotBtn">Send Reset Link</button>
+        <p style="text-align:center;margin-top:10px"><a href="#" onclick="showLogin();return false" style="color:var(--gold-deep);font-size:13px">Back to Sign In</a></p>
+      </form>
+      <p style="text-align:center;margin-top:16px;font-size:12px;color:var(--ink-soft)">Contact admin for account access</p>
+    </div>
+  </div>
+</div>
+
+<!-- APP VIEW -->
+<div id="appView" class="pb-hidden">
+  <div class="pb-user-bar">
+    <span class="name" id="userName"></span>
+    <button class="pb-btn-sm" onclick="signOut()">Sign Out</button>
+  </div>
+  <div class="pb-tabs">
+    <div class="pb-tab active" data-tab="dashboard" onclick="switchTab('dashboard')">Pool Dashboard</div>
+    <div class="pb-tab pb-hidden" data-tab="form" id="formTab" onclick="switchTab('form')">Add / Edit</div>
+    <div class="pb-tab pb-hidden" data-tab="admin" id="adminTab" onclick="switchTab('admin')">Admin</div>
+  </div>
+
+  <!-- TAB: DASHBOARD -->
+  <div id="tab-dashboard" class="pb-wrap">
+    <div id="poolCard"></div>
+    <div id="poolStats"></div>
+    <div id="reimbProgress"></div>
+    <div class="pb-section-title">Publications</div>
+    <div id="pubCards"></div>
+  </div>
+
+  <!-- TAB: ADD/EDIT FORM (admin only) -->
+  <div id="tab-form" class="pb-wrap pb-hidden">
+    <div class="pb-card">
+      <div class="pb-section-title"><span id="formTitle">Add Publication</span></div>
+      <div id="formAlert" class="pb-alert"></div>
+      <form id="pubForm">
+        <input type="hidden" id="editId">
+        <div class="pb-field"><label>Paper Title *</label><input type="text" id="fTitle" required placeholder="Full paper title"></div>
+        <div class="pb-row">
+          <div class="pb-field"><label>Journal *</label><input type="text" id="fJournal" required placeholder="e.g. BMJ Open"></div>
+          <div class="pb-field"><label>Authors</label><input type="text" id="fAuthors" placeholder="Al Alawi AM, et al."></div>
+        </div>
+        <div class="pb-row-3">
+          <div class="pb-field"><label>PubMed ID (PMID)</label><input type="text" id="fPmid" placeholder="e.g. 38123456"></div>
+          <div class="pb-field"><label>DOI</label><input type="text" id="fDoi" placeholder="e.g. 10.1234/xyz"></div>
+          <div class="pb-field"><label>Publication Status</label>
+            <select id="fPubStatus">
+              <option value="submitted">Submitted</option>
+              <option value="under_review">Under Review</option>
+              <option value="accepted">Accepted</option>
+              <option value="published">Published</option>
+              <option value="rejected">Rejected</option>
+            </select>
+          </div>
+        </div>
+        <div class="pb-row">
+          <div class="pb-field"><label>Publication Date</label><input type="date" id="fPubDate"></div>
+          <div class="pb-field"><label>Related Project</label>
+            <select id="fProject">
+              <option value="">None</option>
+              <option value="Medad">Medad</option>
+              <option value="Burnout">Burnout</option>
+              <option value="Readmission">Readmission</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="pb-section-title" style="margin-top:20px">APC & Payment</div>
+        <div class="pb-row-3">
+          <div class="pb-field"><label>APC Fee (OMR)</label><input type="number" id="fApcFee" step="0.01" min="0" placeholder="0.00"></div>
+          <div class="pb-field"><label>Original Amount</label><input type="number" id="fOrigAmount" step="0.01" min="0" placeholder="e.g. 2500"></div>
+          <div class="pb-field"><label>Original Currency</label>
+            <select id="fOrigCurrency">
+              <option value="">Same (OMR)</option>
+              <option value="USD">USD</option>
+              <option value="EUR">EUR</option>
+              <option value="GBP">GBP</option>
+              <option value="CHF">CHF</option>
+            </select>
+          </div>
+        </div>
+        <div class="pb-row-3">
+          <div class="pb-field"><label>Paid By</label>
+            <select id="fPaidBy">
+              <option value="">Not paid yet</option>
+              <option value="Publication Pool">Publication Pool</option>
+              <option value="Abdullah">Abdullah</option>
+              <option value="Grant">Grant</option>
+              <option value="Pre-pool">Pre-pool</option>
+            </select>
+          </div>
+          <div class="pb-field"><label>Paid Date</label><input type="date" id="fPaidDate"></div>
+          <div class="pb-field"><label>Funder</label><select id="fFunder"><option value="">None</option></select></div>
+        </div>
+
+        <div class="pb-section-title" style="margin-top:20px">Reimbursement</div>
+        <div class="pb-row-3">
+          <div class="pb-field"><label>Reimbursement Source</label>
+            <select id="fReimbSource">
+              <option value="">None</option>
+              <option value="SQU Pub Support">SQU Pub Support</option>
+              <option value="TRC">TRC</option>
+              <option value="OMSB">OMSB</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="pb-field"><label>Reimbursement Status</label>
+            <select id="fReimbStatus">
+              <option value="not_applied">Not Applied</option>
+              <option value="applied">Applied</option>
+              <option value="approved">Approved</option>
+              <option value="received">Received</option>
+              <option value="rejected">Rejected</option>
+              <option value="partial">Partial</option>
+            </select>
+          </div>
+          <div class="pb-field"><label>Reimbursement Amount (OMR)</label><input type="number" id="fReimbAmount" step="0.01" min="0" placeholder="0.00"></div>
+        </div>
+        <div class="pb-row">
+          <div class="pb-field"><label>Reimbursement Date</label><input type="date" id="fReimbDate"></div>
+          <div class="pb-field"></div>
+        </div>
+        <div class="pb-field"><label>Reimbursement Plan</label><textarea id="fReimbPlan" placeholder="Notes on how/when to claim reimbursement..."></textarea></div>
+        <div class="pb-field"><label>Notes</label><textarea id="fNotes" placeholder="Any additional notes..."></textarea></div>
+
+        <div style="display:flex;gap:10px;margin-top:16px">
+          <button type="submit" class="pb-btn pb-btn-primary" id="submitBtn">Save Publication</button>
+          <button type="button" class="pb-btn pb-btn-ghost" onclick="resetForm()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- TAB: ADMIN (admin only) -->
+  <div id="tab-admin" class="pb-wrap pb-hidden">
+    <div id="adminSummary"></div>
+    <div class="pb-card">
+      <div class="pb-section-title"><span>Summary Stats</span>
+        <button class="pb-btn-sm" style="margin-left:auto" onclick="exportCSV()">Export CSV</button>
+      </div>
+      <div id="adminStatsTable"></div>
+    </div>
+    <div class="pb-card">
+      <div class="pb-section-title">Reimbursement Action Items</div>
+      <div id="actionItems"></div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="brand"><span class="brand-glyph">مداد</span><span class="brand-en">MEDAD</span></div>
+        <p class="foot-desc">Ambient clinical documentation, in Arabic, on-premise. <i>Made in Oman, for the Arab world.</i></p>
+      </div>
+      <div><h5>The Project</h5><ul><li><a href="./">Home</a></li><li><a href="./team.html">The Team</a></li><li><a href="./worklog.html">Work Log</a></li><li><a href="./budget.html">Budget</a></li><li><a href="./publications.html">Publications</a></li></ul></div>
+      <div><h5>Get Involved</h5><ul><li><a href="./join.html">Join the Project</a></li><li><a href="https://annotate.medad.om">Become an Annotator</a></li><li><a href="mailto:dr.abdullahalalawi@gmail.com">dr.abdullahalalawi@gmail.com</a></li></ul></div>
+      <div><h5>Imprint</h5><ul><li>Muscat, Oman</li><li>SQUH · OMSB · MCMSS</li><li>SQU · GUtech</li><li>EST. 2025</li></ul></div>
+    </div>
+    <div class="foot-bottom"><span>&copy; 2026 Medad · A National AI Initiative · v2.0</span><span class="ar">المُداد يستمع · يكتب · يتعلّم</span></div>
+  </div>
+</footer>
+
+<script>
+const SUPABASE_URL='https://xrxekxvyzayudgkixmza.supabase.co';
+const SUPABASE_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyeGVreHZ5emF5dWRna2l4bXphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1MDM1NzIsImV4cCI6MjA5NjA3OTU3Mn0.dK21GXduLQV2aOsfs743FpYthhA3UNjIRxwYXDAIEHw';
+const RESET_REDIRECT='https://medad.om/reset';
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON);
+let currentMember=null,allPubs=[],allFunders=[];
+
+/* ==================== AUTH ==================== */
+async function init(){
+  const{data:{session}}=await sb.auth.getSession();
+  if(session){await onLogin(session.user)}else{document.getElementById('loginView').classList.remove('pb-hidden');document.getElementById('appView').classList.add('pb-hidden')}
+}
+
+function showForgot(){document.getElementById('loginForm').classList.add('pb-hidden');document.getElementById('forgotForm').classList.remove('pb-hidden');document.getElementById('loginAlert').style.display='none'}
+function showLogin(){document.getElementById('loginForm').classList.remove('pb-hidden');document.getElementById('forgotForm').classList.add('pb-hidden');document.getElementById('loginAlert').style.display='none'}
+
+document.getElementById('forgotForm').addEventListener('submit',async(e)=>{e.preventDefault();const email=document.getElementById('forgotEmail').value.trim();const btn=document.getElementById('forgotBtn');const a=document.getElementById('loginAlert');btn.disabled=true;btn.textContent='Sending...';a.style.display='none';const{error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:RESET_REDIRECT});if(error){a.className='pb-alert pb-alert-error';a.textContent=error.message}else{a.className='pb-alert pb-alert-success';a.textContent='Reset link sent! Check your email.'}a.style.display='block';btn.disabled=false;btn.textContent='Send Reset Link'});
+
+document.getElementById('loginForm').addEventListener('submit',async(e)=>{e.preventDefault();const email=document.getElementById('loginEmail').value.trim();const pw=document.getElementById('loginPassword').value;const btn=document.getElementById('loginBtn');const a=document.getElementById('loginAlert');a.style.display='none';btn.disabled=true;btn.textContent='Signing in...';const{data,error}=await sb.auth.signInWithPassword({email,password:pw});if(error){a.textContent=error.message;a.className='pb-alert pb-alert-error';a.style.display='block';btn.disabled=false;btn.textContent='Sign In';return}await onLogin(data.user)});
+
+async function onLogin(user){
+  let{data:member}=await sb.from('team_members').select('*').eq('auth_id',user.id).limit(1).single();
+  if(!member){const{data:byEmail}=await sb.from('team_members').select('*').eq('email',user.email).limit(1).single();if(byEmail){await sb.from('team_members').update({auth_id:user.id}).eq('id',byEmail.id);member={...byEmail,auth_id:user.id}}else{const a=document.getElementById('loginAlert');a.className='pb-alert pb-alert-error';a.textContent='Your email is not registered as a team member.';a.style.display='block';await sb.auth.signOut();return}}
+  currentMember=member;
+  document.getElementById('loginView').classList.add('pb-hidden');
+  document.getElementById('appView').classList.remove('pb-hidden');
+  document.getElementById('userName').textContent=member.display_name;
+  if(member.role==='admin'){
+    document.getElementById('formTab').classList.remove('pb-hidden');
+    document.getElementById('adminTab').classList.remove('pb-hidden');
+  }
+  await loadFunders();
+  await loadPublications();
+}
+
+async function signOut(){await sb.auth.signOut();currentMember=null;allPubs=[];allFunders=[];document.getElementById('loginView').classList.remove('pb-hidden');document.getElementById('appView').classList.add('pb-hidden');document.getElementById('formTab').classList.add('pb-hidden');document.getElementById('adminTab').classList.add('pb-hidden');document.getElementById('loginAlert').style.display='none';document.getElementById('loginBtn').disabled=false;document.getElementById('loginBtn').textContent='Sign In';switchTab('dashboard')}
+
+/* ==================== DATA ==================== */
+async function loadFunders(){
+  const{data}=await sb.from('budget_funders').select('id,name,short_name').order('name').limit(100);
+  allFunders=data||[];
+  const sel=document.getElementById('fFunder');
+  sel.innerHTML='<option value="">None</option>';
+  allFunders.forEach(f=>{const o=document.createElement('option');o.value=f.id;o.textContent=f.short_name||f.name;sel.appendChild(o)});
+}
+
+async function loadPublications(){
+  const{data}=await sb.from('publications').select('*').order('created_at',{ascending:false}).limit(500);
+  allPubs=data||[];
+  renderDashboard();
+}
+
+/* ==================== DASHBOARD ==================== */
+function renderDashboard(){
+  const pubs=allPubs;
+  // Calculate totals
+  const totalApc=pubs.reduce((s,p)=>s+(parseFloat(p.apc_fee)||0),0);
+  const totalReimbursed=pubs.reduce((s,p)=>{
+    if(p.reimburse_status==='received'||p.reimburse_status==='partial') return s+(parseFloat(p.reimburse_amount)||0);
+    return s;
+  },0);
+  const pendingReimb=pubs.reduce((s,p)=>{
+    if(p.reimburse_status==='applied'||p.reimburse_status==='approved') return s+(parseFloat(p.apc_fee)||0)-(parseFloat(p.reimburse_amount)||0);
+    return s;
+  },0);
+  const poolBalance=totalReimbursed-totalApc;
+
+  // Pool balance card
+  document.getElementById('poolCard').innerHTML=
+    '<div class="pb-pool-card">'+
+      '<div class="pool-label">Publication Pool Balance</div>'+
+      '<div class="pool-balance">OMR '+(poolBalance>=0?'':'-')+Math.abs(poolBalance).toFixed(2)+'</div>'+
+      '<div class="pool-sub">'+
+        '<div class="item"><span class="val">OMR '+totalApc.toFixed(2)+'</span><span class="lbl">Total APC Paid</span></div>'+
+        '<div class="item"><span class="val">OMR '+totalReimbursed.toFixed(2)+'</span><span class="lbl">Total Refunded</span></div>'+
+        '<div class="item"><span class="val">OMR '+pendingReimb.toFixed(2)+'</span><span class="lbl">Pending Refunds</span></div>'+
+      '</div>'+
+    '</div>';
+
+  // Stats
+  const pubCount=pubs.filter(p=>p.pub_status==='published').length;
+  const reviewCount=pubs.filter(p=>p.pub_status==='under_review'||p.pub_status==='submitted').length;
+  const acceptedCount=pubs.filter(p=>p.pub_status==='accepted').length;
+  document.getElementById('poolStats').innerHTML=
+    '<div class="pb-stats">'+
+      '<div class="pb-stat"><div class="val">'+pubs.length+'</div><div class="lbl">Total Papers</div></div>'+
+      '<div class="pb-stat"><div class="val">'+pubCount+'</div><div class="lbl">Published</div></div>'+
+      '<div class="pb-stat"><div class="val">'+acceptedCount+'</div><div class="lbl">Accepted</div></div>'+
+      '<div class="pb-stat"><div class="val">'+reviewCount+'</div><div class="lbl">In Pipeline</div></div>'+
+    '</div>';
+
+  // Reimbursement progress by source
+  const sources=['SQU Pub Support','TRC','OMSB'];
+  let progressHtml='';
+  sources.forEach(src=>{
+    const srcPubs=pubs.filter(p=>p.reimburse_source===src);
+    if(!srcPubs.length) return;
+    const claimed=srcPubs.reduce((s,p)=>(p.reimburse_status==='received'||p.reimburse_status==='partial')?s+(parseFloat(p.reimburse_amount)||0):s,0);
+    const total=srcPubs.reduce((s,p)=>s+(parseFloat(p.apc_fee)||0),0);
+    const pct=total>0?Math.min(100,(claimed/total*100)):0;
+    progressHtml+=
+      '<div class="pb-progress-wrap">'+
+        '<div class="pb-progress-label"><span class="name">'+src+'</span><span class="amt">OMR '+claimed.toFixed(2)+' / '+total.toFixed(2)+'</span></div>'+
+        '<div class="pb-progress-bar"><div class="pb-progress-bar-fill" style="width:'+pct.toFixed(1)+'%"></div></div>'+
+      '</div>';
+  });
+  document.getElementById('reimbProgress').innerHTML=progressHtml;
+
+  // Publication cards
+  if(!pubs.length){document.getElementById('pubCards').innerHTML='<div class="pb-empty">No publications yet</div>';return}
+  let cardsHtml='';
+  pubs.forEach(p=>{
+    const statusLabel=(p.pub_status||'submitted').replace('_',' ');
+    const reimbLabel=(p.reimburse_status||'not_applied').replace('_',' ');
+    cardsHtml+='<div class="pb-pub-card">';
+    cardsHtml+='<div class="pub-title">'+esc(p.title)+'</div>';
+    cardsHtml+='<div class="pub-journal">'+esc(p.journal||'')+(p.pub_date?' &middot; '+p.pub_date:'')+'</div>';
+    if(p.authors) cardsHtml+='<div style="font-size:12px;color:var(--ink-soft);margin-bottom:6px">'+esc(p.authors)+'</div>';
+    cardsHtml+='<div class="pub-meta">';
+    cardsHtml+='<span class="pb-badge pb-status-'+(p.pub_status||'submitted')+'">'+statusLabel+'</span>';
+    if(p.reimburse_status&&p.reimburse_status!=='not_applied'){
+      cardsHtml+='<span class="pb-badge pb-reimb-'+(p.reimburse_status||'not_applied')+'">Reimb: '+reimbLabel+'</span>';
+    } else if(p.apc_fee&&parseFloat(p.apc_fee)>0){
+      cardsHtml+='<span class="pb-badge pb-reimb-not_applied">Reimb: not applied</span>';
+    }
+    if(p.related_project) cardsHtml+='<span class="pub-project">'+esc(p.related_project)+'</span>';
+    cardsHtml+='</div>';
+
+    // Links
+    let links='';
+    if(p.pmid) links+='<a href="https://pubmed.ncbi.nlm.nih.gov/'+esc(p.pmid)+'/" target="_blank">PubMed</a>';
+    if(p.doi) links+='<a href="https://doi.org/'+esc(p.doi)+'" target="_blank">DOI</a>';
+    if(links) cardsHtml+='<div class="pub-links">'+links+'</div>';
+
+    // Money
+    if(parseFloat(p.apc_fee)||parseFloat(p.reimburse_amount)){
+      cardsHtml+='<div class="pub-money">';
+      if(parseFloat(p.apc_fee)){
+        let apcStr='OMR '+parseFloat(p.apc_fee).toFixed(2);
+        if(p.apc_original_amount&&p.apc_original_currency) apcStr+=' ('+p.apc_original_currency+' '+parseFloat(p.apc_original_amount).toFixed(2)+')';
+        cardsHtml+='<div><div class="label">APC Paid</div><div class="value">'+apcStr+'</div></div>';
+        if(p.paid_by) cardsHtml+='<div><div class="label">Paid By</div><div class="value">'+esc(p.paid_by)+'</div></div>';
+      }
+      if(parseFloat(p.reimburse_amount)){
+        cardsHtml+='<div><div class="label">Reimbursed</div><div class="value">OMR '+parseFloat(p.reimburse_amount).toFixed(2)+'</div></div>';
+        if(p.reimburse_source) cardsHtml+='<div><div class="label">Source</div><div class="value">'+esc(p.reimburse_source)+'</div></div>';
+      }
+      cardsHtml+='</div>';
+    }
+
+    // Edit button (admin only)
+    if(currentMember&&currentMember.role==='admin'){
+      cardsHtml+='<div class="pub-actions"><button class="pb-btn-sm" onclick="editPub(\''+p.id+'\')">Edit</button><button class="pb-btn-sm" style="color:var(--seal)" onclick="deletePub(\''+p.id+'\')">Delete</button></div>';
+    }
+    cardsHtml+='</div>';
+  });
+  document.getElementById('pubCards').innerHTML=cardsHtml;
+}
+
+/* ==================== FORM ==================== */
+document.getElementById('pubForm').addEventListener('submit',async(e)=>{
+  e.preventDefault();
+  const a=document.getElementById('formAlert');
+  const btn=document.getElementById('submitBtn');
+  a.style.display='none';btn.disabled=true;btn.textContent='Saving...';
+
+  const record={
+    title:document.getElementById('fTitle').value.trim(),
+    journal:document.getElementById('fJournal').value.trim(),
+    authors:document.getElementById('fAuthors').value.trim()||null,
+    pmid:document.getElementById('fPmid').value.trim()||null,
+    doi:document.getElementById('fDoi').value.trim()||null,
+    pub_status:document.getElementById('fPubStatus').value,
+    pub_date:document.getElementById('fPubDate').value||null,
+    apc_fee:parseFloat(document.getElementById('fApcFee').value)||null,
+    apc_original_amount:parseFloat(document.getElementById('fOrigAmount').value)||null,
+    apc_original_currency:document.getElementById('fOrigCurrency').value||null,
+    paid_by:document.getElementById('fPaidBy').value||null,
+    paid_date:document.getElementById('fPaidDate').value||null,
+    reimburse_source:document.getElementById('fReimbSource').value||null,
+    reimburse_status:document.getElementById('fReimbStatus').value||'not_applied',
+    reimburse_amount:parseFloat(document.getElementById('fReimbAmount').value)||null,
+    reimburse_date:document.getElementById('fReimbDate').value||null,
+    reimburse_plan:document.getElementById('fReimbPlan').value.trim()||null,
+    related_project:document.getElementById('fProject').value||null,
+    funder_id:document.getElementById('fFunder').value?parseInt(document.getElementById('fFunder').value):null,
+    notes:document.getElementById('fNotes').value.trim()||null,
+    updated_at:new Date().toISOString()
+  };
+
+  const editId=document.getElementById('editId').value;
+  let error;
+  if(editId){
+    ({error}=await sb.from('publications').update(record).eq('id',editId));
+  } else {
+    ({error}=await sb.from('publications').insert(record));
+  }
+
+  if(error){a.className='pb-alert pb-alert-error';a.textContent=error.message;a.style.display='block';btn.disabled=false;btn.textContent='Save Publication';return}
+  a.className='pb-alert pb-alert-success';a.textContent=editId?'Publication updated!':'Publication added!';a.style.display='block';
+  setTimeout(()=>a.style.display='none',3000);
+  resetForm();
+  await loadPublications();
+  btn.disabled=false;btn.textContent='Save Publication';
+});
+
+function resetForm(){
+  document.getElementById('pubForm').reset();
+  document.getElementById('editId').value='';
+  document.getElementById('formTitle').textContent='Add Publication';
+  document.getElementById('formAlert').style.display='none';
+}
+
+function editPub(id){
+  const p=allPubs.find(x=>x.id===id);
+  if(!p) return;
+  document.getElementById('editId').value=p.id;
+  document.getElementById('formTitle').textContent='Edit Publication';
+  document.getElementById('fTitle').value=p.title||'';
+  document.getElementById('fJournal').value=p.journal||'';
+  document.getElementById('fAuthors').value=p.authors||'';
+  document.getElementById('fPmid').value=p.pmid||'';
+  document.getElementById('fDoi').value=p.doi||'';
+  document.getElementById('fPubStatus').value=p.pub_status||'submitted';
+  document.getElementById('fPubDate').value=p.pub_date||'';
+  document.getElementById('fApcFee').value=p.apc_fee||'';
+  document.getElementById('fOrigAmount').value=p.apc_original_amount||'';
+  document.getElementById('fOrigCurrency').value=p.apc_original_currency||'';
+  document.getElementById('fPaidBy').value=p.paid_by||'';
+  document.getElementById('fPaidDate').value=p.paid_date||'';
+  document.getElementById('fReimbSource').value=p.reimburse_source||'';
+  document.getElementById('fReimbStatus').value=p.reimburse_status||'not_applied';
+  document.getElementById('fReimbAmount').value=p.reimburse_amount||'';
+  document.getElementById('fReimbDate').value=p.reimburse_date||'';
+  document.getElementById('fReimbPlan').value=p.reimburse_plan||'';
+  document.getElementById('fProject').value=p.related_project||'';
+  document.getElementById('fFunder').value=p.funder_id||'';
+  document.getElementById('fNotes').value=p.notes||'';
+  switchTab('form');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+async function deletePub(id){
+  if(!confirm('Delete this publication?')) return;
+  await sb.from('publications').delete().eq('id',id);
+  await loadPublications();
+}
+
+/* ==================== ADMIN ==================== */
+function renderAdmin(){
+  const pubs=allPubs;
+  const totalApc=pubs.reduce((s,p)=>s+(parseFloat(p.apc_fee)||0),0);
+  const totalReimbursed=pubs.reduce((s,p)=>(p.reimburse_status==='received'||p.reimburse_status==='partial')?s+(parseFloat(p.reimburse_amount)||0):s,0);
+  const netCost=totalApc-totalReimbursed;
+
+  // Pending by source
+  const sources=['SQU Pub Support','TRC','OMSB','Other'];
+  let pendingBySource={};
+  sources.forEach(src=>{
+    const srcPubs=pubs.filter(p=>p.reimburse_source===src&&(p.reimburse_status==='applied'||p.reimburse_status==='approved'));
+    pendingBySource[src]=srcPubs.reduce((s,p)=>s+(parseFloat(p.apc_fee)||0)-(parseFloat(p.reimburse_amount)||0),0);
+  });
+
+  // Summary cards
+  let summaryHtml='<div class="pb-summary-grid">';
+  summaryHtml+='<div class="pb-summary-card"><div class="sum-label">Total APC Paid</div><div class="sum-val">'+totalApc.toFixed(2)+'</div></div>';
+  summaryHtml+='<div class="pb-summary-card"><div class="sum-label">Total Refunded</div><div class="sum-val">'+totalReimbursed.toFixed(2)+'</div></div>';
+  summaryHtml+='<div class="pb-summary-card"><div class="sum-label">Net Cost</div><div class="sum-val">'+netCost.toFixed(2)+'</div></div>';
+  sources.forEach(src=>{
+    if(pendingBySource[src]>0){
+      summaryHtml+='<div class="pb-summary-card"><div class="sum-label">Pending: '+src+'</div><div class="sum-val">'+pendingBySource[src].toFixed(2)+'</div></div>';
+    }
+  });
+  summaryHtml+='</div>';
+  document.getElementById('adminSummary').innerHTML=summaryHtml;
+
+  // Stats table
+  let tableHtml='<table class="pb-table"><thead><tr><th>Title</th><th>Status</th><th>APC (OMR)</th><th>Reimb Status</th><th>Reimb Amt</th><th>Source</th></tr></thead><tbody>';
+  pubs.forEach(p=>{
+    tableHtml+='<tr>';
+    tableHtml+='<td style="max-width:250px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="'+esc(p.title)+'">'+esc(p.title)+'</td>';
+    tableHtml+='<td><span class="pb-badge pb-status-'+(p.pub_status||'submitted')+'">'+(p.pub_status||'submitted').replace('_',' ')+'</span></td>';
+    tableHtml+='<td class="pb-amount">'+(parseFloat(p.apc_fee)?parseFloat(p.apc_fee).toFixed(2):'—')+'</td>';
+    tableHtml+='<td><span class="pb-badge pb-reimb-'+(p.reimburse_status||'not_applied')+'">'+(p.reimburse_status||'not_applied').replace('_',' ')+'</span></td>';
+    tableHtml+='<td class="pb-amount">'+(parseFloat(p.reimburse_amount)?parseFloat(p.reimburse_amount).toFixed(2):'—')+'</td>';
+    tableHtml+='<td>'+(p.reimburse_source||'—')+'</td>';
+    tableHtml+='</tr>';
+  });
+  tableHtml+='</tbody></table>';
+  document.getElementById('adminStatsTable').innerHTML=tableHtml;
+
+  // Action items: pubs with APC > 0 and reimburse_status = not_applied
+  const actionPubs=pubs.filter(p=>parseFloat(p.apc_fee)>0&&(!p.reimburse_status||p.reimburse_status==='not_applied'));
+  if(!actionPubs.length){
+    document.getElementById('actionItems').innerHTML='<div class="pb-empty">No pending action items</div>';
+    return;
+  }
+  let actHtml='';
+  actionPubs.forEach(p=>{
+    actHtml+='<div class="pb-action-item">';
+    actHtml+='<div class="action-title">'+esc(p.title)+'</div>';
+    actHtml+='<div class="action-detail">APC: OMR '+(parseFloat(p.apc_fee)||0).toFixed(2)+' &middot; '+(p.journal||'Unknown journal')+' &middot; No reimbursement application filed</div>';
+    if(p.reimburse_plan) actHtml+='<div class="action-detail" style="margin-top:4px;color:var(--gold-deep)">Plan: '+esc(p.reimburse_plan)+'</div>';
+    actHtml+='</div>';
+  });
+  document.getElementById('actionItems').innerHTML=actHtml;
+}
+
+function exportCSV(){
+  if(!allPubs.length) return alert('No data to export');
+  const headers=['Title','Journal','Authors','PMID','DOI','Status','Pub Date','APC Fee (OMR)','Original Amount','Original Currency','Paid By','Paid Date','Reimb Source','Reimb Status','Reimb Amount','Reimb Date','Reimb Plan','Related Project','Notes'];
+  const rows=allPubs.map(p=>[
+    p.title,p.journal,p.authors,p.pmid,p.doi,p.pub_status,p.pub_date,
+    p.apc_fee,p.apc_original_amount,p.apc_original_currency,p.paid_by,p.paid_date,
+    p.reimburse_source,p.reimburse_status,p.reimburse_amount,p.reimburse_date,
+    p.reimburse_plan,p.related_project,p.notes
+  ]);
+  const csv=[headers,...rows].map(r=>r.map(c=>'"'+String(c||'').replace(/"/g,'""')+'"').join(',')).join('\n');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download='medad_publications_'+new Date().toISOString().split('T')[0]+'.csv';
+  a.click();
+}
+
+/* ==================== TAB SWITCHING ==================== */
+function switchTab(tab){
+  document.querySelectorAll('.pb-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelector('.pb-tab[data-tab="'+tab+'"]').classList.add('active');
+  document.querySelectorAll('[id^="tab-"]').forEach(p=>p.classList.add('pb-hidden'));
+  document.getElementById('tab-'+tab).classList.remove('pb-hidden');
+  if(tab==='admin') renderAdmin();
+  if(tab==='dashboard') renderDashboard();
+}
+
+/* ==================== UTILS ==================== */
+function esc(s){if(!s) return '';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+
+init();
+</script>
+</body>
+</html>
