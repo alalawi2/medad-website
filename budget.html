@@ -942,12 +942,14 @@ async function loadPublications(){
   allPubs=data||[];renderPubStats();renderPubCards();
 }
 function renderPubStats(){
-  const pubs=allPubs.filter(p=>!p.title.startsWith('POOL:'));
+  const poolPubs=allPubs.filter(p=>!p.title.startsWith('POOL:')&&p.paid_by!=='Pre-pool');
+  const prePools=allPubs.filter(p=>p.paid_by==='Pre-pool');
   const deps=allPubs.filter(p=>p.title.startsWith('POOL:'));
-  const totalApc=pubs.reduce((s,p)=>s+(parseFloat(p.apc_fee)||0),0);
-  const totalRef=pubs.reduce((s,p)=>s+(parseFloat(p.reimburse_amount)||0),0);
+  const totalApc=poolPubs.reduce((s,p)=>s+(parseFloat(p.apc_fee)||0),0);
+  const totalRef=poolPubs.reduce((s,p)=>s+(parseFloat(p.reimburse_amount)||0),0);
   const totalDep=deps.reduce((s,p)=>s+Math.abs(parseFloat(p.apc_fee)||0),0);
-  const pending=pubs.filter(p=>['applied','approved','not_applied'].includes(p.reimburse_status)&&parseFloat(p.apc_fee)>0).reduce((s,p)=>s+(parseFloat(p.apc_fee)||0)-(parseFloat(p.reimburse_amount)||0),0);
+  const pending=poolPubs.filter(p=>['applied','approved','not_applied'].includes(p.reimburse_status)&&parseFloat(p.apc_fee)>0).reduce((s,p)=>s+(parseFloat(p.apc_fee)||0)-(parseFloat(p.reimburse_amount)||0),0);
+  const prePoolPending=prePools.reduce((s,p)=>s+(parseFloat(p.apc_fee)||0)-(parseFloat(p.reimburse_amount)||0),0);
   const bal=totalDep-totalApc+totalRef;
   document.getElementById('pubPoolStats').innerHTML=
     `<div class="bg-stat-card"><div class="bg-stat-val" style="color:#059669">${bal.toFixed(3)}</div><div class="bg-stat-label">Pool Balance (OMR)</div></div>
@@ -955,7 +957,8 @@ function renderPubStats(){
     <div class="bg-stat-card"><div class="bg-stat-val" style="color:var(--seal)">${totalApc.toFixed(3)}</div><div class="bg-stat-label">Total APC Paid</div></div>
     <div class="bg-stat-card"><div class="bg-stat-val" style="color:#059669">${totalRef.toFixed(3)}</div><div class="bg-stat-label">Refunded</div></div>
     <div class="bg-stat-card"><div class="bg-stat-val" style="color:var(--gold)">${pending.toFixed(3)}</div><div class="bg-stat-label">Pending Refunds</div></div>
-    <div class="bg-stat-card"><div class="bg-stat-val">${pubs.length}</div><div class="bg-stat-label">Papers</div></div>`;
+    <div class="bg-stat-card"><div class="bg-stat-val">${poolPubs.length}</div><div class="bg-stat-label">Pool Papers</div></div>
+    ${prePools.length?`<div class="bg-stat-card"><div class="bg-stat-val" style="color:var(--ink-soft)">${prePoolPending.toFixed(3)}</div><div class="bg-stat-label">Pre-Pool (refund tracking)</div></div>`:''}`;
 }
 function renderPubCards(){
   const pubs=allPubs.filter(p=>!p.title.startsWith('POOL:'));
