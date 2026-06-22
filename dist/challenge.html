@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<title>The Medad Challenge — Monthly Annotation Competition | مداد</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Compete monthly to annotate Arabic medical audio for the first open Arabic clinical AI. Top 3 win cash prizes, certificates, and a place on the Wall of Fame.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.medad.om/challenge.html">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.medad.om/challenge.html">
+<meta property="og:title" content="The Medad Challenge — Annotate. Earn. Be Named in History.">
+<meta property="og:description" content="Monthly competition to build the first open Arabic clinical AI. Cash prizes for the top 3 reviewers — 75 / 50 / 30 OMR. Certificates for top 4. Wall of Fame.">
+<meta property="og:image" content="https://www.medad.om/images/hero.jpg">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Medad Challenge — تحدّي مداد">
+<meta name="twitter:description" content="Help build the first open Arabic medical AI. Monthly leaderboard. Cash prizes. Certificates. Wall of Fame.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Amiri:ital,wght@0,400;0,700&family=Reem+Kufi:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --paper:#faf8f4;
+  --paper-2:#f0ede7;
+  --paper-3:#e5e1da;
+  --ink:#14110d;
+  --ink-2:#1e1a16;
+  --ink-soft:#38322c;
+  --gold:#b8853a;
+  --gold-2:#d4a24c;
+  --gold-deep:#8e6326;
+  --teal:#008080;
+  --teal-dark:#006666;
+  --gold-warm:#E8B860;
+  --rule:rgba(20,17,13,0.16);
+  --rule-soft:rgba(20,17,13,0.08);
+  --sans:'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --mono:'JetBrains Mono', ui-monospace, monospace;
+  --ar:'Amiri', 'Noto Naskh Arabic', serif;
+  --kufi:'Reem Kufi', 'Noto Kufi Arabic', sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+::selection{background:var(--gold);color:var(--ink)}
+.wrap{max-width:1380px;margin:0 auto;padding:0 56px;position:relative;z-index:2}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:60;background:rgba(250,248,244,0.92);backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid var(--rule)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;padding:18px 56px;max-width:1380px;margin:0 auto}
+.brand{display:flex;align-items:center;gap:14px}
+.brand-glyph{font-family:var(--ar);font-size:30px;font-weight:700;color:var(--ink);letter-spacing:-0.01em;line-height:1;position:relative;padding-right:4px}
+.brand-glyph::after{content:'';position:absolute;bottom:-3px;left:0;right:4px;height:2px;background:linear-gradient(90deg, var(--gold) 0%, var(--gold) 60%, transparent 100%)}
+.brand-logo{height:38px;width:auto;border-radius:6px}
+.brand-en{font-family:var(--mono);font-size:12px;letter-spacing:.32em;color:var(--ink-2);padding-top:4px;border-left:1px solid var(--rule);padding-left:14px}
+.nav-links{display:flex;gap:2px;align-items:center}
+.nav-link{padding:8px 14px;font-size:13px;color:var(--ink-soft);transition:.2s;border-radius:2px}
+.nav-link:hover, .nav-link.active{color:var(--ink);background:rgba(20,17,13,0.05)}
+.nav-cta{display:inline-flex;align-items:center;gap:8px;background:#008080;color:#fff;padding:10px 18px;font-size:12.5px;letter-spacing:.04em;font-weight:500;margin-left:8px;border:1px solid #008080;transition:.2s;border-radius:6px}
+.nav-cta:hover{background:#006666;border-color:#006666}
+
+/* hero */
+.hero{padding:74px 0 60px;background:radial-gradient(circle at 12% 0%, rgba(184,133,58,0.10) 0%, transparent 55%),radial-gradient(circle at 88% 100%, rgba(0,128,128,0.08) 0%, transparent 50%)}
+.eyebrow{font-family:var(--mono);font-size:11.5px;color:var(--gold-deep);letter-spacing:.34em;text-transform:uppercase;margin-bottom:18px;font-weight:600}
+.hero-title{font-family:var(--kufi);font-size:clamp(40px, 5.5vw, 64px);font-weight:700;line-height:1.05;letter-spacing:-0.02em;color:var(--ink);max-width:920px}
+.hero-title .ar{display:block;font-family:var(--ar);font-weight:700;color:var(--gold-deep);font-size:0.86em;margin-bottom:6px;line-height:1.2}
+.hero-sub{margin-top:22px;font-size:18px;color:var(--ink-soft);max-width:760px;line-height:1.6}
+.hero-sub strong{color:var(--ink);font-weight:600}
+
+/* countdown */
+.countdown-card{margin-top:38px;background:linear-gradient(135deg, #fffbef 0%, #fff5d6 100%);border:1.5px solid var(--gold);border-radius:18px;padding:26px 30px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;box-shadow:0 4px 20px rgba(184,133,58,0.12)}
+.countdown-label{font-family:var(--mono);font-size:11.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold-deep);font-weight:600}
+.countdown-deadline{font-family:var(--kufi);font-size:18px;color:var(--ink);margin-top:6px;font-weight:600}
+.countdown-timer{display:flex;gap:18px;font-family:var(--mono)}
+.countdown-block{text-align:center;min-width:64px}
+.countdown-num{font-size:42px;font-weight:700;color:var(--ink);line-height:1;letter-spacing:-0.02em}
+.countdown-unit{font-size:11px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.15em;margin-top:4px}
+
+/* sections */
+.section{padding:70px 0;border-top:1px solid var(--rule-soft)}
+.section-eyebrow{font-family:var(--mono);font-size:11px;color:var(--gold-deep);letter-spacing:.32em;text-transform:uppercase;font-weight:600;margin-bottom:14px}
+.section-title{font-family:var(--kufi);font-size:clamp(28px, 3.6vw, 44px);font-weight:700;line-height:1.1;letter-spacing:-0.015em;margin-bottom:22px;max-width:840px}
+
+/* prize tiers */
+.prizes{display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:18px;margin-top:18px}
+.prize-card{background:#fff;border:1.5px solid var(--rule);border-radius:14px;padding:24px 22px;position:relative;transition:.25s}
+.prize-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,0.06)}
+.prize-card.gold{background:linear-gradient(135deg, #FFF8E1 0%, #FFEDB8 100%);border-color:#E5B85A}
+.prize-card.silver{background:linear-gradient(135deg, #F5F5F5 0%, #E5E5E5 100%);border-color:#BBB}
+.prize-card.bronze{background:linear-gradient(135deg, #FBE9D8 0%, #F3D4B0 100%);border-color:#CC9966}
+.prize-card.cert{background:#fff;border-color:var(--rule)}
+.prize-medal{font-size:36px;line-height:1;margin-bottom:10px}
+.prize-rank{font-family:var(--mono);font-size:11px;letter-spacing:.24em;color:var(--ink-soft);text-transform:uppercase;font-weight:600}
+.prize-amount{font-family:var(--kufi);font-size:34px;font-weight:700;color:var(--ink);margin-top:6px;line-height:1.05}
+.prize-amount small{font-size:14px;color:var(--ink-soft);font-weight:500;margin-left:4px}
+.prize-perks{margin-top:14px;font-size:13px;color:var(--ink-soft);line-height:1.6}
+.prize-perks div{margin-top:3px}
+
+/* formula */
+.formula-card{background:var(--paper-2);border:1px solid var(--rule);border-radius:14px;padding:26px 30px;margin-top:18px}
+.formula-line{font-family:var(--mono);font-size:15px;color:var(--ink);background:#fff;padding:16px 20px;border-radius:8px;border:1px solid var(--rule);overflow-x:auto;line-height:1.7}
+.formula-examples{margin-top:18px;font-size:13.5px;color:var(--ink-soft);line-height:1.85}
+.formula-examples b{color:var(--ink);font-family:var(--mono)}
+.eligibility{margin-top:22px;padding:14px 18px;background:#fffcf2;border-right:3px solid var(--gold);border-radius:6px;font-size:14px;color:var(--ink-soft);line-height:1.7}
+.eligibility strong{color:var(--ink)}
+
+/* leaderboard */
+.leaderboard{margin-top:18px;background:#fff;border:1px solid var(--rule);border-radius:14px;overflow:hidden}
+.lb-head{display:grid;grid-template-columns:60px 1fr 100px 110px 100px;gap:14px;padding:14px 22px;background:var(--paper-2);font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;border-bottom:1px solid var(--rule)}
+.lb-row{display:grid;grid-template-columns:60px 1fr 100px 110px 100px;gap:14px;padding:18px 22px;border-bottom:1px solid var(--rule-soft);align-items:center;font-size:14.5px}
+.lb-row:last-child{border-bottom:none}
+.lb-row.gold{background:linear-gradient(90deg, #FFF8E1 0%, transparent 60%)}
+.lb-row.silver{background:linear-gradient(90deg, #F2F2F2 0%, transparent 60%)}
+.lb-row.bronze{background:linear-gradient(90deg, #FBE9D8 0%, transparent 60%)}
+.lb-rank{font-family:var(--kufi);font-size:22px;font-weight:700;color:var(--ink)}
+.lb-rank.gold{color:#B8853A}
+.lb-rank.silver{color:#777}
+.lb-rank.bronze{color:#AA6633}
+.lb-name{font-weight:600;color:var(--ink)}
+.lb-flag{font-size:18px;margin-left:6px}
+.lb-num{font-family:var(--mono);font-size:14px;color:var(--ink-soft);text-align:right}
+.lb-score{font-family:var(--kufi);font-size:18px;font-weight:700;color:var(--ink);text-align:right}
+.lb-empty{padding:34px;text-align:center;color:var(--ink-soft);font-style:italic}
+.lb-more{padding:14px 22px;text-align:center;color:var(--ink-soft);font-size:13px;background:var(--paper-2);border-top:1px solid var(--rule-soft)}
+.lb-more a{color:var(--gold-deep);font-weight:600;text-decoration:underline}
+.lb-meta{margin-top:10px;font-size:12.5px;color:var(--ink-soft);text-align:right;font-family:var(--mono)}
+.lb-meta .live-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#3a7d44;animation:pulse 1.6s ease-in-out infinite;margin-right:6px;vertical-align:middle}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+/* wall of fame */
+.fame-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));gap:14px;margin-top:18px}
+.fame-card{background:#fff;border:1px solid var(--rule);border-radius:14px;padding:22px 20px;text-align:center}
+.fame-medal{font-size:32px;margin-bottom:8px}
+.fame-name{font-family:var(--kufi);font-size:18px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.fame-period{font-family:var(--mono);font-size:11px;color:var(--ink-soft);letter-spacing:.14em;text-transform:uppercase;margin-top:6px}
+.fame-stats{font-size:12.5px;color:var(--ink-soft);margin-top:8px;line-height:1.5}
+.fame-empty{padding:40px 30px;text-align:center;background:var(--paper-2);border:1px dashed var(--rule);border-radius:14px;color:var(--ink-soft);font-style:italic;margin-top:18px}
+
+/* share kit */
+.share-kit{background:linear-gradient(135deg, #fffbef 0%, #fff5d6 100%);border:1.5px solid var(--gold);border-radius:18px;padding:30px;margin-top:20px}
+.share-title{font-family:var(--kufi);font-size:22px;font-weight:700;color:var(--gold-deep);margin-bottom:8px}
+.share-sub{color:var(--ink-soft);font-size:14px;margin-bottom:20px}
+.share-tabs{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.share-tab{padding:9px 18px;border-radius:8px;background:#fff;border:1px solid var(--rule);font-size:13px;color:var(--ink-soft);cursor:pointer;font-family:var(--mono);font-weight:500;transition:.2s}
+.share-tab.active{background:var(--gold);color:var(--ink);border-color:var(--gold-deep)}
+.share-box{position:relative;background:#fff;border:1px solid var(--rule);border-radius:10px;padding:18px 20px}
+.share-text{font-size:14px;color:var(--ink);line-height:1.7;white-space:pre-wrap;font-family:var(--sans);min-height:140px}
+.share-copy{position:absolute;top:12px;right:12px;background:var(--ink);color:var(--paper);padding:7px 14px;border:none;border-radius:6px;font-size:12px;cursor:pointer;font-family:var(--mono);letter-spacing:.06em;transition:.2s}
+.share-copy:hover{background:var(--gold-deep)}
+.share-copy.copied{background:var(--teal)}
+
+/* CTA */
+.cta-section{background:linear-gradient(135deg, var(--ink) 0%, var(--ink-2) 100%);color:var(--paper);padding:80px 0;text-align:center;margin-top:70px}
+.cta-title{font-family:var(--kufi);font-size:clamp(28px, 3.6vw, 42px);font-weight:700;line-height:1.15;margin-bottom:14px}
+.cta-title .ar{font-family:var(--ar);display:block;color:var(--gold-warm);font-size:0.85em;margin-bottom:6px}
+.cta-sub{color:rgba(250,248,244,0.78);font-size:16px;max-width:600px;margin:0 auto 28px;line-height:1.6}
+.cta-btn{display:inline-flex;align-items:center;gap:10px;background:var(--gold);color:var(--ink);padding:16px 32px;font-size:15px;font-weight:600;letter-spacing:.04em;border-radius:8px;border:1px solid var(--gold-deep);transition:.2s}
+.cta-btn:hover{background:var(--gold-warm);transform:translateY(-2px)}
+
+/* footer */
+.footer{padding:50px 0 38px;border-top:1px solid var(--rule);background:var(--paper-2);font-size:13px;color:var(--ink-soft)}
+.footer-inner{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+.footer a{color:var(--gold-deep);font-weight:500}
+
+@media(max-width:720px){
+  .wrap{padding:0 20px}
+  .nav-inner{padding:12px 20px}
+  .nav-links a:not(.nav-cta){display:none}
+  .countdown-card{flex-direction:column;text-align:center}
+  .countdown-timer{gap:14px}
+  .countdown-num{font-size:34px}
+  .lb-head{display:none}
+  .lb-row{grid-template-columns:46px 1fr 80px;gap:8px;font-size:13px;padding:14px 16px}
+  .lb-row > .lb-num{display:none}
+  .section{padding:50px 0}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="./">
+      <svg class="brand-logo" width="36" height="36" viewBox="0 0 120 120"><defs><linearGradient id="g1" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#E8B860"/><stop offset="1" stop-color="#B8853A"/></linearGradient></defs><path d="M60 14 C60 14 30 46 30 70 C30 87 43 100 60 100 C77 100 90 87 90 70 C90 46 60 14 60 14 Z" fill="url(#g1)"/><path d="M22 72 L40 72 L46 60 L52 86 L58 50 L64 80 L70 66 L98 66" stroke="#14110d" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="brand-glyph" style="font-family:'Amiri','Noto Naskh Arabic',serif">مداد</span>
+      <span class="brand-en">MEDAD</span>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="./">Home</a>
+      <a class="nav-link" href="./team.html">The Team</a>
+      <a class="nav-link active" href="./challenge.html">Challenge</a>
+      <a class="nav-link" href="./join.html">Join</a>
+      <a class="nav-cta" href="https://annotate.medad.om">Annotate Now
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Round <span id="roundNum">1</span> · Monthly Challenge</div>
+    <h1 class="hero-title">
+      <span class="ar">تحدّي مداد</span>
+      The Medad Challenge
+    </h1>
+    <p class="hero-sub" dir="rtl" style="font-family:var(--ar);font-size:20px;color:var(--ink);line-height:1.85;margin-top:24px">
+      ساهم في بناء <strong>أول ذكاء اصطناعي طبي عربي مفتوح المصدر</strong> — كل دقيقة صوت تراجعها تُعلّم النظام الذي سيفهم يوماً مرضى العالم العربي. أفضل المراجعين شهرياً يحصلون على <strong>جوائز نقدية</strong> و<strong>شهادات تقدير</strong> ومكان دائم في <strong>جدار الشرف</strong>.
+    </p>
+    <p class="hero-sub">
+      Help build the <strong>first open Arabic medical AI</strong> — every minute of audio you verify trains the system that will one day understand patients across the Arab world. The top reviewers each month win <strong>cash prizes</strong>, <strong>certificates of appreciation</strong>, and a permanent place on the <strong>Wall of Fame</strong>.
+    </p>
+
+    <div class="countdown-card">
+      <div>
+        <div class="countdown-label">⏳ Time remaining · Round 1</div>
+        <div class="countdown-deadline" id="cdDeadline">Ends 15 June 2026 · 23:59 Muscat</div>
+      </div>
+      <div class="countdown-timer" id="countdown">
+        <div class="countdown-block"><div class="countdown-num" id="cdDays">—</div><div class="countdown-unit">Days</div></div>
+        <div class="countdown-block"><div class="countdown-num" id="cdHours">—</div><div class="countdown-unit">Hours</div></div>
+        <div class="countdown-block"><div class="countdown-num" id="cdMins">—</div><div class="countdown-unit">Minutes</div></div>
+        <div class="countdown-block"><div class="countdown-num" id="cdSecs">—</div><div class="countdown-unit">Seconds</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRIZES ============ -->
+<section class="section">
+  <div class="wrap">
+    <div class="section-eyebrow">🏆 Prizes · الجوائز</div>
+    <h2 class="section-title">What you can win — every month <span dir="rtl" style="font-family:var(--ar);color:var(--gold-deep);display:block;font-size:0.7em;margin-top:6px">ما الذي يمكنك الفوز به — كل شهر</span></h2>
+    <p dir="rtl" style="color:var(--ink-soft);font-size:16px;font-family:var(--ar);max-width:720px;margin-bottom:6px;line-height:1.85">
+      المراجعون الثلاثة الأوائل يحصلون شهرياً على جوائز نقدية وشهادات وتقدير. المركز الرابع يحصل على شهادة تقدير. كل المشاركين يحصلون على أجرهم العادي لكل مقطع بصرف النظر عن الترتيب.
+    </p>
+    <p style="color:var(--ink-soft);font-size:16px;max-width:720px;margin-bottom:8px">
+      The top 3 reviewers each month receive cash, certificates, and recognition. The 4th place earns a certificate of appreciation. Every participant continues to earn their normal per-clip pay regardless.
+    </p>
+    <div class="prizes">
+      <div class="prize-card gold">
+        <div class="prize-medal">🥇</div>
+        <div class="prize-rank">1st Place · المركز الأول</div>
+        <div class="prize-amount">75 <small>OMR · ر.ع</small></div>
+        <div class="prize-perks">
+          ✓ Certificate · شهادة تقدير<br>
+          ✓ Wall of Fame · جدار الشرف<br>
+          ✓ Named contributor · مساهم باسمك
+        </div>
+      </div>
+      <div class="prize-card silver">
+        <div class="prize-medal">🥈</div>
+        <div class="prize-rank">2nd Place · المركز الثاني</div>
+        <div class="prize-amount">50 <small>OMR · ر.ع</small></div>
+        <div class="prize-perks">
+          ✓ Certificate · شهادة تقدير<br>
+          ✓ Wall of Fame · جدار الشرف<br>
+          ✓ Named contributor · مساهم باسمك
+        </div>
+      </div>
+      <div class="prize-card bronze">
+        <div class="prize-medal">🥉</div>
+        <div class="prize-rank">3rd Place · المركز الثالث</div>
+        <div class="prize-amount">30 <small>OMR · ر.ع</small></div>
+        <div class="prize-perks">
+          ✓ Certificate · شهادة تقدير<br>
+          ✓ Wall of Fame · جدار الشرف<br>
+          ✓ Named contributor · مساهم باسمك
+        </div>
+      </div>
+      <div class="prize-card cert">
+        <div class="prize-medal">🎖️</div>
+        <div class="prize-rank">4th Place · المركز الرابع</div>
+        <div class="prize-amount" style="font-size:24px">Certificate<br><span dir="rtl" style="font-family:var(--ar);font-size:0.82em;color:var(--gold-deep)">شهادة تقدير</span></div>
+        <div class="prize-perks">
+          ✓ Recognition for outstanding effort<br>
+          <span dir="rtl" style="font-family:var(--ar);color:var(--ink-soft);font-size:13px">تقدير لجهد متميّز</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SCORE FORMULA ============ -->
+<section class="section">
+  <div class="wrap">
+    <div class="section-eyebrow">📐 Scoring · حساب النقاط</div>
+    <h2 class="section-title">How your score is calculated <span dir="rtl" style="font-family:var(--ar);color:var(--gold-deep);display:block;font-size:0.7em;margin-top:6px">كيف تُحسب نقاطك</span></h2>
+    <div class="formula-card">
+      <div class="formula-line">
+        <b>Score = verified_clips × max(0, avg_quality − 3.0)</b>
+        <div dir="rtl" style="font-family:var(--ar);font-size:14px;color:var(--ink-soft);margin-top:8px;line-height:1.7">
+          النقاط = (عدد المقاطع المعتمدة) × (متوسط جودتك − ٣) — والحد الأدنى صفر
+        </div>
+      </div>
+      <div class="formula-examples">
+        <b>100 clips</b> at quality <b>4.0</b> → 100 × 1.0 = <b>100 points</b><br>
+        <b>60 clips</b> at quality <b>4.5</b> → 60 × 1.5 = <b>90 points</b><br>
+        <b>200 clips</b> at quality <b>3.5</b> → 200 × 0.5 = <b>100 points</b><br>
+        <b>50 clips</b> at quality <b>4.8</b> → 50 × 1.8 = <b>90 points</b>
+        <div dir="rtl" style="font-family:var(--ar);margin-top:14px;font-size:14px;line-height:1.85">
+          الكمية مهمة، لكن الجودة هي المُضاعِف — مراجع متميز بأقل عدد يمكن أن يتفوق على مراجع كثير الكمية متوسط الجودة.
+        </div>
+      </div>
+      <div class="eligibility">
+        <strong>To qualify for prizes</strong>, you need at least <b>60 minutes of verified audio</b> AND an average quality of <b>3.5 or higher</b>. Without these, you stay on the public leaderboard but don't receive cash or certificates. Your normal per-clip pay continues regardless.
+        <div dir="rtl" style="font-family:var(--ar);margin-top:10px;line-height:1.85;font-size:14.5px">
+          <strong>للتأهل للجوائز</strong>: تحتاج على الأقل <b>٦٠ دقيقة من الصوت المعتمد</b> ومتوسط جودة <b>٣٫٥ فأعلى</b>. بدون ذلك تبقى على لوحة الترتيب لكنك لا تستحق الجائزة. أجرك العادي لكل مقطع يستمر بصرف النظر.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LIVE LEADERBOARD ============ -->
+<section class="section">
+  <div class="wrap">
+    <div class="section-eyebrow">⚡ Live · مباشر</div>
+    <h2 class="section-title">Top 5 — this month <span dir="rtl" style="font-family:var(--ar);color:var(--gold-deep);display:block;font-size:0.7em;margin-top:6px">الخمسة الأوائل — هذا الشهر</span></h2>
+    <p dir="rtl" style="color:var(--ink-soft);font-size:15px;font-family:var(--ar);margin-bottom:6px;line-height:1.85">
+      تُعرض الأسماء بصيغة <b>الاسم الأول + الحرف الأول من اسم العائلة</b> للخمسة الأوائل فقط. يمكن لأي مراجع إخفاء اسمه من اللوحة العامة في أي وقت. كل واحد يرى ترتيبه الكامل في حسابه الخاص.
+    </p>
+    <p style="color:var(--ink-soft);font-size:15px;margin-bottom:8px">
+      Names shown as <b>first name + last initial</b> for the top 5. Reviewers can opt out of the public leaderboard at any time. Everyone sees their own exact rank privately on their dashboard.
+    </p>
+    <div class="leaderboard">
+      <div class="lb-head">
+        <div>Rank</div>
+        <div>Reviewer</div>
+        <div style="text-align:right">Clips</div>
+        <div style="text-align:right">Minutes</div>
+        <div style="text-align:right">Score</div>
+      </div>
+      <div id="leaderboardBody">
+        <div class="lb-empty">Loading…</div>
+      </div>
+      <div class="lb-more" id="lbMore" style="display:none"></div>
+    </div>
+    <div class="lb-meta">
+      <span class="live-dot"></span>
+      <span id="lbUpdatedAt">Updating…</span> · auto-refreshes every minute
+    </div>
+  </div>
+</section>
+
+<!-- ============ WALL OF FAME ============ -->
+<section class="section">
+  <div class="wrap">
+    <div class="section-eyebrow">🏛️ History · السجل</div>
+    <h2 class="section-title">Wall of Fame <span dir="rtl" style="font-family:var(--ar);color:var(--gold-deep);display:block;font-size:0.7em;margin-top:6px">جدار الشرف</span></h2>
+    <p dir="rtl" style="color:var(--ink-soft);font-size:15px;font-family:var(--ar);max-width:740px;margin-bottom:6px;line-height:1.85">
+      كل فائز شهري يُسجَّل هنا بشكل دائم كمساهم معتمد في مشروع مداد — الأشخاص الذين بنوا أول ذكاء اصطناعي طبي عربي مفتوح، مقطعاً مقطعاً.
+    </p>
+    <p style="color:var(--ink-soft);font-size:15px;max-width:740px;margin-bottom:8px">
+      Every monthly champion is named here permanently as a credited contributor to Project Medad — the people who built the first open Arabic clinical AI, one verified clip at a time.
+    </p>
+    <div id="wallOfFame">
+      <div class="fame-empty">
+        🌅 The first round closes <b>15 June 2026</b>. The first names will appear here when the winners are announced.<br><br>
+        Will yours be one of them?
+        <div dir="rtl" style="font-family:var(--ar);margin-top:14px;font-size:15px;line-height:1.85">
+          🌅 الجولة الأولى تنتهي في <b>١٥ يونيو ٢٠٢٦</b>. أول الأسماء ستظهر هنا عند الإعلان عن الفائزين.<br>هل سيكون اسمك من بينها؟
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT MEDAD (shareable) ============ -->
+<section class="section" style="background:var(--paper-2)">
+  <div class="wrap">
+    <div class="section-eyebrow">🌍 About · عن المشروع</div>
+    <h2 class="section-title">Why this matters <span dir="rtl" style="font-family:var(--ar);color:var(--gold-deep);display:block;font-size:0.7em;margin-top:6px">لماذا هذا مهم</span></h2>
+    <p dir="rtl" style="font-size:18px;font-family:var(--ar);line-height:2;color:var(--ink-soft);max-width:820px;margin-bottom:18px">
+      <strong style="color:var(--ink)">مداد</strong> يبني أول <strong style="color:var(--ink)">ذكاء اصطناعي طبي عربي مفتوح المصدر</strong> — نظام يستمع لمحادثات الطبيب والمريض باللهجات العربية المختلفة ويكتب الملاحظات السريرية تلقائياً. تُدرَّب التقنية على كلام عربي حقيقي يُراجَع مقطعاً مقطعاً من قبل ناطقين بالعربية — وهذا هو العمل الذي تقوم به في التحدي. كل دقيقة تراجعها هي دقيقة يتعلم منها النموذج. صُنع في عُمان، مفتوح للعالم العربي.
+    </p>
+    <p style="font-size:17px;line-height:1.75;color:var(--ink-soft);max-width:820px">
+      <strong style="color:var(--ink)">Medad (مداد)</strong> is building the first <strong style="color:var(--ink)">open Arabic medical AI</strong> — a system that listens to doctor-patient conversations in Arabic dialects and writes the clinical notes automatically. The technology is being trained on real Arabic speech, verified clip by clip by Arabic-speaking reviewers — that's the work you do in the Challenge. Every minute you verify is a minute the model learns from. Made in Oman, open for the Arab world.
+    </p>
+  </div>
+</section>
+
+<!-- ============ SHARE KIT ============ -->
+<section class="section">
+  <div class="wrap">
+    <div class="section-eyebrow">📣 Spread the word · انشر التحدي</div>
+    <h2 class="section-title">Share the challenge <span dir="rtl" style="font-family:var(--ar);color:var(--gold-deep);display:block;font-size:0.7em;margin-top:6px">شارك التحدي</span></h2>
+    <p dir="rtl" style="color:var(--ink-soft);font-size:15px;font-family:var(--ar);margin-bottom:6px;line-height:1.85">
+      انسخ هذه الرسائل وأرسلها عبر واتساب، X، لينكدإن، أو أي مجموعة — وادعُ الناطقين بالعربية للمساعدة في بناء النموذج.
+    </p>
+    <p style="color:var(--ink-soft);font-size:15px;margin-bottom:8px">
+      Copy these messages into WhatsApp, X, LinkedIn, or any group — invite Arabic speakers to help build the model.
+    </p>
+    <div class="share-kit">
+      <div class="share-tabs">
+        <div class="share-tab active" data-tab="whatsapp" onclick="switchShareTab('whatsapp')">💬 WhatsApp (AR)</div>
+        <div class="share-tab" data-tab="whatsapp_en" onclick="switchShareTab('whatsapp_en')">💬 WhatsApp (EN)</div>
+        <div class="share-tab" data-tab="x" onclick="switchShareTab('x')">𝕏 / Twitter</div>
+        <div class="share-tab" data-tab="linkedin" onclick="switchShareTab('linkedin')">in LinkedIn</div>
+      </div>
+      <div class="share-box">
+        <button class="share-copy" onclick="copyShare()">📋 Copy</button>
+        <div class="share-text" id="shareText" dir="rtl">…</div>
+      </div>
+      <div style="margin-top:14px;font-size:12.5px;color:var(--ink-soft)">
+        Hashtags: <code style="font-family:var(--mono);background:#fff;padding:2px 6px;border-radius:3px">#مداد · #تحدي_مداد · #ArabicAI · #MedadChallenge</code>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="cta-section">
+  <div class="wrap">
+    <h2 class="cta-title">
+      <span class="ar">انضم إلى التحدي</span>
+      Join the Challenge
+    </h2>
+    <p class="cta-sub">
+      Round 1 is open until 15 June 2026. Every clip you verify counts toward your score — and your pay.
+    </p>
+    <p dir="rtl" class="cta-sub" style="font-family:var(--ar);font-size:17px;margin-top:-18px">
+      الجولة الأولى مفتوحة حتى ١٥ يونيو ٢٠٢٦. كل مقطع تراجعه يُحسب لنقاطك — ولأجرك.
+    </p>
+    <a href="https://annotate.medad.om" class="cta-btn">
+      Start Annotating · ابدأ المراجعة →
+    </a>
+    <div style="margin-top:18px;font-size:13px;color:rgba(250,248,244,0.55)">
+      New to Medad · جديد على مداد؟ <a href="./join.html" style="color:var(--gold-warm);text-decoration:underline">Apply first · سجّل أولاً</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="wrap footer-inner">
+    <div>© 2026 Medad — Made in Oman. <a href="./">Back to home</a></div>
+    <div style="font-family:var(--mono);font-size:11px;letter-spacing:.18em">PROJECT MEDAD · مداد</div>
+  </div>
+</footer>
+
+<script>
+// =================================================================
+// Countdown to round end
+// =================================================================
+const COMPETITION_API = 'https://annotate.medad.om/api/competition/current';
+let endDate = new Date('2026-06-15T23:59:59+04:00');
+
+function updateCountdown() {
+  const now = new Date();
+  let diff = (endDate - now) / 1000;
+  if (diff < 0) diff = 0;
+  const d = Math.floor(diff / 86400);
+  const h = Math.floor((diff % 86400) / 3600);
+  const m = Math.floor((diff % 3600) / 60);
+  const s = Math.floor(diff % 60);
+  document.getElementById('cdDays').textContent  = String(d).padStart(2, '0');
+  document.getElementById('cdHours').textContent = String(h).padStart(2, '0');
+  document.getElementById('cdMins').textContent  = String(m).padStart(2, '0');
+  document.getElementById('cdSecs').textContent  = String(s).padStart(2, '0');
+}
+setInterval(updateCountdown, 1000);
+updateCountdown();
+
+// =================================================================
+// Live leaderboard
+// =================================================================
+function flagFor(country) {
+  const map = {Oman:'🇴🇲', UAE:'🇦🇪', 'Saudi Arabia':'🇸🇦', Kuwait:'🇰🇼', Qatar:'🇶🇦', Bahrain:'🇧🇭',
+               Yemen:'🇾🇪', Iraq:'🇮🇶', Egypt:'🇪🇬', Jordan:'🇯🇴', Lebanon:'🇱🇧',
+               Syria:'🇸🇾', Palestine:'🇵🇸', Sudan:'🇸🇩', Morocco:'🇲🇦', Tunisia:'🇹🇳',
+               Algeria:'🇩🇿', Libya:'🇱🇾'};
+  return map[country] || '🌍';
+}
+const RANK_LABELS = {1:['gold','🥇'], 2:['silver','🥈'], 3:['bronze','🥉']};
+
+async function loadLeaderboard() {
+  try {
+    const r = await fetch(COMPETITION_API, {cache:'no-store'});
+    if (!r.ok) throw new Error('API error');
+    const d = await r.json();
+    if (d.competition) {
+      document.getElementById('roundNum').textContent = d.competition.round_number;
+      // Update countdown deadline if backend differs
+      endDate = new Date(d.competition.end_date + 'T23:59:59+04:00');
+    }
+    const body = document.getElementById('leaderboardBody');
+    const more = document.getElementById('lbMore');
+    if (!d.leaderboard || !d.leaderboard.length) {
+      body.innerHTML = '<div class="lb-empty">No competitors have started this round yet. <a href="https://annotate.medad.om" style="color:var(--gold-deep);font-weight:600">Be the first →</a></div>';
+      more.style.display = 'none';
+    } else {
+      body.innerHTML = d.leaderboard.map(r => {
+        const [cls, medal] = RANK_LABELS[r.rank] || ['', ''];
+        const ineligibleStyle = !r.eligible ? 'opacity:0.55' : '';
+        return `<div class="lb-row ${cls}" style="${ineligibleStyle}">
+          <div class="lb-rank ${cls}">${medal || '#' + r.rank}</div>
+          <div class="lb-name">${escapeHtml(r.name)} <span class="lb-flag">${flagFor(r.country)}</span>
+            ${!r.eligible ? '<span style="font-size:11px;color:var(--ink-soft);font-family:var(--mono);margin-left:8px">(not yet 60 min)</span>' : ''}
+          </div>
+          <div class="lb-num">${r.verified_clips}</div>
+          <div class="lb-num">${r.total_minutes.toFixed(1)} min</div>
+          <div class="lb-score">${r.score.toFixed(1)}</div>
+        </div>`;
+      }).join('');
+      if (d.more_competitors_below > 0) {
+        more.style.display = 'block';
+        more.innerHTML = `+ <b>${d.more_competitors_below}</b> more competitor${d.more_competitors_below === 1 ? '' : 's'} below the top 5 · <a href="https://annotate.medad.om">log in</a> to see your own rank`;
+      } else {
+        more.style.display = 'none';
+      }
+    }
+    // Wall of Fame
+    const wf = document.getElementById('wallOfFame');
+    if (d.winners && d.winners.length) {
+      wf.innerHTML = '<div class="fame-grid">' + d.winners.map(w => {
+        const [_, medal] = RANK_LABELS[w.rank] || ['', '🎖️'];
+        return `<div class="fame-card">
+          <div class="fame-medal">${medal}</div>
+          <div class="fame-name">${escapeHtml(w.name)} ${flagFor(w.country)}</div>
+          <div class="fame-period">Round ${w.round_number} · ${w.period}</div>
+          <div class="fame-stats">${w.verified_clips} clips · ${w.total_minutes.toFixed(0)} min · ⭐${w.avg_quality.toFixed(2)}</div>
+          ${w.prize_omr > 0 ? `<div style="margin-top:8px;font-family:var(--mono);font-size:13px;color:var(--gold-deep);font-weight:600">${w.prize_omr} OMR · 🏆</div>` : ''}
+        </div>`;
+      }).join('') + '</div>';
+    }
+    document.getElementById('lbUpdatedAt').textContent =
+      'Updated ' + new Date().toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'});
+  } catch (e) {
+    document.getElementById('leaderboardBody').innerHTML =
+      '<div class="lb-empty">Couldn\'t load leaderboard right now. <a href="javascript:loadLeaderboard()" style="color:var(--gold-deep);font-weight:600">Try again</a></div>';
+  }
+}
+function escapeHtml(s) {
+  return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+loadLeaderboard();
+setInterval(loadLeaderboard, 60000);
+
+// =================================================================
+// Share kit
+// =================================================================
+const SHARE_TEXTS = {
+  whatsapp: `🌟 *تحدّي مداد · The Medad Challenge* 🌟
+
+ساعد في بناء أول ذكاء اصطناعي طبي عربي مفتوح المصدر — حرفياً، كلمة بكلمة.
+
+🎯 المهمة: تصحيح نصوص محادثات طبية باللهجات العربية
+💰 الأجر: ٢٠ بيسة لكل مقطع + مكافآت جودة
+🏆 الجوائز الشهرية:
+   🥇 ٧٥ ر.ع + شهادة + جدار الشرف
+   🥈 ٥٠ ر.ع + شهادة + جدار الشرف
+   🥉 ٣٠ ر.ع + شهادة + جدار الشرف
+   🎖️ المركز الرابع: شهادة تقدير
+
+⏰ الجولة الأولى: ١٥ مايو → ١٥ يونيو ٢٠٢٦
+
+🇴🇲 صُنع في عُمان · للعالم العربي
+📱 سجّل الآن: https://medad.om/challenge.html
+
+#مداد #تحدي_مداد #ArabicAI`,
+
+  whatsapp_en: `🌟 *The Medad Challenge* 🌟
+
+Help build the *first open Arabic medical AI* — one verified clip at a time.
+
+🎯 The task: review Arabic doctor-patient audio and correct the transcript
+💰 Pay: 20 baisa per clip + quality bonus
+🏆 Monthly prizes:
+   🥇 75 OMR + certificate + Wall of Fame
+   🥈 50 OMR + certificate + Wall of Fame
+   🥉 30 OMR + certificate + Wall of Fame
+   🎖️ 4th place: certificate of appreciation
+
+⏰ Round 1: 15 May → 15 June 2026
+
+🇴🇲 Made in Oman · for the Arab world
+📱 Join now: https://medad.om/challenge.html
+
+#MedadChallenge #ArabicAI`,
+
+  x: `🌟 The Medad Challenge
+
+Help build the first open Arabic medical AI — verify clips, climb the leaderboard, win monthly prizes.
+
+🥇 75 OMR · 🥈 50 OMR · 🥉 30 OMR
+🎖️ 4th: certificate of appreciation
+🏛️ Top 3 → Wall of Fame on medad.om
+
+Round 1 ends 15 June 2026.
+
+https://medad.om/challenge.html
+
+#MedadChallenge #ArabicAI #مداد`,
+
+  linkedin: `Excited to launch the Medad Challenge — a monthly competition to help build the first open Arabic medical AI.
+
+Medad listens to Arabic doctor-patient conversations and writes the clinical notes automatically. The model is trained on real Arabic speech, verified clip by clip by Arabic-speaking reviewers.
+
+🏆 Top 3 each month receive:
+• 75 / 50 / 30 OMR cash prizes
+• Certificate of appreciation
+• Named contributor on medad.om's Wall of Fame
+
+🎖️ 4th place receives a certificate of appreciation.
+
+Round 1: 15 May → 15 June 2026.
+
+If you speak Arabic and care about closing the medical AI gap for the 400M Arabic-speakers in the world — this is one of the most direct ways to help.
+
+🇴🇲 Made in Oman · open for the Arab world.
+
+https://medad.om/challenge.html
+
+#MedadChallenge #ArabicAI #HealthTech`,
+};
+
+function switchShareTab(tab) {
+  document.querySelectorAll('.share-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+  const box = document.getElementById('shareText');
+  box.textContent = SHARE_TEXTS[tab];
+  box.dir = (tab === 'whatsapp' ? 'rtl' : 'ltr');
+}
+switchShareTab('whatsapp');
+
+function copyShare() {
+  const text = document.getElementById('shareText').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.share-copy');
+    const orig = btn.textContent;
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 1800);
+  });
+}
+</script>
+
+</body>
+</html>

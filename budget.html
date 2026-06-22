@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<title>Budget Tracker — Medad مداد</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Amiri:ital,wght@0,400;0,700;1,400&family=Reem+Kufi:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+(function(){
+  var search=window.location.search||'';
+  var hash=window.location.hash||'';
+  var searchParams=new URLSearchParams(search);
+  var hashParams=new URLSearchParams(hash.replace(/^#/,''));
+  var hasRecoveryCode=!!searchParams.get('code');
+  var hasRecoveryHash=hashParams.get('type')==='recovery'||hashParams.has('access_token')||hashParams.has('refresh_token');
+  if(!hasRecoveryCode&&!hasRecoveryHash)return;
+  window.location.replace('./reset'+search+hash);
+})();
+</script>
+<style>
+:root{
+  --paper:#faf8f4;--paper-2:#f0ede7;--paper-3:#e5e1da;
+  --ink:#14110d;--ink-2:#1e1a16;--ink-soft:#38322c;
+  --gold:#b8853a;--gold-2:#d4a24c;--gold-deep:#8e6326;
+  --seal:#8a2e2e;
+  --rule:rgba(20,17,13,0.16);--rule-soft:rgba(20,17,13,0.08);
+  --sans:'Helvetica Neue',Helvetica,'Sohne',Arial,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --ar:'Amiri','Noto Naskh Arabic',serif;
+  --kufi:'Reem Kufi','Noto Kufi Arabic',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--gold);color:var(--ink)}
+
+.wrap{max-width:1380px;margin:0 auto;padding:0 56px;position:relative;z-index:2}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:60;background:rgba(250,248,244,0.92);backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid var(--rule)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;padding:18px 56px;max-width:1380px;margin:0 auto}
+.brand{display:flex;align-items:center;gap:14px}
+.brand-glyph{font-family:var(--ar);font-size:30px;font-weight:700;color:var(--ink);line-height:1;position:relative;padding-right:4px}
+.brand-glyph::after{content:'';position:absolute;bottom:-3px;left:0;right:4px;height:2px;background:linear-gradient(90deg,var(--gold) 0%,var(--gold) 60%,transparent 100%)}
+.brand-logo{height:38px;width:auto;border-radius:6px}
+.brand-en{font-family:var(--mono);font-size:12px;letter-spacing:.32em;color:var(--ink-2);padding-top:4px;border-left:1px solid var(--rule);padding-left:14px}
+.nav-links{display:flex;gap:2px;align-items:center}
+.nav-link{padding:8px 14px;font-size:13px;color:var(--ink-soft);transition:.2s;border-radius:2px}
+.nav-link:hover,.nav-link.active{color:var(--ink);background:rgba(20,17,13,0.05)}
+.nav-cta{display:inline-flex;align-items:center;gap:8px;background:#008080;color:#fff;padding:10px 18px;font-size:12.5px;letter-spacing:.04em;font-weight:500;margin-left:8px;border:1px solid #008080;transition:.2s;border-radius:6px}
+.nav-cta:hover{background:#006666;border-color:#006666}
+
+/* page header */
+.page-header{padding:60px 0 48px;border-bottom:1px solid var(--rule);text-align:center}
+.page-header h1{font-family:var(--sans);font-size:clamp(32px,5vw,56px);font-weight:700;line-height:1.05;letter-spacing:-0.03em;color:var(--ink)}
+.page-header p{font-size:17px;color:var(--ink-soft);margin-top:14px;max-width:560px;margin-left:auto;margin-right:auto;line-height:1.55}
+
+/* footer */
+.foot{padding:64px 0 32px;background:var(--paper-2);border-top:1px solid var(--ink)}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px}
+.foot-desc{font-family:var(--sans);font-size:16px;color:var(--ink-2);max-width:380px;margin-top:18px;line-height:1.5}
+.foot h5{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:14px}
+.foot ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+.foot a{font-size:13.5px;color:var(--ink-2);transition:.2s;border-bottom:1px solid transparent}
+.foot a:hover{color:var(--seal);border-bottom-color:var(--seal)}
+.foot-bottom{margin-top:48px;padding-top:24px;border-top:1px solid var(--rule);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--ink-soft);text-transform:uppercase}
+.foot-bottom .ar{font-family:var(--ar);font-size:14px;font-style:italic;letter-spacing:0;color:var(--gold-deep);text-transform:none}
+
+/* ============ BUDGET ============ */
+.bg-login{min-height:60vh;display:flex;align-items:center;justify-content:center;padding:60px 20px}
+.bg-login-card{background:var(--paper-2);border:1px solid var(--rule);border-radius:8px;padding:40px 36px;max-width:400px;width:100%}
+.bg-login-card h2{font-size:1.3rem;font-weight:700;margin-bottom:4px;text-align:center}
+
+.bg-wrap{max-width:1000px;margin:0 auto;padding:40px 20px}
+.bg-user-bar{display:flex;align-items:center;justify-content:space-between;padding:14px 56px;border-bottom:1px solid var(--rule);max-width:1380px;margin:0 auto}
+.bg-user-bar .name{font-weight:600;font-size:14px}
+
+.bg-tabs{display:flex;gap:0;border-bottom:1px solid var(--rule);padding:0 56px;max-width:1380px;margin:0 auto}
+.bg-tab{padding:12px 18px;cursor:pointer;color:var(--ink-soft);border-bottom:2px solid transparent;font-size:13px;font-family:var(--mono);letter-spacing:.04em;transition:.2s}
+.bg-tab:hover{color:var(--ink)}
+.bg-tab.active{color:var(--ink);border-bottom-color:var(--gold)}
+
+.bg-field{margin-bottom:14px}
+.bg-field label{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:6px}
+.bg-field input,.bg-field select,.bg-field textarea{
+  width:100%;padding:10px 14px;background:var(--paper);border:1px solid var(--rule);border-radius:6px;
+  color:var(--ink);font-size:14px;font-family:var(--sans);outline:none;transition:border-color .2s;
+}
+.bg-field input:focus,.bg-field select:focus,.bg-field textarea:focus{border-color:var(--gold)}
+.bg-field textarea{min-height:80px;resize:vertical}
+.bg-field select{cursor:pointer}
+.bg-field .hint{font-size:12px;color:var(--ink-soft);margin-top:4px;font-style:italic}
+.bg-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.bg-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+
+.bg-btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 22px;border-radius:6px;border:1px solid var(--ink);
+  font-size:13.5px;font-weight:500;cursor:pointer;transition:.25s;font-family:var(--sans);letter-spacing:.02em;
+}
+.bg-btn-primary{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.bg-btn-primary:hover{background:var(--seal);border-color:var(--seal)}
+.bg-btn-primary:disabled{opacity:.5;cursor:not-allowed}
+.bg-btn-block{width:100%}
+.bg-btn-ghost{background:transparent;color:var(--ink)}
+.bg-btn-ghost:hover{background:var(--ink);color:var(--paper)}
+.bg-btn-sm{padding:6px 14px;font-size:12px;font-family:var(--mono);letter-spacing:.04em;border:1px solid var(--rule);background:transparent;color:var(--ink-soft);cursor:pointer;border-radius:4px;transition:.2s}
+.bg-btn-sm:hover{border-color:var(--gold);color:var(--gold-deep)}
+
+.bg-alert{padding:12px 16px;border-radius:6px;font-size:13px;margin-bottom:14px;display:none}
+.bg-alert-error{background:#fef2f2;color:#991b1b;border:1px solid #fca5a5}
+.bg-alert-success{background:#f0fdf4;color:#166534;border:1px solid #86efac}
+
+.bg-card{background:var(--paper-2);border:1px solid var(--rule);border-radius:8px;padding:28px 24px;margin-bottom:20px}
+.bg-section-title{font-size:16px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;letter-spacing:-0.01em}
+
+/* table */
+.bg-table{width:100%;border-collapse:collapse;font-size:13px}
+.bg-table th{text-align:left;padding:8px 10px;color:var(--ink-soft);border-bottom:1px solid var(--ink);font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:500}
+.bg-table td{padding:10px 10px;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+.bg-table tr:hover td{background:var(--paper-2)}
+.bg-badge{display:inline-block;padding:2px 8px;border-radius:3px;background:rgba(184,133,58,0.12);color:var(--gold-deep);font-size:11px;font-family:var(--mono);letter-spacing:.04em}
+.bg-badge-status{display:inline-block;padding:2px 8px;border-radius:3px;font-size:11px;font-family:var(--mono);letter-spacing:.04em}
+.bg-badge-pending{background:rgba(234,179,8,0.12);color:#92400e}
+.bg-badge-paid{background:rgba(34,197,94,0.12);color:#166534}
+.bg-badge-reimbursed{background:rgba(59,130,246,0.12);color:#1e40af}
+.bg-amount{font-weight:700;color:var(--gold-deep);font-family:var(--mono)}
+.bg-del{background:none;border:none;color:var(--ink-soft);cursor:pointer;font-size:13px;padding:2px 6px;border-radius:4px}
+.bg-del:hover{color:var(--seal);background:rgba(138,46,46,0.08)}
+.bg-empty{text-align:center;padding:48px;color:var(--ink-soft);font-size:14px}
+
+/* stats */
+.bg-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--ink);margin-bottom:24px}
+.bg-stat{padding:20px 16px;text-align:center;border-right:1px solid var(--rule)}
+.bg-stat:last-child{border-right:none}
+.bg-stat .val{font-size:28px;font-weight:700;color:var(--gold-deep);font-family:var(--mono);letter-spacing:-0.02em}
+.bg-stat .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin-top:6px}
+
+/* dashboard cards */
+.bg-dash-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-bottom:24px}
+.bg-dash-card{background:var(--paper-2);border:1px solid var(--rule);border-radius:8px;padding:18px 16px}
+.bg-dash-card .cat-name{font-size:12px;font-family:var(--mono);letter-spacing:.04em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:8px}
+.bg-dash-card .cat-amount{font-size:22px;font-weight:700;color:var(--ink);font-family:var(--mono);letter-spacing:-0.02em}
+.bg-dash-card .cat-pct{font-size:12px;color:var(--gold-deep);margin-top:4px;font-family:var(--mono)}
+.bg-dash-card .cat-bar{height:4px;background:var(--paper-3);border-radius:2px;margin-top:8px;overflow:hidden}
+.bg-dash-card .cat-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-2));border-radius:2px;transition:width .4s ease}
+
+/* monthly chart */
+.bg-chart{display:flex;align-items:flex-end;gap:6px;height:160px;padding:10px 0;margin-bottom:24px}
+.bg-chart-bar{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.bg-chart-bar .bar{width:100%;background:linear-gradient(180deg,var(--gold-2),var(--gold-deep));border-radius:3px 3px 0 0;min-height:2px;transition:height .4s ease}
+.bg-chart-bar .bar-label{font-size:10px;font-family:var(--mono);color:var(--ink-soft);letter-spacing:.04em}
+.bg-chart-bar .bar-val{font-size:10px;font-family:var(--mono);color:var(--gold-deep);font-weight:700}
+
+/* filters */
+.bg-filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;align-items:end}
+.bg-filters .bg-field{margin-bottom:0;flex:1;min-width:140px}
+
+/* modal */
+.bg-modal-bg{position:fixed;inset:0;background:rgba(20,17,13,0.5);display:none;align-items:center;justify-content:center;z-index:200;padding:20px}
+.bg-modal-bg.show{display:flex}
+.bg-modal{background:var(--paper);border:1px solid var(--rule);border-radius:8px;max-width:600px;width:100%;max-height:80vh;overflow-y:auto;padding:28px 24px}
+.bg-modal h3{margin-bottom:14px;font-size:18px;font-weight:700}
+.bg-modal .close-x{float:right;background:none;border:none;color:var(--ink-soft);font-size:20px;cursor:pointer}
+
+/* checkbox */
+.bg-check{width:16px;height:16px;cursor:pointer;accent-color:var(--gold-deep)}
+
+.bg-hidden{display:none !important}
+
+/* admin summary cards */
+.bg-summary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin-bottom:24px}
+.bg-summary-card{background:var(--paper-2);border:1px solid var(--rule);border-radius:8px;padding:18px 16px}
+.bg-summary-card .payer-name{font-size:13px;font-weight:700;margin-bottom:6px}
+.bg-summary-card .payer-total{font-size:20px;font-weight:700;color:var(--gold-deep);font-family:var(--mono)}
+.bg-summary-card .payer-detail{font-size:12px;color:var(--ink-soft);margin-top:4px;font-family:var(--mono)}
+
+@media(max-width:720px){
+  .wrap,.bg-user-bar,.bg-tabs{padding-left:20px;padding-right:20px}
+  .nav-inner{padding:12px 20px}
+  .nav-links a:not(.nav-cta){display:none}
+  .bg-row,.bg-row-3{grid-template-columns:1fr}
+  .bg-stats{grid-template-columns:1fr 1fr}
+  .bg-filters{flex-direction:column}
+  .bg-table th:nth-child(5),.bg-table td:nth-child(5){display:none}
+  .bg-tab{padding:10px 12px;font-size:11px}
+  .foot-grid{grid-template-columns:1fr}
+  .foot-bottom{flex-direction:column;text-align:center;gap:8px}
+  .brand-en{display:none}
+  .brand-glyph{font-size:24px}
+  .page-header h1{font-size:clamp(24px,6vw,36px)}
+  .bg-dash-grid{grid-template-columns:1fr 1fr}
+  .bg-chart{height:120px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="./">
+      <svg class="brand-logo" width="36" height="36" viewBox="0 0 120 120"><defs><linearGradient id="g1" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#E8B860"/><stop offset="1" stop-color="#B8853A"/></linearGradient></defs><path d="M60 14 C60 14 30 46 30 70 C30 87 43 100 60 100 C77 100 90 87 90 70 C90 46 60 14 60 14 Z" fill="url(#g1)"/><path d="M22 72 L40 72 L46 60 L52 86 L58 50 L64 80 L70 66 L98 66" stroke="#14110d" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="brand-glyph">مداد</span>
+      <span class="brand-en">MEDAD</span>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="./">Home</a>
+      <a class="nav-link" href="./team.html">The Team</a>
+      <a class="nav-link" href="./challenge.html">Challenge</a>
+      <a class="nav-link" href="./join.html">Join</a>
+      <a class="nav-link" href="https://annotate.medad.om" style="font-weight:500">Annotator Login</a>
+      <a class="nav-link" href="./worklog.html" style="font-weight:500">Work Log</a>
+      <a class="nav-link active" href="./budget.html" style="font-weight:500">Budget</a>
+      <a class="nav-cta" href="./join.html">Join the Project
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- LOGIN VIEW -->
+<div id="loginView">
+  <section class="page-header">
+    <div class="wrap"><h1>Budget Tracker</h1><p>Track project spending. Manage expenses. Stay on budget.</p></div>
+  </section>
+  <div class="bg-login">
+    <div class="bg-login-card">
+      <div id="loginAlert" class="bg-alert bg-alert-error"></div>
+      <form id="loginForm">
+        <div class="bg-field"><label>Email</label><input type="email" id="loginEmail" required placeholder="your@email.com" autocomplete="email"></div>
+        <div class="bg-field"><label>Password</label><input type="password" id="loginPassword" required placeholder="Min 6 characters" autocomplete="current-password"></div>
+        <button type="submit" class="bg-btn bg-btn-primary bg-btn-block" id="loginBtn">Sign In</button>
+        <p style="text-align:center;margin-top:10px"><a href="#" onclick="showForgot();return false" style="color:var(--gold-deep);font-size:13px">Forgot password?</a></p>
+      </form>
+      <form id="forgotForm" class="bg-hidden">
+        <div class="bg-field"><label>Email</label><input type="email" id="forgotEmail" required placeholder="your@email.com" autocomplete="email"></div>
+        <button type="submit" class="bg-btn bg-btn-primary bg-btn-block" id="forgotBtn">Send Reset Link</button>
+        <p style="text-align:center;margin-top:10px"><a href="#" onclick="showLogin();return false" style="color:var(--gold-deep);font-size:13px">Back to Sign In</a></p>
+      </form>
+      <p style="text-align:center;margin-top:16px;font-size:12px;color:var(--ink-soft)">Contact admin for account access</p>
+    </div>
+  </div>
+</div>
+
+<!-- APP VIEW -->
+<div id="appView" class="bg-hidden">
+  <div class="bg-user-bar">
+    <span class="name" id="userName"></span>
+    <button class="bg-btn-sm" onclick="signOut()">Sign Out</button>
+  </div>
+  <div class="bg-tabs">
+    <div class="bg-tab active" data-tab="dashboard" onclick="switchTab('dashboard')">Dashboard</div>
+    <div class="bg-tab" data-tab="add" onclick="switchTab('add')">Add Expense</div>
+    <div class="bg-tab" data-tab="expenses" onclick="switchTab('expenses')">All Expenses</div>
+    <div class="bg-tab bg-hidden" data-tab="admin" id="adminTab" onclick="switchTab('admin')">Admin</div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="tab-dashboard" class="bg-wrap">
+    <div class="bg-stats" id="dashStats">
+      <div class="bg-stat"><div class="val">25,500</div><div class="lbl">Total Budget (OMR)</div></div>
+      <div class="bg-stat"><div class="val" id="dashSpent">0</div><div class="lbl">Total Spent</div></div>
+      <div class="bg-stat"><div class="val" id="dashRemaining">25,500</div><div class="lbl">Remaining</div></div>
+      <div class="bg-stat"><div class="val" id="dashPending">0</div><div class="lbl">Abdullah Pending</div></div>
+    </div>
+    <div class="bg-section-title">Spending by Category</div>
+    <div class="bg-dash-grid" id="dashCategories"></div>
+    <div class="bg-section-title">Monthly Spending</div>
+    <div class="bg-chart" id="dashChart"></div>
+  </div>
+
+  <!-- ADD EXPENSE -->
+  <div id="tab-add" class="bg-wrap bg-hidden">
+    <div class="bg-card">
+      <div class="bg-section-title">New Expense Entry</div>
+      <div id="addAlert" class="bg-alert"></div>
+      <form id="addForm">
+        <div class="bg-row-3">
+          <div class="bg-field"><label>Date</label><input type="date" id="addDate" required></div>
+          <div class="bg-field"><label>Amount (OMR)</label><input type="number" id="addAmount" required min="0.001" step="0.001" placeholder="e.g. 125.500"></div>
+          <div class="bg-field"><label>Paid By</label>
+            <select id="addPaidBy" required>
+              <option value="">Select...</option>
+              <option value="Abdullah (pending)">Abdullah (pending)</option>
+              <option value="IG (paid)">IG (paid)</option>
+              <option value="SRP (claimed)">SRP (claimed)</option>
+            </select>
+          </div>
+        </div>
+        <div class="bg-row">
+          <div class="bg-field"><label>Category</label><select id="addCategory" required><option value="">Select category...</option></select></div>
+          <div class="bg-field"><label>Subcategory</label><select id="addSubcategory" required><option value="">Select subcategory...</option></select></div>
+        </div>
+        <div class="bg-row">
+          <div class="bg-field"><label>Status</label>
+            <select id="addStatus">
+              <option value="pending">Pending</option>
+              <option value="paid">Paid</option>
+              <option value="reimbursed">Reimbursed</option>
+            </select>
+          </div>
+          <div class="bg-field"><label>Receipt Reference (optional)</label><input type="text" id="addReceipt" placeholder="e.g. INV-2026-001"></div>
+        </div>
+        <div class="bg-row">
+          <div class="bg-field"><label>Original Amount (optional)</label><input type="number" id="addOrigAmount" step="0.01" placeholder="e.g. 50.00"></div>
+          <div class="bg-field"><label>Original Currency</label>
+            <select id="addOrigCurrency">
+              <option value="">N/A</option>
+              <option value="USD">USD</option>
+              <option value="AUD">AUD</option>
+              <option value="EUR">EUR</option>
+              <option value="GBP">GBP</option>
+              <option value="SAR">SAR</option>
+              <option value="AED">AED</option>
+            </select>
+          </div>
+        </div>
+        <div class="bg-field"><label>Description</label><textarea id="addDescription" placeholder="What was this expense for?"></textarea></div>
+        <div class="bg-field"><label>Notes (optional)</label><textarea id="addNotes" placeholder="Any additional notes..." style="min-height:50px"></textarea></div>
+        <button type="submit" class="bg-btn bg-btn-primary" id="submitAdd">Save Expense</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ALL EXPENSES -->
+  <div id="tab-expenses" class="bg-wrap">
+    <div class="bg-stats" id="expStats"></div>
+    <div class="bg-card">
+      <div class="bg-section-title">All Expenses</div>
+      <div class="bg-filters">
+        <div class="bg-field"><label>From</label><input type="date" id="expFrom"></div>
+        <div class="bg-field"><label>To</label><input type="date" id="expTo"></div>
+        <div class="bg-field"><label>Category</label><select id="expCategory"><option value="">All</option></select></div>
+        <div class="bg-field"><label>Paid By</label>
+          <select id="expPaidBy">
+            <option value="">All</option>
+            <option value="Abdullah (pending)">Abdullah (pending)</option>
+            <option value="IG (paid)">IG (paid)</option>
+            <option value="SRP (claimed)">SRP (claimed)</option>
+          </select>
+        </div>
+        <div class="bg-field"><label>Status</label>
+          <select id="expStatus">
+            <option value="">All</option>
+            <option value="pending">Pending</option>
+            <option value="paid">Paid</option>
+            <option value="reimbursed">Reimbursed</option>
+          </select>
+        </div>
+        <button class="bg-btn bg-btn-ghost" onclick="loadExpenses()">Filter</button>
+      </div>
+      <div id="expensesTable"></div>
+    </div>
+  </div>
+
+  <!-- ADMIN -->
+  <div id="tab-admin" class="bg-wrap bg-hidden">
+    <div class="bg-card">
+      <div class="bg-section-title">Admin Tools</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px">
+        <button class="bg-btn bg-btn-ghost" onclick="exportCSV()">Export CSV</button>
+        <button class="bg-btn bg-btn-ghost" onclick="bulkReimburse()">Mark Selected as Reimbursed</button>
+      </div>
+    </div>
+
+    <div class="bg-section-title">Summary by Funder/Payer</div>
+    <div class="bg-summary-grid" id="adminPayerSummary"></div>
+
+    <div class="bg-card">
+      <div class="bg-section-title">Reimbursement Tracker</div>
+      <div id="adminReimbursement"></div>
+    </div>
+
+    <div class="bg-card">
+      <div class="bg-section-title">All Entries (selectable)</div>
+      <div class="bg-filters">
+        <div class="bg-field"><label>Paid By</label>
+          <select id="adminPaidBy">
+            <option value="">All</option>
+            <option value="Abdullah (pending)">Abdullah (pending)</option>
+            <option value="IG (paid)">IG (paid)</option>
+            <option value="SRP (claimed)">SRP (claimed)</option>
+          </select>
+        </div>
+        <div class="bg-field"><label>Status</label>
+          <select id="adminStatus">
+            <option value="">All</option>
+            <option value="pending">Pending</option>
+            <option value="paid">Paid</option>
+            <option value="reimbursed">Reimbursed</option>
+          </select>
+        </div>
+        <button class="bg-btn bg-btn-ghost" onclick="loadAdmin()">Filter</button>
+      </div>
+      <div id="adminTable"></div>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT MODAL -->
+<div class="bg-modal-bg" id="editModal">
+  <div class="bg-modal">
+    <button class="close-x" onclick="hideEdit()">&times;</button>
+    <h3>Edit Expense</h3>
+    <div id="editAlert" class="bg-alert"></div>
+    <form id="editForm">
+      <input type="hidden" id="editId">
+      <div class="bg-row">
+        <div class="bg-field"><label>Date</label><input type="date" id="editDate" required></div>
+        <div class="bg-field"><label>Amount (OMR)</label><input type="number" id="editAmount" required min="0.001" step="0.001"></div>
+      </div>
+      <div class="bg-row">
+        <div class="bg-field"><label>Paid By</label>
+          <select id="editPaidBy" required>
+            <option value="Abdullah (pending)">Abdullah (pending)</option>
+            <option value="IG (paid)">IG (paid)</option>
+            <option value="SRP (claimed)">SRP (claimed)</option>
+          </select>
+        </div>
+        <div class="bg-field"><label>Status</label>
+          <select id="editStatus">
+            <option value="pending">Pending</option>
+            <option value="paid">Paid</option>
+            <option value="reimbursed">Reimbursed</option>
+          </select>
+        </div>
+      </div>
+      <div class="bg-field"><label>Description</label><textarea id="editDescription"></textarea></div>
+      <div class="bg-field"><label>Receipt Reference</label><input type="text" id="editReceipt"></div>
+      <div class="bg-field"><label>Notes</label><textarea id="editNotes" style="min-height:50px"></textarea></div>
+      <button type="submit" class="bg-btn bg-btn-primary">Update Expense</button>
+    </form>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="brand"><span class="brand-glyph">مداد</span><span class="brand-en">MEDAD</span></div>
+        <p class="foot-desc">Ambient clinical documentation, in Arabic, on-premise. <i>Made in Oman, for the Arab world.</i></p>
+      </div>
+      <div><h5>The Project</h5><ul><li><a href="./">Home</a></li><li><a href="./team.html">The Team</a></li><li><a href="./worklog.html">Work Log</a></li><li><a href="./budget.html">Budget</a></li></ul></div>
+      <div><h5>Get Involved</h5><ul><li><a href="./join.html">Join the Project</a></li><li><a href="https://annotate.medad.om">Become an Annotator</a></li><li><a href="mailto:dr.abdullahalalawi@gmail.com">dr.abdullahalalawi@gmail.com</a></li></ul></div>
+      <div><h5>Imprint</h5><ul><li>Muscat, Oman</li><li>SQUH · OMSB · MCMSS</li><li>SQU · GUtech</li><li>EST. 2025</li></ul></div>
+    </div>
+    <div class="foot-bottom"><span>&copy; 2026 Medad · A National AI Initiative · v2.0</span><span class="ar">المُداد يستمع · يكتب · يتعلّم</span></div>
+  </div>
+</footer>
+
+<script>
+const SUPABASE_URL='https://xrxekxvyzayudgkixmza.supabase.co';
+const SUPABASE_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyeGVreHZ5emF5dWRna2l4bXphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1MDM1NzIsImV4cCI6MjA5NjA3OTU3Mn0.dK21GXduLQV2aOsfs743FpYthhA3UNjIRxwYXDAIEHw';
+const RESET_REDIRECT='https://medad.om/reset';
+const TOTAL_BUDGET=25500;
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON);
+let currentMember=null,categories=[],allEntries=[],selectedIds=new Set();
+
+/* ==================== AUTH ==================== */
+async function init(){
+  const{data:{session}}=await sb.auth.getSession();
+  if(session){await onLogin(session.user)}else{document.getElementById('loginView').classList.remove('bg-hidden');document.getElementById('appView').classList.add('bg-hidden')}
+}
+
+function showForgot(){document.getElementById('loginForm').classList.add('bg-hidden');document.getElementById('forgotForm').classList.remove('bg-hidden');document.getElementById('loginAlert').style.display='none'}
+function showLogin(){document.getElementById('loginForm').classList.remove('bg-hidden');document.getElementById('forgotForm').classList.add('bg-hidden');document.getElementById('loginAlert').style.display='none'}
+
+document.getElementById('forgotForm').addEventListener('submit',async(e)=>{e.preventDefault();const email=document.getElementById('forgotEmail').value.trim();const btn=document.getElementById('forgotBtn');const a=document.getElementById('loginAlert');btn.disabled=true;btn.textContent='Sending...';a.style.display='none';const{error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:RESET_REDIRECT});if(error){a.className='bg-alert bg-alert-error';a.textContent=error.message}else{a.className='bg-alert bg-alert-success';a.textContent='Reset link sent! Check your email.'}a.style.display='block';btn.disabled=false;btn.textContent='Send Reset Link'});
+
+document.getElementById('loginForm').addEventListener('submit',async(e)=>{e.preventDefault();const email=document.getElementById('loginEmail').value.trim();const pw=document.getElementById('loginPassword').value;const btn=document.getElementById('loginBtn');const a=document.getElementById('loginAlert');a.style.display='none';btn.disabled=true;btn.textContent='Signing in...';const{data,error}=await sb.auth.signInWithPassword({email,password:pw});if(error){a.textContent=error.message;a.className='bg-alert bg-alert-error';a.style.display='block';btn.disabled=false;btn.textContent='Sign In';return}await onLogin(data.user)});
+
+async function onLogin(user){
+  let{data:member}=await sb.from('team_members').select('*').eq('auth_id',user.id).limit(1).single();
+  if(!member){
+    const{data:byEmail}=await sb.from('team_members').select('*').eq('email',user.email).limit(1).single();
+    if(byEmail){await sb.from('team_members').update({auth_id:user.id}).eq('id',byEmail.id);member={...byEmail,auth_id:user.id}}
+    else{const a=document.getElementById('loginAlert');a.className='bg-alert bg-alert-error';a.textContent='Your email is not registered as a team member.';a.style.display='block';await sb.auth.signOut();return}
+  }
+  currentMember=member;
+  document.getElementById('loginView').classList.add('bg-hidden');
+  document.getElementById('appView').classList.remove('bg-hidden');
+  document.getElementById('userName').textContent=member.display_name;
+  if(member.role==='admin')document.getElementById('adminTab').classList.remove('bg-hidden');
+  document.getElementById('addDate').value=new Date().toISOString().split('T')[0];
+  await loadCategories();
+  await loadDashboard();
+}
+
+async function signOut(){await sb.auth.signOut();currentMember=null;allEntries=[];selectedIds.clear();document.getElementById('loginView').classList.remove('bg-hidden');document.getElementById('appView').classList.add('bg-hidden');document.getElementById('adminTab').classList.add('bg-hidden');document.getElementById('loginAlert').style.display='none';document.getElementById('loginBtn').disabled=false;document.getElementById('loginBtn').textContent='Sign In';switchTab('dashboard')}
+
+/* ==================== CATEGORIES ==================== */
+async function loadCategories(){
+  const{data}=await sb.from('budget_categories').select('id,parent_id,name,sort_order').eq('is_active',true).order('sort_order').limit(500);
+  categories=data||[];
+  // Top-level categories (A, B, C, D, E)
+  const tops=categories.filter(c=>!c.parent_id);
+  ['addCategory','expCategory'].forEach(id=>{
+    const sel=document.getElementById(id);
+    const first=sel.options[0];
+    sel.innerHTML='';sel.appendChild(first);
+    tops.forEach(p=>{const o=document.createElement('option');o.value=p.id;o.textContent=p.name;sel.appendChild(o)});
+  });
+}
+
+document.getElementById('addCategory').addEventListener('change',e=>{
+  const pid=parseInt(e.target.value);
+  const sel=document.getElementById('addSubcategory');
+  sel.innerHTML='<option value="">Select subcategory...</option>';
+  if(!pid)return;
+  // Get direct children; if they have children too, flatten
+  const children=categories.filter(c=>c.parent_id===pid);
+  children.forEach(ch=>{
+    const grandchildren=categories.filter(c=>c.parent_id===ch.id);
+    if(grandchildren.length>0){
+      // This is a sub-group (like C1, C2...) — show its children with prefix
+      grandchildren.forEach(gc=>{
+        const o=document.createElement('option');o.value=gc.id;o.textContent=ch.name+' > '+gc.name;sel.appendChild(o);
+      });
+    }else{
+      const o=document.createElement('option');o.value=ch.id;o.textContent=ch.name;sel.appendChild(o);
+    }
+  });
+});
+
+/* ==================== HELPERS ==================== */
+function fmtOMR(n){return parseFloat(n).toFixed(3)}
+function fmtNum(n){return parseFloat(n).toLocaleString('en',{minimumFractionDigits:3,maximumFractionDigits:3})}
+
+function getCatName(id){
+  const c=categories.find(x=>x.id===id);if(!c)return '';
+  // Walk up to find the top-level parent letter
+  let cur=c;
+  while(cur.parent_id){const p=categories.find(x=>x.id===cur.parent_id);if(!p)break;cur=p}
+  return cur.name;
+}
+
+function getSubName(id){
+  const c=categories.find(x=>x.id===id);if(!c)return '';
+  // If this has a parent that also has a parent (3-level), show "Parent > Name"
+  if(c.parent_id){
+    const parent=categories.find(x=>x.id===c.parent_id);
+    if(parent&&parent.parent_id){
+      return parent.name+' > '+c.name;
+    }
+  }
+  return c.name;
+}
+
+function getTopCatId(id){
+  const c=categories.find(x=>x.id===id);if(!c)return null;
+  let cur=c;
+  while(cur.parent_id){const p=categories.find(x=>x.id===cur.parent_id);if(!p)break;cur=p}
+  return cur.id;
+}
+
+function statusBadge(s){
+  const cls=s==='paid'?'bg-badge-paid':s==='reimbursed'?'bg-badge-reimbursed':'bg-badge-pending';
+  return '<span class="bg-badge-status '+cls+'">'+s+'</span>';
+}
+
+/* ==================== DASHBOARD ==================== */
+async function loadDashboard(){
+  const{data}=await sb.from('budget_entries').select('id,entry_date,amount,currency,paid_by,status,category_id').order('entry_date',{ascending:false}).limit(5000);
+  const entries=data||[];
+  const totalSpent=entries.reduce((s,e)=>s+parseFloat(e.amount),0);
+  const remaining=TOTAL_BUDGET-totalSpent;
+  const abdPending=entries.filter(e=>e.paid_by.includes('Abdullah')&&e.status==='pending').reduce((s,e)=>s+parseFloat(e.amount),0);
+
+  document.getElementById('dashSpent').textContent=fmtNum(totalSpent);
+  document.getElementById('dashRemaining').textContent=fmtNum(remaining);
+  document.getElementById('dashPending').textContent=fmtNum(abdPending);
+
+  // Category breakdown
+  const tops=categories.filter(c=>!c.parent_id);
+  let catHtml='';
+  tops.forEach(top=>{
+    // Sum all entries whose top-level cat matches
+    const catTotal=entries.filter(e=>getTopCatId(e.category_id)===top.id).reduce((s,e)=>s+parseFloat(e.amount),0);
+    const pct=totalSpent>0?(catTotal/totalSpent*100).toFixed(1):'0.0';
+    const budgetPct=TOTAL_BUDGET>0?(catTotal/TOTAL_BUDGET*100):0;
+    catHtml+='<div class="bg-dash-card"><div class="cat-name">'+top.name+'</div><div class="cat-amount">'+fmtNum(catTotal)+' <span style="font-size:12px;color:var(--ink-soft)">OMR</span></div><div class="cat-pct">'+pct+'% of spend</div><div class="cat-bar"><div class="cat-bar-fill" style="width:'+Math.min(budgetPct,100)+'%"></div></div></div>';
+  });
+  document.getElementById('dashCategories').innerHTML=catHtml;
+
+  // Monthly chart
+  const monthly={};
+  entries.forEach(e=>{
+    const m=e.entry_date.substring(0,7); // YYYY-MM
+    monthly[m]=(monthly[m]||0)+parseFloat(e.amount);
+  });
+  const months=Object.keys(monthly).sort();
+  const maxVal=Math.max(...Object.values(monthly),1);
+  let chartHtml='';
+  if(months.length===0){
+    chartHtml='<div class="bg-empty" style="width:100%">No expenses recorded yet</div>';
+  }else{
+    months.forEach(m=>{
+      const h=Math.max((monthly[m]/maxVal)*130,4);
+      const label=m.substring(5)+'/'+m.substring(2,4);
+      chartHtml+='<div class="bg-chart-bar"><div class="bar-val">'+fmtOMR(monthly[m])+'</div><div class="bar" style="height:'+h+'px"></div><div class="bar-label">'+label+'</div></div>';
+    });
+  }
+  document.getElementById('dashChart').innerHTML=chartHtml;
+}
+
+/* ==================== ADD EXPENSE ==================== */
+document.getElementById('addForm').addEventListener('submit',async(e)=>{
+  e.preventDefault();
+  const a=document.getElementById('addAlert');
+  const btn=document.getElementById('submitAdd');
+  a.style.display='none';btn.disabled=true;btn.textContent='Saving...';
+
+  const catId=parseInt(document.getElementById('addSubcategory').value);
+  if(!catId){
+    a.className='bg-alert bg-alert-error';a.textContent='Please select a subcategory.';a.style.display='block';btn.disabled=false;btn.textContent='Save Expense';return;
+  }
+
+  const entry={
+    member_id:currentMember.id,
+    category_id:catId,
+    entry_date:document.getElementById('addDate').value,
+    amount:parseFloat(document.getElementById('addAmount').value),
+    currency:'OMR',
+    paid_by:document.getElementById('addPaidBy').value,
+    status:document.getElementById('addStatus').value,
+    description:document.getElementById('addDescription').value.trim()||null,
+    receipt_ref:document.getElementById('addReceipt').value.trim()||null,
+    notes:document.getElementById('addNotes').value.trim()||null
+  };
+
+  const origAmt=document.getElementById('addOrigAmount').value;
+  const origCur=document.getElementById('addOrigCurrency').value;
+  if(origAmt&&origCur){
+    entry.original_amount=parseFloat(origAmt);
+    entry.original_currency=origCur;
+  }
+
+  const{error}=await sb.from('budget_entries').insert(entry);
+  if(error){a.className='bg-alert bg-alert-error';a.textContent=error.message}
+  else{
+    a.className='bg-alert bg-alert-success';a.textContent='Expense saved!';
+    document.getElementById('addForm').reset();
+    document.getElementById('addDate').value=new Date().toISOString().split('T')[0];
+    document.getElementById('addSubcategory').innerHTML='<option value="">Select subcategory...</option>';
+    setTimeout(()=>a.style.display='none',3000);
+    loadDashboard();
+  }
+  a.style.display='block';btn.disabled=false;btn.textContent='Save Expense';
+});
+
+/* ==================== ALL EXPENSES ==================== */
+async function loadExpenses(){
+  let q=sb.from('budget_entries').select('id,entry_date,amount,currency,original_amount,original_currency,description,paid_by,status,receipt_ref,notes,category_id,member_id,created_at').order('entry_date',{ascending:false}).limit(2000);
+
+  const f=document.getElementById('expFrom').value;
+  const t=document.getElementById('expTo').value;
+  const c=document.getElementById('expCategory').value;
+  const p=document.getElementById('expPaidBy').value;
+  const s=document.getElementById('expStatus').value;
+
+  if(f)q=q.gte('entry_date',f);
+  if(t)q=q.lte('entry_date',t);
+  if(p)q=q.eq('paid_by',p);
+  if(s)q=q.eq('status',s);
+  if(c){
+    // Get all descendant category IDs
+    const ids=getAllDescendantIds(parseInt(c));
+    if(ids.length)q=q.in('category_id',ids);
+  }
+
+  const{data}=await q;
+  allEntries=data||[];
+
+  const totalAmt=allEntries.reduce((s,e)=>s+parseFloat(e.amount),0);
+  const avg=allEntries.length>0?totalAmt/allEntries.length:0;
+
+  document.getElementById('expStats').innerHTML=
+    '<div class="bg-stat"><div class="val">'+fmtNum(totalAmt)+'</div><div class="lbl">Total Amount (OMR)</div></div>'+
+    '<div class="bg-stat"><div class="val">'+allEntries.length+'</div><div class="lbl">Entries</div></div>'+
+    '<div class="bg-stat"><div class="val">'+fmtNum(avg)+'</div><div class="lbl">Avg Per Entry</div></div>'+
+    '<div class="bg-stat"><div class="val">'+new Set(allEntries.map(e=>e.entry_date)).size+'</div><div class="lbl">Distinct Days</div></div>';
+
+  renderExpensesTable(allEntries,'expensesTable',currentMember.role==='admin');
+}
+
+function getAllDescendantIds(parentId){
+  const ids=[];
+  const children=categories.filter(c=>c.parent_id===parentId);
+  children.forEach(ch=>{
+    ids.push(ch.id);
+    const grandchildren=categories.filter(c=>c.parent_id===ch.id);
+    grandchildren.forEach(gc=>{ids.push(gc.id)});
+  });
+  return ids;
+}
+
+function renderExpensesTable(entries,containerId,isAdmin){
+  const el=document.getElementById(containerId);
+  if(!entries.length){el.innerHTML='<div class="bg-empty">No expenses found</div>';return}
+  let h='<table class="bg-table"><thead><tr><th>Date</th><th>Category</th><th>Amount</th><th>Paid By</th><th>Status</th><th>Description</th>';
+  if(isAdmin)h+='<th>Actions</th>';
+  h+='</tr></thead><tbody>';
+  entries.forEach(e=>{
+    const origInfo=e.original_amount&&e.original_currency?' <span style="font-size:11px;color:var(--ink-soft)">('+fmtOMR(e.original_amount)+' '+e.original_currency+')</span>':'';
+    h+='<tr><td>'+e.entry_date+'</td>';
+    h+='<td><span class="bg-badge">'+getCatName(e.category_id)+'</span><div style="font-size:11px;color:var(--ink-soft);margin-top:2px">'+getSubName(e.category_id)+'</div></td>';
+    h+='<td class="bg-amount">'+fmtNum(e.amount)+origInfo+'</td>';
+    h+='<td style="font-size:12px">'+e.paid_by+'</td>';
+    h+='<td>'+statusBadge(e.status)+'</td>';
+    h+='<td style="color:var(--ink-soft);max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+(e.description||'—')+'</td>';
+    if(isAdmin){
+      h+='<td><button class="bg-btn-sm" onclick="showEdit(\''+e.id+'\')">Edit</button> <button class="bg-del" onclick="deleteEntry(\''+e.id+'\')" title="Delete">&#10005;</button></td>';
+    }
+    h+='</tr>';
+  });
+  h+='</tbody></table>';
+  el.innerHTML=h;
+}
+
+/* ==================== EDIT ==================== */
+function showEdit(id){
+  const e=allEntries.find(x=>x.id===id);
+  if(!e)return;
+  document.getElementById('editId').value=e.id;
+  document.getElementById('editDate').value=e.entry_date;
+  document.getElementById('editAmount').value=e.amount;
+  document.getElementById('editPaidBy').value=e.paid_by;
+  document.getElementById('editStatus').value=e.status;
+  document.getElementById('editDescription').value=e.description||'';
+  document.getElementById('editReceipt').value=e.receipt_ref||'';
+  document.getElementById('editNotes').value=e.notes||'';
+  document.getElementById('editAlert').style.display='none';
+  document.getElementById('editModal').classList.add('show');
+}
+function hideEdit(){document.getElementById('editModal').classList.remove('show')}
+document.getElementById('editModal').addEventListener('click',e=>{if(e.target===e.currentTarget)hideEdit()});
+
+document.getElementById('editForm').addEventListener('submit',async(e)=>{
+  e.preventDefault();
+  const id=document.getElementById('editId').value;
+  const a=document.getElementById('editAlert');
+  const update={
+    entry_date:document.getElementById('editDate').value,
+    amount:parseFloat(document.getElementById('editAmount').value),
+    paid_by:document.getElementById('editPaidBy').value,
+    status:document.getElementById('editStatus').value,
+    description:document.getElementById('editDescription').value.trim()||null,
+    receipt_ref:document.getElementById('editReceipt').value.trim()||null,
+    notes:document.getElementById('editNotes').value.trim()||null,
+    updated_at:new Date().toISOString()
+  };
+  const{error}=await sb.from('budget_entries').update(update).eq('id',id);
+  if(error){a.className='bg-alert bg-alert-error';a.textContent=error.message;a.style.display='block'}
+  else{hideEdit();loadExpenses();loadDashboard()}
+});
+
+async function deleteEntry(id){
+  if(!confirm('Delete this expense entry?'))return;
+  await sb.from('budget_entries').delete().eq('id',id);
+  loadExpenses();loadDashboard();
+}
+
+/* ==================== ADMIN ==================== */
+async function loadAdmin(){
+  let q=sb.from('budget_entries').select('id,entry_date,amount,currency,original_amount,original_currency,description,paid_by,status,receipt_ref,notes,category_id,member_id,created_at').order('entry_date',{ascending:false}).limit(5000);
+
+  const p=document.getElementById('adminPaidBy').value;
+  const s=document.getElementById('adminStatus').value;
+  if(p)q=q.eq('paid_by',p);
+  if(s)q=q.eq('status',s);
+
+  const{data}=await q;
+  allEntries=data||[];
+  selectedIds.clear();
+
+  // Payer summary
+  const payers={};
+  allEntries.forEach(e=>{
+    if(!payers[e.paid_by])payers[e.paid_by]={total:0,pending:0,paid:0,reimbursed:0,count:0};
+    payers[e.paid_by].total+=parseFloat(e.amount);
+    payers[e.paid_by][e.status]+=parseFloat(e.amount);
+    payers[e.paid_by].count++;
+  });
+  let payerHtml='';
+  Object.keys(payers).forEach(name=>{
+    const p=payers[name];
+    payerHtml+='<div class="bg-summary-card"><div class="payer-name">'+name+'</div><div class="payer-total">'+fmtNum(p.total)+' OMR</div><div class="payer-detail">'+p.count+' entries | Pending: '+fmtNum(p.pending)+' | Paid: '+fmtNum(p.paid)+' | Reimbursed: '+fmtNum(p.reimbursed)+'</div></div>';
+  });
+  document.getElementById('adminPayerSummary').innerHTML=payerHtml||'<div class="bg-empty">No data</div>';
+
+  // Reimbursement tracker: show pending items for Abdullah
+  const pendingAbdullah=allEntries.filter(e=>e.paid_by.includes('Abdullah')&&e.status==='pending');
+  const reimTotal=pendingAbdullah.reduce((s,e)=>s+parseFloat(e.amount),0);
+  let reimHtml='<p style="margin-bottom:14px;font-size:14px">Abdullah pending reimbursement: <strong style="color:var(--seal)">'+fmtNum(reimTotal)+' OMR</strong> ('+pendingAbdullah.length+' entries)</p>';
+  if(pendingAbdullah.length){
+    reimHtml+='<table class="bg-table"><thead><tr><th>Date</th><th>Category</th><th>Amount</th><th>Description</th></tr></thead><tbody>';
+    pendingAbdullah.forEach(e=>{
+      reimHtml+='<tr><td>'+e.entry_date+'</td><td><span class="bg-badge">'+getSubName(e.category_id)+'</span></td><td class="bg-amount">'+fmtNum(e.amount)+'</td><td style="color:var(--ink-soft)">'+(e.description||'—')+'</td></tr>';
+    });
+    reimHtml+='</tbody></table>';
+  }
+  document.getElementById('adminReimbursement').innerHTML=reimHtml;
+
+  // Selectable table
+  renderAdminTable(allEntries);
+}
+
+function renderAdminTable(entries){
+  const el=document.getElementById('adminTable');
+  if(!entries.length){el.innerHTML='<div class="bg-empty">No entries found</div>';return}
+  let h='<table class="bg-table"><thead><tr><th><input type="checkbox" class="bg-check" onchange="toggleAll(this)"></th><th>Date</th><th>Category</th><th>Amount</th><th>Paid By</th><th>Status</th><th>Description</th><th>Actions</th></tr></thead><tbody>';
+  entries.forEach(e=>{
+    h+='<tr><td><input type="checkbox" class="bg-check" data-id="'+e.id+'" onchange="toggleSelect(this)" '+(selectedIds.has(e.id)?'checked':'')+'></td>';
+    h+='<td>'+e.entry_date+'</td>';
+    h+='<td><span class="bg-badge">'+getCatName(e.category_id)+'</span></td>';
+    h+='<td class="bg-amount">'+fmtNum(e.amount)+'</td>';
+    h+='<td style="font-size:12px">'+e.paid_by+'</td>';
+    h+='<td>'+statusBadge(e.status)+'</td>';
+    h+='<td style="color:var(--ink-soft);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+(e.description||'—')+'</td>';
+    h+='<td><button class="bg-btn-sm" onclick="showEdit(\''+e.id+'\')">Edit</button> <button class="bg-del" onclick="deleteEntry(\''+e.id+'\')" title="Delete">&#10005;</button></td>';
+    h+='</tr>';
+  });
+  h+='</tbody></table>';
+  el.innerHTML=h;
+}
+
+function toggleSelect(cb){
+  const id=cb.dataset.id;
+  if(cb.checked)selectedIds.add(id);else selectedIds.delete(id);
+}
+function toggleAll(cb){
+  const checks=document.querySelectorAll('#adminTable .bg-check[data-id]');
+  checks.forEach(c=>{c.checked=cb.checked;if(cb.checked)selectedIds.add(c.dataset.id);else selectedIds.delete(c.dataset.id)});
+}
+
+async function bulkReimburse(){
+  if(!selectedIds.size){alert('No entries selected.');return}
+  if(!confirm('Mark '+selectedIds.size+' entries as reimbursed?'))return;
+  const ids=Array.from(selectedIds);
+  for(const id of ids){
+    await sb.from('budget_entries').update({status:'reimbursed',updated_at:new Date().toISOString()}).eq('id',id);
+  }
+  selectedIds.clear();
+  loadAdmin();loadDashboard();
+}
+
+function exportCSV(){
+  if(!allEntries.length){alert('No data to export.');return}
+  const headers=['Date','Category','Subcategory','Amount (OMR)','Original Amount','Original Currency','Paid By','Status','Description','Receipt Ref','Notes'];
+  const rows=allEntries.map(e=>[
+    e.entry_date,
+    getCatName(e.category_id),
+    getSubName(e.category_id),
+    e.amount,
+    e.original_amount||'',
+    e.original_currency||'',
+    e.paid_by,
+    e.status,
+    (e.description||'').replace(/"/g,'""'),
+    e.receipt_ref||'',
+    (e.notes||'').replace(/"/g,'""')
+  ]);
+  const csv=[headers.join(','),...rows.map(r=>r.map(v=>'"'+v+'"').join(','))].join('\n');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download='medad_budget_'+new Date().toISOString().split('T')[0]+'.csv';
+  a.click();
+}
+
+/* ==================== TAB SWITCHING ==================== */
+function switchTab(tab){
+  document.querySelectorAll('.bg-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelector('.bg-tab[data-tab="'+tab+'"]').classList.add('active');
+  document.querySelectorAll('[id^="tab-"]').forEach(p=>p.classList.add('bg-hidden'));
+  document.getElementById('tab-'+tab).classList.remove('bg-hidden');
+  if(tab==='dashboard')loadDashboard();
+  if(tab==='expenses')loadExpenses();
+  if(tab==='admin')loadAdmin();
+}
+
+init();
+</script>
+</body>
+</html>
