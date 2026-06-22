@@ -214,7 +214,6 @@ a{color:inherit;text-decoration:none}
       <a class="nav-link" href="https://annotate.medad.om" style="font-weight:500">Annotator Login</a>
       <a class="nav-link" href="./worklog.html" style="font-weight:500">Work Log</a>
       <a class="nav-link active" href="./budget.html" style="font-weight:500">Budget</a>
-      <a class="nav-link" href="./publications.html" style="font-weight:500">Publications</a>
       <a class="nav-cta" href="./join.html">Join the Project
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
       </a>
@@ -256,6 +255,7 @@ a{color:inherit;text-decoration:none}
     <div class="bg-tab active" data-tab="dashboard" onclick="switchTab('dashboard')">Dashboard</div>
     <div class="bg-tab" data-tab="add" onclick="switchTab('add')">Add Expense</div>
     <div class="bg-tab" data-tab="expenses" onclick="switchTab('expenses')">All Expenses</div>
+    <div class="bg-tab" data-tab="publications" onclick="switchTab('publications')">Publications</div>
     <div class="bg-tab bg-hidden" data-tab="admin" id="adminTab" onclick="switchTab('admin')">Admin</div>
   </div>
 
@@ -357,6 +357,66 @@ a{color:inherit;text-decoration:none}
     </div>
   </div>
 
+  <!-- PUBLICATIONS -->
+  <div id="tab-publications" class="bg-wrap bg-hidden">
+    <div class="bg-summary-grid" id="pubPoolStats"></div>
+    <div class="bg-card" style="margin-top:16px">
+      <div class="bg-section-title">Publications</div>
+      <div id="pubCards"></div>
+    </div>
+    <div class="bg-card" style="margin-top:16px" id="pubFormCard">
+      <div class="bg-section-title">Add / Edit Publication</div>
+      <form id="pubForm" class="bg-filters" style="flex-direction:column;gap:12px">
+        <input type="hidden" id="pubEditId" value="">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div class="bg-field"><label>Paper Title *</label><input id="pubTitle" required></div>
+          <div class="bg-field"><label>Journal *</label><input id="pubJournal" required></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+          <div class="bg-field"><label>PMID</label><input id="pubPmid" placeholder="e.g. 38654321"></div>
+          <div class="bg-field"><label>DOI</label><input id="pubDoi" placeholder="10.1234/..."></div>
+          <div class="bg-field"><label>Authors</label><input id="pubAuthors"></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+          <div class="bg-field"><label>Status</label>
+            <select id="pubStatus"><option value="submitted">Submitted</option><option value="under_review">Under Review</option><option value="accepted">Accepted</option><option value="published">Published</option><option value="rejected">Rejected</option></select>
+          </div>
+          <div class="bg-field"><label>Publication Date</label><input type="date" id="pubDate"></div>
+          <div class="bg-field"><label>Related Project</label>
+            <select id="pubProject"><option value="">-</option><option value="Medad">Medad</option><option value="Burnout">Burnout</option><option value="Readmission">Readmission</option><option value="Other">Other</option></select>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px">
+          <div class="bg-field"><label>APC Fee (OMR)</label><input type="number" step="0.001" id="pubApcFee" value="0"></div>
+          <div class="bg-field"><label>Paid By</label>
+            <select id="pubPaidBy"><option value="Publication Pool">Publication Pool</option><option value="Abdullah">Abdullah</option><option value="Grant">Grant</option><option value="Pre-pool">Pre-pool</option></select>
+          </div>
+          <div class="bg-field"><label>Paid Date</label><input type="date" id="pubPaidDate"></div>
+          <div class="bg-field"><label>Original Amt + Currency</label>
+            <div style="display:flex;gap:4px"><input type="number" step="0.01" id="pubOrigAmt" style="width:60%"><input id="pubOrigCur" placeholder="USD" style="width:40%"></div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px">
+          <div class="bg-field"><label>Reimburse Source</label>
+            <select id="pubReimSource"><option value="">None</option><option value="SQU Pub Support">SQU Pub Support</option><option value="TRC">TRC</option><option value="OMSB">OMSB</option><option value="Other">Other</option></select>
+          </div>
+          <div class="bg-field"><label>Reimburse Status</label>
+            <select id="pubReimStatus"><option value="not_applied">Not Applied</option><option value="applied">Applied</option><option value="approved">Approved</option><option value="received">Received</option><option value="partial">Partial</option><option value="rejected">Rejected</option></select>
+          </div>
+          <div class="bg-field"><label>Reimburse Amount</label><input type="number" step="0.001" id="pubReimAmt" value="0"></div>
+          <div class="bg-field"><label>Reimburse Date</label><input type="date" id="pubReimDate"></div>
+        </div>
+        <div class="bg-field"><label>Reimbursement Plan</label><textarea id="pubReimPlan" rows="2" placeholder="How/when to claim refund..."></textarea></div>
+        <div class="bg-field"><label>Notes</label><textarea id="pubNotes" rows="2"></textarea></div>
+        <div style="display:flex;gap:8px">
+          <button type="submit" class="bg-btn" id="pubSubmitBtn">Add Publication</button>
+          <button type="button" class="bg-btn bg-btn-ghost" onclick="clearPubForm()">Clear</button>
+        </div>
+        <div id="pubAlert" class="bg-alert" style="display:none"></div>
+      </form>
+    </div>
+  </div>
+
   <!-- ADMIN -->
   <div id="tab-admin" class="bg-wrap bg-hidden">
     <div class="bg-card">
@@ -445,7 +505,7 @@ a{color:inherit;text-decoration:none}
         <div class="brand"><span class="brand-glyph">مداد</span><span class="brand-en">MEDAD</span></div>
         <p class="foot-desc">Ambient clinical documentation, in Arabic, on-premise. <i>Made in Oman, for the Arab world.</i></p>
       </div>
-      <div><h5>The Project</h5><ul><li><a href="./">Home</a></li><li><a href="./team.html">The Team</a></li><li><a href="./worklog.html">Work Log</a></li><li><a href="./budget.html">Budget</a></li><li><a href="./publications.html">Publications</a></li></ul></div>
+      <div><h5>The Project</h5><ul><li><a href="./">Home</a></li><li><a href="./team.html">The Team</a></li><li><a href="./worklog.html">Work Log</a></li><li><a href="./budget.html">Budget</a></li></ul></div>
       <div><h5>Get Involved</h5><ul><li><a href="./join.html">Join the Project</a></li><li><a href="https://annotate.medad.om">Become an Annotator</a></li><li><a href="mailto:dr.abdullahalalawi@gmail.com">dr.abdullahalalawi@gmail.com</a></li></ul></div>
       <div><h5>Imprint</h5><ul><li>Muscat, Oman</li><li>SQUH · OMSB · MCMSS</li><li>SQU · GUtech</li><li>EST. 2025</li></ul></div>
     </div>
@@ -872,6 +932,99 @@ function exportCSV(){
   a.click();
 }
 
+/* ==================== PUBLICATIONS ==================== */
+let allPubs=[];
+const reimColors={received:'#059669',approved:'#2563eb',partial:'#f59e0b',applied:'#b8853a',not_applied:'#9ca3af',rejected:'#dc2626'};
+const pubStatusColors={published:'#059669',accepted:'#2563eb',under_review:'#b8853a',submitted:'#9ca3af',rejected:'#dc2626'};
+
+async function loadPublications(){
+  const{data}=await sb.from('publications').select('*').order('id').limit(100);
+  allPubs=data||[];renderPubStats();renderPubCards();
+}
+function renderPubStats(){
+  const pubs=allPubs.filter(p=>!p.title.startsWith('POOL:'));
+  const deps=allPubs.filter(p=>p.title.startsWith('POOL:'));
+  const totalApc=pubs.reduce((s,p)=>s+(parseFloat(p.apc_fee)||0),0);
+  const totalRef=pubs.reduce((s,p)=>s+(parseFloat(p.reimburse_amount)||0),0);
+  const totalDep=deps.reduce((s,p)=>s+Math.abs(parseFloat(p.apc_fee)||0),0);
+  const pending=pubs.filter(p=>['applied','approved','not_applied'].includes(p.reimburse_status)&&parseFloat(p.apc_fee)>0).reduce((s,p)=>s+(parseFloat(p.apc_fee)||0)-(parseFloat(p.reimburse_amount)||0),0);
+  const bal=totalDep-totalApc+totalRef;
+  document.getElementById('pubPoolStats').innerHTML=
+    `<div class="bg-stat-card"><div class="bg-stat-val" style="color:#059669">${bal.toFixed(3)}</div><div class="bg-stat-label">Pool Balance (OMR)</div></div>
+    <div class="bg-stat-card"><div class="bg-stat-val">${totalDep.toFixed(3)}</div><div class="bg-stat-label">Total Deposits</div></div>
+    <div class="bg-stat-card"><div class="bg-stat-val" style="color:var(--seal)">${totalApc.toFixed(3)}</div><div class="bg-stat-label">Total APC Paid</div></div>
+    <div class="bg-stat-card"><div class="bg-stat-val" style="color:#059669">${totalRef.toFixed(3)}</div><div class="bg-stat-label">Refunded</div></div>
+    <div class="bg-stat-card"><div class="bg-stat-val" style="color:var(--gold)">${pending.toFixed(3)}</div><div class="bg-stat-label">Pending Refunds</div></div>
+    <div class="bg-stat-card"><div class="bg-stat-val">${pubs.length}</div><div class="bg-stat-label">Papers</div></div>`;
+}
+function renderPubCards(){
+  const pubs=allPubs.filter(p=>!p.title.startsWith('POOL:'));
+  const deps=allPubs.filter(p=>p.title.startsWith('POOL:'));
+  let h='';
+  pubs.forEach(p=>{
+    const sc=pubStatusColors[p.pub_status]||'#9ca3af';const rc=reimColors[p.reimburse_status]||'#9ca3af';
+    const pm=p.pmid?`<a href="https://pubmed.ncbi.nlm.nih.gov/${p.pmid}" target="_blank" style="color:var(--gold);font-size:12px">PubMed</a>`:'';
+    const doi=p.doi?`<a href="https://doi.org/${p.doi}" target="_blank" style="color:var(--gold);font-size:12px">DOI</a>`:'';
+    h+=`<div style="border:1px solid var(--rule-soft);border-radius:8px;padding:14px;margin-bottom:8px;background:var(--paper)">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;flex-wrap:wrap">
+        <div><div style="font-weight:600;font-size:14px">${p.title}</div>
+        <div style="font-size:12px;color:var(--ink-soft);margin-top:2px">${p.journal||''}${p.related_project?' · <span style="color:var(--gold)">'+p.related_project+'</span>':''}</div>
+        <div style="margin-top:4px;display:flex;gap:8px">${pm}${doi}</div></div>
+        <div style="display:flex;gap:6px;align-items:center"><span style="background:${sc}20;color:${sc};padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600">${(p.pub_status||'').replace('_',' ')}</span>
+        ${parseFloat(p.apc_fee)>0?`<span style="font-family:var(--mono);font-size:12px">${parseFloat(p.apc_fee).toFixed(3)} OMR</span>`:''}</div>
+      </div>
+      ${parseFloat(p.apc_fee)>0?`<div style="margin-top:8px;display:flex;gap:10px;flex-wrap:wrap;font-size:12px">
+        <span>Paid: ${p.paid_by||'-'}</span>
+        <span style="background:${rc}20;color:${rc};padding:1px 6px;border-radius:3px;font-weight:600">${(p.reimburse_status||'').replace('_',' ')}</span>
+        ${parseFloat(p.reimburse_amount)>0?`<span style="color:#059669;font-weight:600">Refunded: ${parseFloat(p.reimburse_amount).toFixed(3)}</span>`:''}
+        ${p.reimburse_source?`<span style="color:var(--ink-soft)">via ${p.reimburse_source}</span>`:''}
+      </div>`:''}
+      ${currentMember&&currentMember.role==='admin'?`<div style="margin-top:6px;text-align:right"><button class="bg-btn bg-btn-ghost" style="font-size:11px;padding:3px 8px" onclick="editPub(${p.id})">Edit</button></div>`:''}
+    </div>`;
+  });
+  if(deps.length){h+='<div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--rule)"><div style="font-size:12px;font-weight:600;color:var(--ink-soft);margin-bottom:6px">Pool Deposits</div>';
+    deps.forEach(d=>{h+=`<div style="display:flex;justify-content:space-between;padding:4px 0;font-size:13px"><span>${d.title.replace('POOL: ','')}</span><span style="color:#059669;font-family:var(--mono);font-weight:600">+${Math.abs(parseFloat(d.apc_fee)).toFixed(3)}</span></div>`;});h+='</div>';}
+  document.getElementById('pubCards').innerHTML=h||'<div class="bg-empty">No publications yet</div>';
+}
+function editPub(id){
+  const p=allPubs.find(x=>x.id===id);if(!p)return;
+  document.getElementById('pubEditId').value=id;
+  document.getElementById('pubTitle').value=p.title||'';document.getElementById('pubJournal').value=p.journal||'';
+  document.getElementById('pubPmid').value=p.pmid||'';document.getElementById('pubDoi').value=p.doi||'';
+  document.getElementById('pubAuthors').value=p.authors||'';document.getElementById('pubStatus').value=p.pub_status||'submitted';
+  document.getElementById('pubDate').value=p.pub_date||'';document.getElementById('pubProject').value=p.related_project||'';
+  document.getElementById('pubApcFee').value=p.apc_fee||0;document.getElementById('pubPaidBy').value=p.paid_by||'Publication Pool';
+  document.getElementById('pubPaidDate').value=p.paid_date||'';document.getElementById('pubOrigAmt').value=p.apc_original_amount||'';
+  document.getElementById('pubOrigCur').value=p.apc_original_currency||'';document.getElementById('pubReimSource').value=p.reimburse_source||'';
+  document.getElementById('pubReimStatus').value=p.reimburse_status||'not_applied';document.getElementById('pubReimAmt').value=p.reimburse_amount||0;
+  document.getElementById('pubReimDate').value=p.reimburse_date||'';document.getElementById('pubReimPlan').value=p.reimburse_plan||'';
+  document.getElementById('pubNotes').value=p.notes||'';
+  document.getElementById('pubSubmitBtn').textContent='Update Publication';
+  document.getElementById('pubFormCard').scrollIntoView({behavior:'smooth'});
+}
+function clearPubForm(){document.getElementById('pubForm').reset();document.getElementById('pubEditId').value='';document.getElementById('pubSubmitBtn').textContent='Add Publication';}
+document.getElementById('pubForm').addEventListener('submit',async(e)=>{
+  e.preventDefault();const a=document.getElementById('pubAlert');a.style.display='none';
+  const btn=document.getElementById('pubSubmitBtn');btn.disabled=true;const editId=document.getElementById('pubEditId').value;
+  const entry={title:document.getElementById('pubTitle').value.trim(),journal:document.getElementById('pubJournal').value.trim(),
+    authors:document.getElementById('pubAuthors').value.trim()||null,pmid:document.getElementById('pubPmid').value.trim()||null,
+    doi:document.getElementById('pubDoi').value.trim()||null,pub_status:document.getElementById('pubStatus').value,
+    pub_date:document.getElementById('pubDate').value||null,related_project:document.getElementById('pubProject').value||null,
+    apc_fee:parseFloat(document.getElementById('pubApcFee').value)||0,
+    apc_original_amount:parseFloat(document.getElementById('pubOrigAmt').value)||null,
+    apc_original_currency:document.getElementById('pubOrigCur').value.trim()||null,
+    paid_by:document.getElementById('pubPaidBy').value,paid_date:document.getElementById('pubPaidDate').value||null,
+    reimburse_source:document.getElementById('pubReimSource').value||null,reimburse_status:document.getElementById('pubReimStatus').value,
+    reimburse_amount:parseFloat(document.getElementById('pubReimAmt').value)||0,reimburse_date:document.getElementById('pubReimDate').value||null,
+    reimburse_plan:document.getElementById('pubReimPlan').value.trim()||null,notes:document.getElementById('pubNotes').value.trim()||null,
+    updated_at:new Date().toISOString()};
+  let error;if(editId){const r=await sb.from('publications').update(entry).eq('id',parseInt(editId));error=r.error}
+  else{const r=await sb.from('publications').insert(entry);error=r.error}
+  if(error){a.className='bg-alert bg-alert-error';a.textContent=error.message}
+  else{a.className='bg-alert bg-alert-success';a.textContent=editId?'Updated!':'Added!';clearPubForm();await loadPublications();setTimeout(()=>a.style.display='none',3000)}
+  a.style.display='block';btn.disabled=false;btn.textContent='Add Publication';
+});
+
 /* ==================== TAB SWITCHING ==================== */
 function switchTab(tab){
   document.querySelectorAll('.bg-tab').forEach(t=>t.classList.remove('active'));
@@ -880,6 +1033,7 @@ function switchTab(tab){
   document.getElementById('tab-'+tab).classList.remove('bg-hidden');
   if(tab==='dashboard')loadDashboard();
   if(tab==='expenses')loadExpenses();
+  if(tab==='publications')loadPublications();
   if(tab==='admin')loadAdmin();
 }
 
