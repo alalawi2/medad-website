@@ -267,6 +267,15 @@ a{color:inherit;text-decoration:none}
       <div class="bg-stat"><div class="val" id="dashRemaining">25,500</div><div class="lbl">Remaining</div></div>
       <div class="bg-stat"><div class="val" id="dashPending">0</div><div class="lbl">Abdullah Pending</div></div>
     </div>
+    <div class="bg-card" id="cashPosition" hidden>
+      <div class="bg-section-title">Recorded Cash Position (OMR)</div>
+      <div class="bg-stats">
+        <div class="bg-stat"><div class="val" id="cashResearch">-</div><div class="lbl">Research Cash</div></div>
+        <div class="bg-stat"><div class="val" id="cashPublications">-</div><div class="lbl">Restricted Publication Reserve</div></div>
+        <div class="bg-stat"><div class="val" id="cashBank">-</div><div class="lbl">Calculated Shared Bank Balance</div></div>
+      </div>
+      <p id="cashBasis" style="font-size:13px;color:var(--ink-soft)"></p>
+    </div>
     <div class="bg-section-title">Spending by Category</div>
     <div class="bg-dash-grid" id="dashCategories"></div>
     <div class="bg-section-title">Monthly Spending</div>
@@ -624,7 +633,33 @@ function statusBadge(s){
 }
 
 /* ==================== DASHBOARD ==================== */
+async function loadCashPosition(){
+  const panel=document.getElementById('cashPosition');
+  panel.hidden=true;
+  try{
+    const {data,error}=await sb.from('budget_funders').select('notes').eq('id',1).single();
+    if(error)throw error;
+    const prefix='MEDAD_CASH_SNAPSHOT:';
+    const line=(data.notes||'').split('\n').find(line=>line.startsWith(prefix));
+    if(!line)return;
+    const cash=JSON.parse(line.slice(prefix.length));
+    const amounts=[cash.research_cash,cash.publication_reserve,cash.bank_balance];
+    if(cash.currency!=='OMR'||!amounts.every(n=>typeof n==='number'&&Number.isFinite(n))||
+      Math.abs(cash.bank_balance-cash.research_cash-cash.publication_reserve)>0.0005||
+      !/^\d{4}-\d{2}-\d{2}$/.test(cash.as_of))throw new Error('Invalid cash snapshot');
+    document.getElementById('cashResearch').textContent=fmtNum(cash.research_cash);
+    document.getElementById('cashPublications').textContent=fmtNum(cash.publication_reserve);
+    document.getElementById('cashBank').textContent=fmtNum(cash.bank_balance);
+    document.getElementById('cashBasis').textContent='As of '+cash.as_of+'. '+cash.basis+' This dated cash position is separate from grant budget remaining.';
+    panel.hidden=false;
+  }catch(error){
+    document.getElementById('cashBasis').textContent='Recorded cash position unavailable. No zero balance assumed.';
+    panel.hidden=false;
+  }
+}
+
 async function loadDashboard(){
+  await loadCashPosition();
   const{data}=await sb.from('budget_entries').select('id,entry_date,amount,currency,paid_by,status,category_id').order('entry_date',{ascending:false}).limit(5000);
   const entries=data||[];
   const totalSpent=entries.reduce((s,e)=>s+parseFloat(e.amount),0);
