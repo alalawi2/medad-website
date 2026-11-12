@@ -133,7 +133,7 @@ a{color:inherit;text-decoration:none}
 .bg-empty{text-align:center;padding:48px;color:var(--ink-soft);font-size:14px}
 
 /* stats */
-.bg-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--ink);margin-bottom:24px}
+.bg-stats{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border:1px solid var(--ink);margin-bottom:24px}
 .bg-stat{padding:20px 16px;text-align:center;border-right:1px solid var(--rule)}
 .bg-stat:last-child{border-right:none}
 .bg-stat .val{font-size:28px;font-weight:700;color:var(--gold-deep);font-family:var(--mono);letter-spacing:-0.02em}
@@ -265,7 +265,8 @@ a{color:inherit;text-decoration:none}
       <div class="bg-stat"><div class="val">25,500</div><div class="lbl">Total Budget (OMR)</div></div>
       <div class="bg-stat"><div class="val" id="dashSpent">0</div><div class="lbl">Total Spent</div></div>
       <div class="bg-stat"><div class="val" id="dashRemaining">25,500</div><div class="lbl">Remaining</div></div>
-      <div class="bg-stat"><div class="val" id="dashPending">0</div><div class="lbl">Abdullah Pending</div></div>
+      <div class="bg-stat"><div class="val" id="dashPending">0</div><div class="lbl">Abdullah Outstanding (Net)</div></div>
+      <div class="bg-stat"><div class="val" id="dashReimbursements">0</div><div class="lbl">RA Repayments</div></div>
     </div>
     <div class="bg-card" id="cashPosition" hidden>
       <div class="bg-section-title">Recorded Cash Position (OMR)</div>
@@ -445,6 +446,22 @@ a{color:inherit;text-decoration:none}
     </div>
 
     <div class="bg-card">
+      <div class="bg-section-title">Record Abdullah Repayment</div>
+      <p style="font-size:13px;color:var(--ink-soft);margin-bottom:14px">Record RA repayments against Abdullah's pending personal expenses. These receipts reduce the outstanding amount; they are not new project expenses or grant funding.</p>
+      <form id="reimbursementForm">
+        <div class="bg-row-3">
+          <div class="bg-field"><label>Date Received (optional)</label><input type="date" id="reimbDate"></div>
+          <div class="bg-field"><label>Amount (OMR)</label><input type="number" id="reimbAmount" min="0.001" step="0.001" value="600" required></div>
+          <div class="bg-field"><label>Source</label><input type="text" id="reimbSource" value="Research Assistant" required></div>
+        </div>
+        <div class="bg-field"><label>Notes</label><input type="text" id="reimbNotes" placeholder="e.g. Monthly repayment toward Abdullah's pending expenses"></div>
+        <button type="submit" class="bg-btn bg-btn-primary" id="reimbSubmit">Record Repayment</button>
+        <div id="reimbAlert" class="bg-alert"></div>
+      </form>
+      <div id="adminReimbursementLedger" style="margin-top:16px"></div>
+    </div>
+
+    <div class="bg-card">
       <div class="bg-section-title">All Entries (selectable)</div>
       <div class="bg-filters">
         <div class="bg-field"><label>Paid By</label>
@@ -543,6 +560,24 @@ document.getElementById('forgotForm').addEventListener('submit',async(e)=>{e.pre
 
 document.getElementById('loginForm').addEventListener('submit',async(e)=>{e.preventDefault();const email=document.getElementById('loginEmail').value.trim();const pw=document.getElementById('loginPassword').value;const btn=document.getElementById('loginBtn');const a=document.getElementById('loginAlert');a.style.display='none';btn.disabled=true;btn.textContent='Signing in...';const{data,error}=await sb.auth.signInWithPassword({email,password:pw});if(error){a.textContent=error.message;a.className='bg-alert bg-alert-error';a.style.display='block';btn.disabled=false;btn.textContent='Sign In';return}await onLogin(data.user)});
 
+document.getElementById('reimbursementForm').addEventListener('submit',async(e)=>{
+  e.preventDefault();
+  if(!currentMember||currentMember.role!=='admin')return;
+  const btn=document.getElementById('reimbSubmit');
+  const alertBox=document.getElementById('reimbAlert');
+  btn.disabled=true;btn.textContent='Saving...';alertBox.style.display='none';
+  const{error}=await sb.from('budget_reimbursements').insert({
+    received_date:document.getElementById('reimbDate').value||null,
+    amount:parseFloat(document.getElementById('reimbAmount').value),
+    source:document.getElementById('reimbSource').value.trim(),
+    beneficiary:'Abdullah',
+    notes:document.getElementById('reimbNotes').value.trim()||null
+  });
+  if(error){alertBox.className='bg-alert bg-alert-error';alertBox.textContent=error.message;alertBox.style.display='block'}
+  else{e.target.reset();document.getElementById('reimbAmount').value='600';document.getElementById('reimbSource').value='Research Assistant';alertBox.className='bg-alert bg-alert-success';alertBox.textContent='Repayment recorded; project spending was not changed.';alertBox.style.display='block';await loadAdmin();await loadDashboard()}
+  btn.disabled=false;btn.textContent='Record Repayment';
+});
+
 async function onLogin(user){
   let{data:member}=await sb.from('team_members').select('*').eq('auth_id',user.id).limit(1).single();
   if(!member){
@@ -632,6 +667,10 @@ function statusBadge(s){
   return '<span class="bg-badge-status '+cls+'">'+s+'</span>';
 }
 
+function escapeHtml(value){
+  return String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+}
+
 /* ==================== DASHBOARD ==================== */
 async function loadCashPosition(){
   const panel=document.getElementById('cashPosition');
@@ -660,15 +699,21 @@ async function loadCashPosition(){
 
 async function loadDashboard(){
   await loadCashPosition();
-  const{data}=await sb.from('budget_entries').select('id,entry_date,amount,currency,paid_by,status,category_id').order('entry_date',{ascending:false}).limit(5000);
-  const entries=data||[];
+  const[{data},{data:reimbursements}]=await Promise.all([
+    sb.from('budget_entries').select('id,entry_date,amount,currency,paid_by,status,category_id').order('entry_date',{ascending:false}).limit(5000),
+    sb.from('budget_reimbursements').select('amount').eq('beneficiary','Abdullah').limit(1000)
+  ]);
+  const entries=data||[],receipts=reimbursements||[];
   const totalSpent=entries.reduce((s,e)=>s+parseFloat(e.amount),0);
   const remaining=TOTAL_BUDGET-totalSpent;
-  const abdPending=entries.filter(e=>e.paid_by.includes('Abdullah')&&e.status==='pending').reduce((s,e)=>s+parseFloat(e.amount),0);
+  const pendingBeforeReceipts=entries.filter(e=>e.paid_by.includes('Abdullah')&&e.status==='pending').reduce((s,e)=>s+parseFloat(e.amount),0);
+  const totalReceipts=receipts.reduce((s,r)=>s+parseFloat(r.amount||0),0);
+  const abdPending=Math.max(0,pendingBeforeReceipts-totalReceipts);
 
   document.getElementById('dashSpent').textContent=fmtNum(totalSpent);
   document.getElementById('dashRemaining').textContent=fmtNum(remaining);
   document.getElementById('dashPending').textContent=fmtNum(abdPending);
+  document.getElementById('dashReimbursements').textContent=fmtNum(totalReceipts);
 
   // Category breakdown
   const tops=categories.filter(c=>!c.parent_id);
@@ -869,8 +914,14 @@ async function loadAdmin(){
   if(p)q=q.eq('paid_by',p);
   if(s)q=q.eq('status',s);
 
-  const{data}=await q;
+  const[{data},{data:reimbursements},{data:pendingRows}]=await Promise.all([
+    q,
+    sb.from('budget_reimbursements').select('id,received_date,amount,source,beneficiary,notes,external_ref,created_at').eq('beneficiary','Abdullah').order('created_at',{ascending:false}).limit(500),
+    sb.from('budget_entries').select('id,entry_date,amount,paid_by,status,description,category_id').ilike('paid_by','%Abdullah%').eq('status','pending').order('entry_date',{ascending:false}).limit(5000)
+  ]);
   allEntries=data||[];
+  const receipts=reimbursements||[];
+  const pendingEntries=pendingRows||[];
   selectedIds.clear();
 
   // Payer summary
@@ -889,17 +940,26 @@ async function loadAdmin(){
   document.getElementById('adminPayerSummary').innerHTML=payerHtml||'<div class="bg-empty">No data</div>';
 
   // Reimbursement tracker: show pending items for Abdullah
-  const pendingAbdullah=allEntries.filter(e=>e.paid_by.includes('Abdullah')&&e.status==='pending');
-  const reimTotal=pendingAbdullah.reduce((s,e)=>s+parseFloat(e.amount),0);
-  let reimHtml='<p style="margin-bottom:14px;font-size:14px">Abdullah pending reimbursement: <strong style="color:var(--seal)">'+fmtNum(reimTotal)+' OMR</strong> ('+pendingAbdullah.length+' entries)</p>';
+  const pendingAbdullah=pendingEntries;
+  const grossPending=pendingAbdullah.reduce((s,e)=>s+parseFloat(e.amount),0);
+  const received=receipts.reduce((s,r)=>s+parseFloat(r.amount||0),0);
+  const reimTotal=Math.max(0,grossPending-received);
+  let reimHtml='<p style="margin-bottom:14px;font-size:14px">Gross pending expense claims before repayments: <strong>'+fmtNum(grossPending)+' OMR</strong><br>RA repayments received: <strong>'+fmtNum(received)+' OMR</strong><br>Current net outstanding to Abdullah: <strong style="color:var(--seal)">'+fmtNum(reimTotal)+' OMR</strong></p>';
   if(pendingAbdullah.length){
     reimHtml+='<table class="bg-table"><thead><tr><th>Date</th><th>Category</th><th>Amount</th><th>Description</th></tr></thead><tbody>';
     pendingAbdullah.forEach(e=>{
-      reimHtml+='<tr><td>'+e.entry_date+'</td><td><span class="bg-badge">'+getSubName(e.category_id)+'</span></td><td class="bg-amount">'+fmtNum(e.amount)+'</td><td style="color:var(--ink-soft)">'+(e.description||'—')+'</td></tr>';
+      reimHtml+='<tr><td>'+escapeHtml(e.entry_date)+'</td><td><span class="bg-badge">'+escapeHtml(getSubName(e.category_id))+'</span></td><td class="bg-amount">'+fmtNum(e.amount)+'</td><td style="color:var(--ink-soft)">'+escapeHtml(e.description||'—')+'</td></tr>';
     });
     reimHtml+='</tbody></table>';
   }
   document.getElementById('adminReimbursement').innerHTML=reimHtml;
+  let receiptHtml='';
+  if(receipts.length){
+    receiptHtml='<table class="bg-table"><thead><tr><th>Date received</th><th>Source</th><th>Amount (OMR)</th><th>Notes</th></tr></thead><tbody>';
+    receipts.forEach(r=>{receiptHtml+='<tr><td>'+escapeHtml(r.received_date||'Date not recorded')+'</td><td>'+escapeHtml(r.source||'—')+'</td><td class="bg-amount">'+fmtNum(r.amount)+'</td><td>'+escapeHtml(r.notes||'—')+'</td></tr>'});
+    receiptHtml+='</tbody></table>';
+  }else receiptHtml='<div class="bg-empty" style="padding:18px">No partial repayments recorded yet.</div>';
+  document.getElementById('adminReimbursementLedger').innerHTML=receiptHtml;
 
   // Selectable table
   renderAdminTable(allEntries);
